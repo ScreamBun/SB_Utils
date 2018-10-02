@@ -1,6 +1,7 @@
 image: gitlab.labs.g2-inc.net:4567/screamingbunny/docker/plus:alpine-python3
 
 variables:
+  GIT_SSL_NO_VERIFY: "true"
   PKG_DIR: ./
   DIST_DIR: ./dist
 
