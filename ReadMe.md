@@ -28,8 +28,10 @@
 		```bash
 		curl --header "JOB-TOKEN: $CI_JOB_TOKEN" "$UTILS_URL"
 		```
-		 
-	3. Add to the docker file
+	3. Add to requiremtns.txt file
+		- ScreamingBunny_Utils
+	
+	4. Add to the docker file
 
 		```DockerFile
 		...
@@ -38,8 +40,7 @@
 		RUN ...
 		mkdir -p /tmp/SB_UTILS && \
 		unzip /tmp/SB_UTILS.zip -d /tmp/SB_UTILS && \
-		pip3 install 
-		pip3 install -r requirements.txt && \
+		pip3 install -r requirements.txt --find-links file:///tmp/SB_UTILS && \
 		...
 		```
 	
