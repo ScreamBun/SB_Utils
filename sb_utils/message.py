@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import base64
 import cbor2
 import collections
-from dicttoxml import dicttoxml
 import json
 import xmltodict
+import yaml
+
+from dicttoxml import dicttoxml
 
 xml_root = dict(
     command='command',
@@ -30,7 +33,13 @@ def load_xml(m):
         return tmp
 
     if type(m) == str:
-        return _xml_to_dict(xmltodict.parse(m))[xml_root['command']]
+        xml_dict = _xml_to_dict(xmltodict.parse(m))
+        if xml_root['command'] in xml_dict:
+            return xml_dict[xml_root['command']]
+        elif xml_root['response'] in xml_dict:
+            return xml_dict[xml_root['response']]
+        else:
+            raise Exception('Cannot load message, not a command/response')
 
     else:
         raise Exception('Cannot load xml, improperly formatted')
@@ -38,21 +47,23 @@ def load_xml(m):
 
 encodings = dict(
     encode=dict(
-        cbor=cbor2.dumps,
+        cbor=lambda x: base64.b64encode(cbor2.dumps(x)).decode('utf-8'),
         json=json.dumps,
-        protobuf=json.dumps,
-        xml=lambda x: dicttoxml(x, custom_root=xml_root['response'], attr_type=False)
+        xml=lambda x: dicttoxml(x, custom_root=xml_root['command' if 'target' in x else 'response'], attr_type=False),
+        yaml=yaml.dump
     ),
     decode=dict(
-        cbor=cbor2.loads,
+        cbor=lambda x: base64.b64decode(cbor2.loads(x)),
         json=json.loads,
-        protobuf=json.loads,
-        xml=load_xml
+        xml=load_xml,
+        yaml=yaml.load
     )
 )
 
 
 def encode_msg(msg, enc):
+    enc = enc.lower()
+
     if enc not in encodings['encode']:
         raise ReferenceError('Invalid Encoding')
     elif type(msg) is not dict:
@@ -62,6 +73,8 @@ def encode_msg(msg, enc):
 
 
 def decode_msg(msg, enc):
+    enc = enc.lower()
+
     if type(msg) is dict:
         return msg
     elif enc not in encodings['decode']:
