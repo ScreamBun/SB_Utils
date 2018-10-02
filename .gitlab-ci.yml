@@ -16,6 +16,7 @@ Build-Wheel:
     - mv $DIST_DIR/ScreamingBunny_Utils-*.whl .
 
   artifacts:
+    name: "SB_UTILS.${CI_PIPELINE_ID}_${CI_COMMIT_SHA:0:8}"
     expire_in: 4 weeks
     paths:
      - ./ScreamingBunny_Utils-*.whl
