@@ -13,10 +13,9 @@ Build-Wheel:
 
   script:
     - pip wheel $PKG_DIR -w $DIST_DIR
-    - mv $DIST_DIR/*.whl .
+    - mv $DIST_DIR/ScreamingBunny_Utils-*.whl .
 
   artifacts:
-    name: "SB_UTILS.${CI_PIPELINE_ID}_${CI_COMMIT_SHA:0:8}"
     expire_in: 4 weeks
     paths:
-     - ./*.whl
+     - ./ScreamingBunny_Utils-*.whl
