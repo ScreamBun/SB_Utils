@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 
 version = dict(
     major=0,
-    minor=0,
-    bugfix=1
+    minor=1,
+    bugfix=0
 )
 
 setup(
@@ -12,10 +12,10 @@ setup(
     version='{major}.{minor}.{bugfix}'.format(**version),
 
     description='ScreamingBunny Utils',
-    # long_description="The Server for NetVamp, that provides the REST API, controllers, and database.",
+    # long_description="ScreamingBunny Utils",
 
-    # author='G2-Inc. Solutions',
-    # author_email='solutions@g2-inc.com',
+    # author='G2-Inc.',
+    # author_email='screaming-bunny@g2-inc.com',
 
     classifiers=[
         'Development Status :: 5 - Production/Stable',
