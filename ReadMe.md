@@ -17,27 +17,20 @@
 ### Gitlab CI
 - Installing requires a download of the current artifacts from the CI of Utils
 -  All edits are done to `.gitlab-ci.yml`, `requirements.txt`, and `Dockerfile`
-	1. Add to the variables
-
-		```yaml
-		variables:
-			...
-			UTILS_URL: https://gitlab.labs.g2-inc.net/ScreamingBunny/Utils/-/jobs/artifacts/master/download?job=Build-Wheel
-		```
-	2. Add to `before_script`
+	1. Add to `before_script`
 			
 		```yaml
 		...
 		before_script:
 			...
 			- apk add --no-cache curl
-			- curl --header "JOB-TOKEN: $CI_JOB_TOKEN" "$UTILS_URL"
+			- curl --insecure --header "JOB-TOKEN:$CI_JOB_TOKEN" "$UTILS_URL"
 		...
 		```
-	3. Add to requirements.txt file
+	2. Add to requirements.txt file
 		- ScreamingBunny_Utils
 	
-	4. Add to the Dockerfile
+	3. Add to the Dockerfile
 
 		```DockerFile
 		...
