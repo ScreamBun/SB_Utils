@@ -1,9 +1,10 @@
 # Screaming Bunny Utils
 
 ## Installing
-### On a standalone System
+### On a standalone System via pip
 - Install requires Python 3.6+ and pip
-    
+
+- Install via pip
     ```bash
     pip install git+https://gitlab.labs.g2-inc.net/ScreamingBunny/Utils.git
     ```
@@ -11,34 +12,52 @@
 - To update if already installed
 	 
    ```bash
-	pip install --upgrade git+https://gitlab.labs.g2-inc.net/ScreamingBunny/Utils.git
+   pip install --upgrade git+https://gitlab.labs.g2-inc.net/ScreamingBunny/Utils.git
    ```
+
+### On a standalone System via submodule source
+- Install requires Python 3.6+ and pip
+
+- Add the submodule to the repo
+    - Add `--branch=BRANCH` to use a branch instead of master
+    - DIR - the directory to add the submodule to, recommended to use ./module/NAME
+    - After adding a submodule, it is recomended to edit the `.gitmodules` file and change the absolute url to a relative url unless the git server is not the same
+
+    ```bash
+    git submodule add "REPO-URL.git" "DIR"
+    ```
+    
+- Initialize the submodule and pull the repo
+	
+	```bash
+	git submodule init
+	git submodule update
+	```
+
+	- Updating the submodule
+		- The submodule is a nested repo, using `git fetch` and `git merge` will work within submodule directory
+		- For easier updating, especially if their are multiple submodules
+			
+			```bash
+			git submodule update --remote
+			```
+- Installing via source
+	- Be sure to be in the submodule directory to be installed
+	- Updating is running the same command again, it will override the currently installed version
+
+	```bash
+	python setup.py install
+	```
+
    
 ### Gitlab CI
-- Installing requires a download of the current artifacts from the CI of Utils
--  All edits are done to `.gitlab-ci.yml`, `requirements.txt`, and `Dockerfile`
-	1. Add to `before_script`
-			
-		```yaml
-		...
-		before_script:
-			...
-			- apk add --no-cache curl
-			- curl --insecure --header "JOB-TOKEN:$CI_JOB_TOKEN" "$UTILS_URL"
-		...
-		```
-	2. Add to requirements.txt file
-		- ScreamingBunny_Utils
-	
-	3. Add to the Dockerfile
+- Submodule init and update are handled by the CI Runner
+- The submodule will be available where its folder is specified
+- This repo is recomended to be used as a python pkg, the following is how to install and use it
+	- Standalone
+		- See the Installing on a standalone system via submodule source
 
-		```DockerFile
-		...
-		ADD SB_UTILS.*.zip /tmp/SB_UTILS.zip
-		...
-		RUN ...
-		mkdir -p /tmp/SB_UTILS && \
-		unzip /tmp/SB_UTILS.zip -d /tmp/SB_UTILS && \
-		pip3 install -r requirements.txt --find-links file:///tmp/SB_UTILS && \
-		...
-		```
+	- Docker
+		- Add the submodule directory to the image, a tmp directory is preferred
+		- See the Installing on a standalone system via submodule source
+		- Cleanup the tmp directory and remove the submodule directory
