@@ -45,7 +45,7 @@ def load_xml(m):
         raise Exception('Cannot load xml, improperly formatted')
 
 
-encodings = dict(
+serializations = dict(
     encode=dict(
         cbor=lambda x: base64.b64encode(cbor2.dumps(x)).decode('utf-8'),
         json=json.dumps,
@@ -64,12 +64,12 @@ encodings = dict(
 def encode_msg(msg, enc):
     enc = enc.lower()
 
-    if enc not in encodings['encode']:
+    if enc not in serializations['encode']:
         raise ReferenceError('Invalid Encoding')
     elif type(msg) is not dict:
         raise TypeError('Message is not type dict')
 
-    return encodings['encode'].get(enc, encodings['encode']['json'])(msg)
+    return serializations['encode'].get(enc, serializations['encode']['json'])(msg)
 
 
 def decode_msg(msg, enc):
@@ -77,9 +77,9 @@ def decode_msg(msg, enc):
 
     if type(msg) is dict:
         return msg
-    elif enc not in encodings['decode']:
+    elif enc not in serializations['decode']:
         raise ReferenceError('Invalid Encoding')
     elif type(msg) not in [str, bytes]:
         raise TypeError('Message is not type string or bytestring')
 
-    return encodings['decode'].get(enc, encodings['decode']['json'])(msg)
+    return serializations['decode'].get(enc, serializations['decode']['json'])(msg)
