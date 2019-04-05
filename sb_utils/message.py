@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
+"""
+Message Conversion functions
+"""
 import base64
 import cbor2
 import collections
@@ -10,53 +10,46 @@ import yaml
 
 from dicttoxml import dicttoxml
 
-xml_root = dict(
-    command='command',
-    response='response'
-)
+try:
+    from yaml import CLoader as Loader, CDumper as Dumper
+except ImportError:
+    from yaml import Loader, Dumper
 
 
-def load_xml(m):
-    """
-    :parammg: XML Encoded message
-    :type m: str
-    """
-    def _xml_to_dict(xml):
-        tmp = {}
+def _xml_root(msg):
+    if 'message' in msg:
+        return msg.get('message', {})
 
-        for t in xml:
-            if type(xml[t]) == collections.OrderedDict:
-                tmp[t] = _xml_to_dict(xml[t])
-            else:
-                tmp[t[1:] if t.startswith("@") else t] = xml[t]
+    elif 'response' in msg:
+        return msg.get('response', {})
 
-        return tmp
+    elif 'action' in msg:
+        return 'message'
 
-    if type(m) == str:
-        xml_dict = _xml_to_dict(xmltodict.parse(m))
-        if xml_root['command'] in xml_dict:
-            return xml_dict[xml_root['command']]
-        elif xml_root['response'] in xml_dict:
-            return xml_dict[xml_root['response']]
-        else:
-            raise Exception('Cannot load message, not a command/response')
+    elif 'status' in msg:
+        return 'response'
 
-    else:
-        raise Exception('Cannot load xml, improperly formatted')
+
+def _xml_to_dict(xml):
+    tmp = {}
+    for k, v in xml.items():
+        a = k[1:] if k.startswith("@") else k
+        tmp[a] = _xml_to_dict(v) if isinstance(v, collections.OrderedDict) else v
+    return tmp
 
 
 serializations = dict(
     encode=dict(
-        cbor=lambda x: base64.b64encode(cbor2.dumps(x)).decode('utf-8'),
-        json=json.dumps,
-        xml=lambda x: dicttoxml(x, custom_root=xml_root['command' if 'target' in x else 'response'], attr_type=False),
-        yaml=yaml.dump
+        cbor=lambda v: base64.b64encode(cbor2.dumps(v)).decode('utf-8'),
+        json=lambda v: json.loads(v),
+        xml=lambda v: dicttoxml(v, custom_root=_xml_root(v), attr_type=False),
+        yaml=lambda v: yaml.dump(v, Dumper=Dumper),
     ),
     decode=dict(
-        cbor=lambda x: base64.b64decode(cbor2.loads(x)),
-        json=json.loads,
-        xml=load_xml,
-        yaml=yaml.load
+        cbor=lambda v: base64.b64decode(cbor2.loads(v)),
+        json=lambda v: json.dumps(v),
+        xml=lambda v: _xml_root(_xml_to_dict(xmltodict.parse(v))),
+        yaml=lambda v: yaml.load(v, Loader=Loader),
     )
 )
 
