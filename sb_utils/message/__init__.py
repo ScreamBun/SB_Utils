@@ -6,7 +6,7 @@ import bson
 import cbor2
 import json
 import msgpack
-import pybinn
+# import pybinn
 # import pysmile
 import re
 # import pickle
@@ -29,7 +29,7 @@ except ImportError:
 serializations = FrozenDict(
     encode=FrozenDict(
         # avro=lambda v: v,
-        binn=lambda v: pybinn.dumps(v),
+        # binn=lambda v: pybinn.dumps(v),
         bson=lambda v: bson.dumps(v),
         cbor=lambda v: cbor2.dumps(v),
         json=lambda v: json.dumps(v),
@@ -43,7 +43,7 @@ serializations = FrozenDict(
     ),
     decode=FrozenDict(
         # avro=lambda v: v,
-        binn=lambda v: pybinn.loads(v),
+        # binn=lambda v: pybinn.loads(v),
         bson=lambda v: bson.loads(v),
         cbor=lambda v: cbor2.loads(v),
         json=lambda v: json.loads(v),

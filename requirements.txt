@@ -6,4 +6,3 @@ kombu
 msgpack
 xmltodict
 pyyaml
-git+https://github.com/meeron/pybinn
