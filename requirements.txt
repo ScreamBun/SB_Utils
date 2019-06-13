@@ -1,5 +1,9 @@
+avro
+bson
 cbor2
 dicttoxml
 kombu
+msgpack
 xmltodict
 pyyaml
+git+https://github.com/meeron/pybinn
