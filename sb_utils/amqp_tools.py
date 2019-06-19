@@ -7,6 +7,7 @@ import socket  # identify exceptions that occur with timeout
 import datetime  # print time received message
 import os  # to determine localhost on a given machine
 
+from functools import partial
 from inspect import isfunction
 from multiprocessing import Event, Process
 from typing import Union
@@ -92,7 +93,7 @@ class Consumer(Process):
         Add a function to the list of callback functions.
         :param fun: function to add to callbacks
         """
-        if isfunction(fun):
+        if isfunction(fun) or isinstance(fun, partial):
             if fun in self._callbacks:
                 raise ValueError("Duplicate function found in callbacks")
             self._callbacks.append(fun)
