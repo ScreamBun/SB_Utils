@@ -78,7 +78,11 @@ def encode_msg(msg: dict, enc: str, b64: bool = True) -> str:
         raise KeyError("Message should have at minimum one key")
 
     encoded = serializations["encode"].get(enc, serializations.encode["json"])(msg)
-    return base64.b64encode(encoded).decode() if isinstance(encoded, bytes) and b64 else encoded
+    if isinstance(encoded, bytes) and b64:
+        encoded = base64.b64encode(encoded).decode()
+        encoded += '=' * (-len(encoded) % 4)
+
+    return encoded
 
 
 def decode_msg(msg: str, enc: str, b64: bool = True) -> dict:
@@ -101,6 +105,7 @@ def decode_msg(msg: str, enc: str, b64: bool = True) -> dict:
         raise TypeError(f"Message is not expected type {bytes}/{bytearray}/{str}, got {type(msg)}")
 
     if b64 and isinstance(msg, str) and re.match(r"^[a-zA-Z0-9+/]+?={0,3}$", msg):
+        msg += '=' * (-len(msg) % 4)
         msg = base64.b64decode(msg)
 
     return serializations["decode"].get(enc, serializations.decode["json"])(msg)
