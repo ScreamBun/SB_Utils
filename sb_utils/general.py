@@ -1,7 +1,12 @@
 import sys
 import uuid
 
-from typing import Any, Type
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Type
+)
 
 
 # Util Functions
@@ -38,3 +43,25 @@ def safe_cast(val: Any, to_type: Type, default: Any = None) -> Any:
         return to_type(val)
     except (ValueError, TypeError):
         return default
+
+
+def default_encode(itm: Any, encoders: Dict[Type, Callable[[Any], Any]]) -> Any:
+    """
+    Default encode the given object to the system default string
+    :param itm: object to encode/decode,
+    :param encoders: custom type encoding - Ex) -> {bytes: lambda b: b.decode('utf-8', 'backslashreplace')}
+    :return: default system encoded object
+    """
+    if isinstance(itm, tuple(encoders.keys())):
+        return encoders[type(itm)](itm)
+
+    if isinstance(itm, dict):
+        return {k: default_encode(v) for k, v in itm.items()}
+
+    if isinstance(itm, (list, tuple)):
+        return type(itm)(default_encode(i) for i in itm)
+
+    if isinstance(itm, (complex, int, float)):
+        return itm
+
+    return toStr(itm)
