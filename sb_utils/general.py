@@ -45,7 +45,7 @@ def safe_cast(val: Any, to_type: Type, default: Any = None) -> Any:
         return default
 
 
-def default_encode(itm: Any, encoders: Dict[Type, Callable[[Any], Any]]) -> Any:
+def default_encode(itm: Any, encoders: Dict[Type, Callable[[Any], Any]] = {}) -> Any:
     """
     Default encode the given object to the system default string
     :param itm: object to encode/decode,
