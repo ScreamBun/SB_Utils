@@ -1,3 +1,4 @@
+import json
 import sys
 import uuid
 
@@ -5,7 +6,8 @@ from typing import (
     Any,
     Callable,
     Dict,
-    Type
+    Type,
+    Union
 )
 
 
@@ -43,6 +45,24 @@ def safe_cast(val: Any, to_type: Type, default: Any = None) -> Any:
         return to_type(val)
     except (ValueError, TypeError):
         return default
+
+
+def safe_json(msg: Union[dict, str], encoders: Dict[Type, Callable[[Any], Any]] = {}, *args, **kwargs) -> Union[dict, str]:
+    """
+    Load JSON data if given a str and able
+    Dump JSON data otherwise, encoding using encoders & JSON Defaults
+    :param msg: str JSON to attempt to load
+    :param encoders: custom type encoding - Ex) -> {bytes: lambda b: b.decode('utf-8', 'backslashreplace')}
+    :return: loaded JSON data or original str
+    """
+    if isinstance(msg, str):
+        try:
+            return json.loads(msg, *args, **kwargs)
+        except ValueError:
+            return msg
+
+    msg = default_encode(msg, encoders)
+    return json.dumps(msg, *args, **kwargs)
 
 
 def default_encode(itm: Any, encoders: Dict[Type, Callable[[Any], Any]] = {}) -> Any:
