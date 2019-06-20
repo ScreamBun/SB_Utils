@@ -55,7 +55,8 @@ class Consumer(Process):
 
         # Start consumer as an independent process
         self.start()
-        print(f"Connected to {self._url}")
+        if self._debug:
+            print(f"Connected to {self._url}")
 
     def run(self) -> None:
         """
@@ -80,9 +81,7 @@ class Consumer(Process):
         :param message: contains meta data about the message sent (ie. delivery_info)
         """
         if self._debug:
-            print("\nMessage Received @", datetime.datetime.now())
-            # print("Routing Key:", message.delivery_info.get("routing_key", ""))
-            # print("Exchange:", message.delivery_info.get("exchange", ""))
+            print(f"Message Received @ {datetime.datetime.now()}")
 
         message.ack()
         for func in self._callbacks:
