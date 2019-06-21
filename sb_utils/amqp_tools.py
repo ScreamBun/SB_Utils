@@ -9,7 +9,7 @@ import os  # to determine localhost on a given machine
 
 from functools import partial
 from inspect import isfunction
-from multiprocessing import Event, Process, Manager
+from multiprocessing import Event, Process
 from typing import Union
 
 
@@ -37,7 +37,7 @@ class Consumer(Process):
 
         self._url = f"amqp://{host}:{port}"
         self._exchange_name = exchange
-        self._callbacks = Manager().list()
+        self._callbacks = ()
         self._debug = debug
 
         if isinstance(callbacks, (list, tuple)):
@@ -46,7 +46,6 @@ class Consumer(Process):
 
         # Initialize connection we are consuming from based on defaults/passed params
         self._conn = kombu.Connection(hostname=host, port=port, userid="guest", password="guest", virtual_host="/")
-        self._manager = self._conn.get_manager()
         self._exchange = kombu.Exchange(self._exchange_name, type="topic")
         self._routing_key = routing_key
 
@@ -96,14 +95,14 @@ class Consumer(Process):
         if isfunction(fun) or isinstance(fun, partial):
             if fun in self._callbacks:
                 raise ValueError("Duplicate function found in callbacks")
-            self._callbacks.append(fun)
+            self._callbacks = (*self._callbacks, fun)
 
     def get_exchanges(self):
         """
         Get a list of exchange names on the queue
         :return: list of exchange names
         """
-        exchanges = self._manager.get_exchanges()
+        exchanges = self._conn.get_manager().get_exchanges()
         return list(filter(None, [exc.get("name", "")for exc in exchanges]))
 
     def get_queues(self):
@@ -111,7 +110,7 @@ class Consumer(Process):
         Get a list of queue names on the queue
         :return: list of queue names
         """
-        queues = self._manager.get_queues()
+        queues = self._conn.get_manager().get_queues()
         return list(filter(None, [que.get("name", "") for que in queues]))
 
     def get_binds(self):
@@ -120,8 +119,9 @@ class Consumer(Process):
         :return: list of exchange/topic bindings
         """
         binds = []
+        manager = self._conn.get_manager()
         for queue in self.get_queues():
-            for bind in self._manager.get_queue_bindings(vhost="/", qname=queue):
+            for bind in manager.get_queue_bindings(vhost="/", qname=queue):
                 binds.append({
                     "exchange": bind.get("source", ""),
                     "routing_key": bind.get("routing_key", "")
