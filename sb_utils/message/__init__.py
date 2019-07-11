@@ -6,6 +6,7 @@ import bson
 import cbor2
 import json
 import msgpack
+import ubjson
 import yaml
 
 from .. import (
@@ -13,10 +14,11 @@ from .. import (
     general
 )
 
-from .xml import (
-    decode as decode_xml,
-    encode as encode_xml
+from . import (
+    pybinn,
+    xml
 )
+
 
 try:
     from yaml import CLoader as Loader, CDumper as Dumper
@@ -26,19 +28,23 @@ except ImportError:
 
 serializations = ext_dicts.FrozenDict(
     encode=ext_dicts.FrozenDict(
+        binn=lambda v: base64.b64encode(pybinn.dumps(v)).decode("utf-8"),
         bson=lambda v: base64.b64encode(bson.dumps(v)).decode("utf-8"),
         cbor=lambda v: base64.b64encode(cbor2.dumps(v)).decode("utf-8"),
         json=lambda v: json.dumps(v),
         msgpack=lambda v: base64.b64encode(msgpack.packb(v, use_bin_type=True)).decode("utf-8"),
-        xml=lambda v: encode_xml(v),
+        xml=lambda v: xml.encode(v),
+        ubjson=lambda v: base64.b64encode(ubjson.dumpb(v)).decode("utf-8"),
         yaml=lambda v: yaml.dump(v, Dumper=Dumper),
     ),
     decode=ext_dicts.FrozenDict(
+        binn=lambda v: pybinn.loads(base64.b64decode(v if isinstance(v, bytes) else v.encode())),
         bson=lambda v: bson.loads(base64.b64decode(v if isinstance(v, bytes) else v.encode())),
         cbor=lambda v: cbor2.loads(base64.b64decode(v if isinstance(v, bytes) else v.encode())),
         json=lambda v: json.loads(v),
         msgpack=lambda v: msgpack.unpackb(base64.b64decode(v if isinstance(v, bytes) else v.encode()), raw=False),
-        xml=lambda v: decode_xml(v),
+        xml=lambda v: xml.decode(v),
+        ubjson=lambda v: ubjson.loadb(base64.b64decode(v if isinstance(v, bytes) else v.encode())),
         yaml=lambda v: yaml.load(v, Loader=Loader),
     )
 )
