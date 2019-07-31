@@ -118,6 +118,8 @@ class MultiKeyDict(ObjectDict):
                 dict.__delitem__(self, k)
                 keys = self._keySplit(k)
                 dict.setdefault(self, keys[0], MultiKeyDict(sep=self._sep))[self._sep.join(keys[1:])] = v
+            elif isinstance(v, dict):
+                self[k] = MultiKeyDict(sep=self._sep, **v)
 
     def __setitem__(self, key: str, val: Any) -> None:
         """
