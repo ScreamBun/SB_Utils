@@ -12,7 +12,7 @@ Build-Wheel:
   stage: build
 
   script:
-    - pip wheel $PKG_DIR -w $DIST_DIR
+    - python3 setup.py sdist bdist_wheel
     - mv $DIST_DIR/*.whl .
 
   artifacts:
