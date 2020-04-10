@@ -49,7 +49,7 @@ def safe_cast(val: Any, to_type: Type, default: Any = None) -> Any:
         return default
 
 
-def safe_json(msg: Union[dict, str], encoders: Dict[Type, Callable[[Any], Any]] = {}, *args, **kwargs) -> Union[dict, str]:
+def safe_json(msg: Union[bytes, dict, str], encoders: Dict[Type, Callable[[Any], Any]] = {}, *args, **kwargs) -> Union[dict, str]:
     """
     Load JSON data if given a str and able
     Dump JSON data otherwise, encoding using encoders & JSON Defaults
@@ -57,6 +57,7 @@ def safe_json(msg: Union[dict, str], encoders: Dict[Type, Callable[[Any], Any]] 
     :param encoders: custom type encoding - Ex) -> {bytes: lambda b: b.decode('utf-8', 'backslashreplace')}
     :return: loaded JSON data or original str
     """
+    msg = msg.decode("utf-8") if isinstance(msg, bytes) else msg
     if isinstance(msg, str):
         try:
             return json.loads(msg, *args, **kwargs)
