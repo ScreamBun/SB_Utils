@@ -85,7 +85,7 @@ def encode_msg(msg: dict, enc: SerialFormats = SerialFormats.JSON, raw: bool = F
     :param raw: message is in raw form (bytes/string) or safe string (base64 bytes as string)
     :return: encoded message
     """
-    enc = enc.value
+    enc = enc.lower() if isinstance(enc, str) else enc.value
     msg = general.default_encode(msg)
 
     if enc not in serializations.encode:
@@ -111,7 +111,7 @@ def decode_msg(msg: Union[bytes, str], enc: SerialFormats, raw: bool = False) ->
     :param raw: message is in raw form (bytes/string) or safe string (base64 bytes as string)
     :return: decoded message
     """
-    enc = enc.value
+    enc = enc.lower() if isinstance(enc, str) else enc.value
 
     if isinstance(msg, dict):
         return msg
