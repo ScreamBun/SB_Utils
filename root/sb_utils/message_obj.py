@@ -121,27 +121,6 @@ class Message:
         return msg
 
     @property
-    def oc2List(self) -> list:
-        msg = dict(
-            # Message body as specified by msg_type (the ID/Name of Content)
-            content='',
-            # A unique identifier created by Producer and copied by Consumer into responses
-            request_id=self.request_id,
-            # Creation date/time of the content
-            created=unixTimeMillis(self.created)
-        )
-
-        if self.origin:
-            # Authenticated identifier of the creator of/authority for a request
-            msg['from'] = self.origin
-
-        if self.recipients:
-            # Authenticated identifier(s) of the authorized recipient(s) of a message
-            msg['to'] = self.recipients
-
-        return msg
-
-    @property
     def list(self) -> list:
         return [
             self.recipients,
@@ -152,6 +131,21 @@ class Message:
             self.request_id,
             self.content_type,
             self.content
+        ]
+
+    @property
+    def oc2List(self) -> list:
+        return [
+            # Message body as specified by msg_type (the ID/Name of Content)
+            encode_msg(self.content, self.content_type),
+            # A unique identifier created by Producer and copied by Consumer into responses
+            self.request_id,
+            # Creation date/time of the content
+            unixTimeMillis(self.created),
+            # Authenticated identifier of the creator of/authority for a request
+            self.origin or None,
+            # Authenticated identifier(s) of the authorized recipient(s) of a message
+            self.recipients or []
         ]
 
     def serialize(self) -> Union[bytes, str]:
