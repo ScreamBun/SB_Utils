@@ -1,31 +1,16 @@
-import base64
-import canonicaljson
-import json
-import jws
+
 import struct
 import uuid
 
-from Crypto.Hash import SHA
-from Crypto.PublicKey import RSA
-from Crypto.Signature import PKCS1_v1_5
 from datetime import datetime
-from enum import Enum
 from typing import (
     List,
     Union
 )
 
-from .general import unixTimeMillis
-from .message import decode_msg, encode_msg, SerialFormats
-
-
-class MessageType(Enum):
-    """
-    The type of an OpenC2 Message
-    """
-    Command = 'cmd'         # The initiator of a two-way message exchange.
-    Response = 'rsp'        # A response linked to a request in a two-way message exchange.
-    Notification = 'notif'  # A (one-way) message that is not a request or response.  (Placeholder)
+from .enums import MessageType
+from ..general import unixTimeMillis
+from ..serialize import decode_msg, encode_msg, SerialFormats
 
 
 class Message:
@@ -42,11 +27,13 @@ class Message:
     msg_type: MessageType
     # Populated with a numeric status code in Responses
     status: int
-    # A unique identifier created by the Producer and copied by Consumer into all Responses, in order to support reference to a particular Command, transaction, or event chain
+    # A unique identifier created by the Producer and copied by Consumer into all Responses, in order to support
+    # reference to a particular Command, transaction, or event chain
     request_id: uuid.UUID
     # Media Type that identifies the format of the content, including major version
     # Incompatible content formats must have different content_types
-    # Content_type application/openc2 identifies content defined by OpenC2 language specification versions 1.x, i.e., all versions that are compatible with version 1.0
+    # Content_type application/openc2 identifies content defined by OpenC2 language specification versions 1.x, i.e.,
+    # all versions that are compatible with version 1.0
     content_type: SerialFormats
     # Message body as specified by content_type and msg_type
     content: dict
@@ -138,30 +125,28 @@ class Message:
     # OpenC2 Specifics
     @property
     def oc2Dict(self) -> dict:
-        msg = dict(
+        msg = {
             # Media Type that identifies the format of the content, including major version
-            content_type=f"application/openc2-{self.msg_type.value}+{self.content_type.value};version=1.0",
+            'content_type': f"application/openc2-{self.msg_type.value}+{self.content_type.value};version=1.0",
             # Message body as specified by msg_type (the ID/Name of Content)
-            content=self.content if self.content_type == SerialFormats.JSON else encode_msg(self.content, self.content_type),
+            'content': self.content if self.content_type == SerialFormats.JSON else encode_msg(self.content, self.content_type),
             # A unique identifier created by Producer and copied by Consumer into responses
-            request_id=str(self.request_id),
+            'request_id': str(self.request_id),
             # Creation date/time of the content
-            created=int(unixTimeMillis(self.created))
-        )
-
-        if self.origin:
+            'created': int(unixTimeMillis(self.created)),
             # Authenticated identifier of the creator of/authority for a request
-            msg['from'] = self.origin
-
-        if self.recipients:
+            'from': self.origin or None,
             # Authenticated identifier(s) of the authorized recipient(s) of a message
-            msg['to'] = self.recipients
+            'to': self.recipients or []
+        }
 
         return msg
 
     @property
     def oc2List(self) -> list:
         return [
+            # Media Type that identifies the format of the content, including major version
+            f"application/openc2-{self.msg_type.value}+{self.content_type.value};version=1.0",
             # Message body as specified by msg_type (the ID/Name of Content)
             encode_msg(self.content, self.content_type),
             # A unique identifier created by Producer and copied by Consumer into responses
@@ -174,59 +159,3 @@ class Message:
             self.recipients or []
         ]
 
-    def oc2Signed(self, privKey: str) -> dict:
-        if not privKey:
-            raise ValueError("privKey was not passed as a param")
-
-        msg = self.oc2Dict
-        header = {
-            "alg": "RS256",
-            "kid": msg.get("from", 'ORIGIN')
-        }
-        header_b = base64.b64encode(canonicaljson.encode_canonical_json(header)).decode()
-        payload_b = base64.b64encode(canonicaljson.encode_canonical_json(msg)).decode()
-        sig_payload = f'{header_b}.{payload_b}'
-        with open(privKey, 'rb') as f:
-            key = RSA.importKey(f.read())
-
-        sig = jws.sign(header, sig_payload, key).decode()
-        print(sig_payload)
-        print('--'*100)
-        print(sig)
-        print('--'*100)
-        msg['signature'] = f'{header_b}..{sig}'
-        return msg
-
-    @staticmethod
-    def oc2Verify(msg: dict, pubKey: str) -> bool:
-        signature = msg.pop('signature', None)
-        if not signature:
-            raise ValueError("Message is not signed with JWS")
-        if not pubKey:
-            raise ValueError("pubKey was not passed as a param")
-
-        header_b, payload, sig = signature.split('.')
-        print(f'{header_b}\n{"--"*100}\n{sig}\n{"--"*100}')
-        header = json.loads(base64.b64decode(header_b))
-        header.pop('kid', None)
-        payload_b = base64.b64encode(canonicaljson.encode_canonical_json(msg)).decode()
-        sig_payload = f'{header_b}.{payload_b}'
-        combo = f'{header_b}\n{"--"*100}\n{payload_b}\n{"--"*100}\n{sig}'
-        print(combo)
-        print('--'*100)
-
-        with open(pubKey, 'rb') as f:
-            key = RSA.importKey(f.read())
-
-        h = SHA.new(sig_payload.encode('utf-8'))
-        verifier = PKCS1_v1_5.new(key)
-        if verifier.verify(h, sig):
-            print("The signature is authentic.")
-        else:
-            print("The signature is not authentic.")
-
-        try:
-            jws.verify(header, sig_payload, sig, key)
-            return True
-        except jws.exceptions.SignatureError:
-            return False

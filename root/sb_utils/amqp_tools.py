@@ -94,9 +94,10 @@ class Consumer(Process):
 
         elif 'exchange' in kwargs and 'routing_key' in kwargs:
             exchange = kombu.Exchange(kwargs['exchange'], type="direct")
+            key = kwargs['routing_key']
             # At this point, consumers are reading messages regardless of queue name
             # so I am just setting it to be the same as the exchange.
-            self._queues = [kombu.Queue(name=kwargs['routing_key'], exchange=exchange, routing_key=kwargs['routing_key'])]
+            self._queues = [kombu.Queue(name=key, bindings=[kombu.binding(exchange=exchange, routing_key=key)])]
 
         # Start consumer as an independent process
         self.start()

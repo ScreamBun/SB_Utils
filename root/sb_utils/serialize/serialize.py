@@ -34,10 +34,6 @@ optionals = dict(
     decode={}
 )
 
-if shutil.which("json-to-vpack") and shutil.which("vpack-to-json"):
-    optionals["encode"]["vpack"] = helpers.vpack_encode
-    optionals["decode"]["vpack"] = helpers.vpack_decode
-
 
 serializations = ext_dicts.FrozenDict(
     encode=ext_dicts.FrozenDict(
@@ -52,8 +48,8 @@ serializations = ext_dicts.FrozenDict(
         toml=toml.dumps,
         xml=helpers.xml_encode,
         ubjson=ubjson.dumpb,
-        yaml=lambda m: yaml.dump(m, Dumper=Dumper),
-        **optionals["encode"]
+        vpack=helpers.vpack_encode,
+        yaml=lambda m: yaml.dump(m, Dumper=Dumper)
     ),
     decode=ext_dicts.FrozenDict(
         binn=pybinn.loads,
@@ -67,8 +63,8 @@ serializations = ext_dicts.FrozenDict(
         toml=toml.loads,
         xml=helpers.xml_decode,
         ubjson=ubjson.loadb,
-        yaml=lambda m: yaml.load(m, Loader=Loader),
-        **optionals["decode"]
+        vpack=helpers.vpack_decode,
+        yaml=lambda m: yaml.load(m, Loader=Loader)
     )
 )
 
