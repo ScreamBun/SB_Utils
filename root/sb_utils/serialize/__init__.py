@@ -1,4 +1,5 @@
-from .serialize import decode_msg, encode_msg, serializations, SerialFormats
+from .enums import SerialFormats
+from .serialize import decode_msg, encode_msg, serializations
 
 
 __all__ = [

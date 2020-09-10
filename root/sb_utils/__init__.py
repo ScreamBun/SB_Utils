@@ -26,7 +26,7 @@ __all__ = [
     'prefixUUID',
     'safe_cast',
     'safe_json',
-    # Extended Dictionaries
+    # Dictionaries
     'FrozenDict',
     'ObjectDict',
     'QueryDict',

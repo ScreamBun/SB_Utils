@@ -1,7 +1,8 @@
-from .enums import MessageType
+from .enums import MessageType, SerialTypes
 from .message import Message
 
 __all__ = [
+    'Message',
     'MessageType',
-    'Message'
+    'SerialTypes'
 ]
