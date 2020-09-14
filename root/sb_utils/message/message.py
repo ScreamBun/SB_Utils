@@ -3,10 +3,7 @@ import uuid
 
 from datetime import datetime
 from io import BytesIO
-from typing import (
-    List,
-    Union
-)
+from typing import List, Union
 
 from .enums import MessageType, SerialTypes
 from ..general import toBytes, unixTimeMillis
@@ -29,22 +26,22 @@ class Message:
     # reference to a particular Command, transaction, or event chain
     request_id: uuid.UUID
     # Media Type that identifies the format of the content, including major version
-    # Incompatible content formats must have different content_types
+    # Incompatible content formats must have different serializations
     # Content_type application/openc2 identifies content defined by OpenC2 language specification versions 1.x, i.e.,
     # all versions that are compatible with version 1.0
     content_type: SerialFormats
-    # Message body as specified by content_type and msg_type
+    # Message body as specified by serialization and msg_type
     content: dict
 
     __slots__ = ("recipients", "origin", "created", "msg_type", "request_id", "content_type", "content")
 
-    def __init__(self, recipients: Union[str, List[str]] = "", origin: str = "", created: datetime = None, msg_type: MessageType = None, request_id: uuid.UUID = None, content_type: SerialFormats = None, content: dict = None):
+    def __init__(self, recipients: Union[str, List[str]] = "", origin: str = "", created: datetime = None, msg_type: MessageType = None, request_id: uuid.UUID = None, serialization: SerialFormats = None, content: dict = None):
         self.recipients = (recipients if isinstance(recipients, list) else [recipients]) if recipients else []
         self.origin = origin
         self.created = created or datetime.utcnow()
         self.msg_type = msg_type or MessageType.Request
         self.request_id = request_id or uuid.uuid4()
-        self.content_type = content_type or SerialFormats.JSON
+        self.content_type = serialization or SerialFormats.JSON
         self.content = content or {}
 
     def __setattr__(self, key, val):
@@ -58,42 +55,38 @@ class Message:
 
     @property
     def serialization(self) -> str:
-        return self.content_type.name  # message encoding
+        # message encoding
+        return self.content_type.name
 
     def serialize(self) -> Union[bytes, str]:
-        return encode_msg(self.dict, self.content_type.lower(), raw=True)
+        return encode_msg(self.dict, self.content_type, raw=True)
 
     # OpenC2 Specifics
     @property
+    def mimetype(self) -> str:
+        # Media Type that identifies the format of the content, including major version
+        return f"application/openc2-{self.msg_type}+{self.content_type};version=1.0"
+
+    @property
     def dict(self) -> dict:
-        msg = {
-            # Media Type that identifies the format of the content, including major version
-            'content_type': f"application/openc2-{self.msg_type.value}+{self.content_type.value};version=1.0",
+        return {
             # Message body as specified by msg_type (the ID/Name of Content)
-            'content': self.content if self.content_type == SerialFormats.JSON else encode_msg(self.content, self.content_type),
+            'content': self.content,
             # A unique identifier created by Producer and copied by Consumer into responses
             'request_id': str(self.request_id),
             # Creation date/time of the content
-            'created': int(unixTimeMillis(self.created))
-        }
-
-        if self.origin:
+            'created': int(unixTimeMillis(self.created)),
             # Authenticated identifier of the creator of/authority for a request
-            msg['from'] = self.origin
-
-        if self.recipients:
+            'from': self.origin or None,
             # Authenticated identifier(s) of the authorized recipient(s) of a message
-            msg['to'] = self.recipients
-
-        return msg
+            'to': self.recipients or []
+        }
 
     @property
     def list(self) -> list:
         return [
-            # Media Type that identifies the format of the content, including major version
-            f"application/openc2-{self.msg_type.value}+{self.content_type.value};version=1.0",
             # Message body as specified by msg_type (the ID/Name of Content)
-            encode_msg(self.content, self.content_type),
+            self.content,
             # A unique identifier created by Producer and copied by Consumer into responses
             str(self.request_id),
             # Creation date/time of the content
@@ -106,9 +99,7 @@ class Message:
 
     # Struct like options
     def pack(self) -> bytes:
-        msg = self.oc2Dict
-        msg.pop('content_type', None)
-        b_msg = toBytes(encode_msg(msg, self.content_type))
+        b_msg = toBytes(self.serialize())
 
         return bytes([
             self.msg_type,
@@ -123,15 +114,13 @@ class Message:
         if created := msg.get('created', None):
             created = datetime.fromtimestamp(created / 1000.0)
 
-        print(f'{fmt} - {msg}')
-
         return cls(
             recipients=msg.get('to', []),
             origin=msg.get('from', ''),
             created=created,
             msg_type=MessageType(m[0]),
             request_id=uuid.UUID(msg.get('request_id', {})),
-            content_type=fmt,
+            serialization=fmt,
             content=msg.get('content', {})
         )
 
@@ -170,7 +159,7 @@ class Message:
         msg = m.split(b"\xF5\xBE")
         if len(msg) != 7:
             raise ValueError("The OpenC2 message was not properly loaded")
-        [recipients, origin, created, msg_type, request_id, content_type, content] = msg
+        [recipients, origin, created, msg_type, request_id, serialization, content] = msg
 
         return cls(
             recipients=list(filter(None, map(bytes.decode, recipients.split(b"\xF5\xBD")))),
@@ -178,7 +167,7 @@ class Message:
             created=datetime.fromtimestamp(float(".".join(map(str, struct.unpack('LI', created))))),
             msg_type=MessageType(struct.unpack("B", msg_type)[0]),
             request_id=uuid.UUID(bytes=request_id),
-            content_type=SerialFormats.from_value(SerialTypes.from_value(struct.unpack("B", content_type)[0]).name),
+            serialization=SerialFormats.from_value(SerialTypes.from_value(struct.unpack("B", serialization)[0]).name),
             content=decode_msg(content, SerialFormats.CBOR, raw=True)
         )
 
