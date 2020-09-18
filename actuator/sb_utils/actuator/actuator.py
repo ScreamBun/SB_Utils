@@ -4,6 +4,7 @@ Simple Actuator base class to dynamically load actions from the Action Dispatch
 import json
 import os
 import uuid
+import etcd
 
 from sb_utils import FrozenDict
 from typing import (
@@ -37,6 +38,12 @@ class ActuatorBase(object):
             config.setdefault("actuator_id", act_id)
             json.dump(config, open(config_file, "w"), indent=4)
 
+
+        """
+        Initialize etcd client
+        """
+        self.etcdClient = etcd.Client();
+
         self._config = FrozenDict(
             **config,
             schema=general.safe_load(schema_file)
@@ -45,14 +52,22 @@ class ActuatorBase(object):
         self._dispatch.register(exceptions.action_not_implemented, "default")
         self._pairs = None
 
+        for nsid in self.nsid:
+            etcdClient.write(f"/actuator/{nsid}", self._config.actuator_id)
+
         # Get valid Actions & Targets from the schema
         self._profile = self._config.schema.get("title", "N/A").replace(" ", "_").lower()
+
         self._validator = general.ValidatorJSON(self._config.schema)
 
         schema_defs = self._config.schema.get("definitions", {})
 
         self._valid_actions = tuple(a["const"] for a in schema_defs.get("Action", {}).get("oneOf", []))
         self._valid_targets = tuple(schema_defs.get("Target", {}).get("properties", {}).keys())
+
+    def removeActuatorId():
+        for nsid in self.nsid:
+            etcdClient.delete(f"/actuator/{nsid}")
 
     def __repr__(self) -> str:
         return f"Actuator({self.profile})"
@@ -120,9 +135,9 @@ class ActuatorBase(object):
         else:
             print(f"Invalid Command - {msg} -> [{', '.join(getattr(e, 'message', e) for e in errors)}]")
             return exceptions.bad_request()
+    def _dispatch_transform(self, *args: tuple, **kwargs: dict) -> Tuple[Union[None, tuple], dict]:
 
     # Helper Functions
-    def _dispatch_transform(self, *args: tuple, **kwargs: dict) -> Tuple[Union[None, tuple], dict]:
         """
         Transform the command/message so the target is the value of the first key
         :param args: arguments to pass
