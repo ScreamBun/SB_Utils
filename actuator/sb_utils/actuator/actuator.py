@@ -5,8 +5,9 @@ import json
 import os
 import uuid
 import etcd
+import atexit
 
-from sb_utils import FrozenDict
+from sb_utils import FrozenDict, safe_cast
 from typing import (
     List,
     Tuple,
@@ -38,11 +39,11 @@ class ActuatorBase(object):
             config.setdefault("actuator_id", act_id)
             json.dump(config, open(config_file, "w"), indent=4)
 
-
-        """
-        Initialize etcd client
-        """
-        self.etcdClient = etcd.Client();
+        # Initialize etcd client
+        self.etcdClient = etcd.Client(
+            host=os.environ.get('ETCD_HOST', 'etcd'),
+            port=safe_cast(os.environ.get('ETCD_PORT', '4003'), int, 4003),
+        )
 
         self._config = FrozenDict(
             **config,
@@ -53,7 +54,7 @@ class ActuatorBase(object):
         self._pairs = None
 
         for nsid in self.nsid:
-            etcdClient.write(f"/actuator/{nsid}", self._config.actuator_id)
+            self.etcdClient.write(f"/actuator/{nsid}", self._config.actuator_id)
 
         # Get valid Actions & Targets from the schema
         self._profile = self._config.schema.get("title", "N/A").replace(" ", "_").lower()
@@ -64,10 +65,7 @@ class ActuatorBase(object):
 
         self._valid_actions = tuple(a["const"] for a in schema_defs.get("Action", {}).get("oneOf", []))
         self._valid_targets = tuple(schema_defs.get("Target", {}).get("properties", {}).keys())
-
-    def removeActuatorId():
-        for nsid in self.nsid:
-            etcdClient.delete(f"/actuator/{nsid}")
+        atexit.register(self.removeActuatorId())
 
     def __repr__(self) -> str:
         return f"Actuator({self.profile})"
@@ -111,6 +109,10 @@ class ActuatorBase(object):
         """
         return self._config.schema
 
+    def removeActuatorId(self):
+        for nsid in self.nsid:
+            self.etcdClient.delete(f"/actuator/{nsid}")
+
     def action(self, msg_id: Union[str, int] = None, msg: dict = None) -> Union[dict, None]:
         """
         Process command message
@@ -135,9 +137,9 @@ class ActuatorBase(object):
         else:
             print(f"Invalid Command - {msg} -> [{', '.join(getattr(e, 'message', e) for e in errors)}]")
             return exceptions.bad_request()
-    def _dispatch_transform(self, *args: tuple, **kwargs: dict) -> Tuple[Union[None, tuple], dict]:
 
-    # Helper Functions
+    def _dispatch_transform(self, *args: tuple, **kwargs: dict) -> Tuple[Union[None, tuple], dict]:
+        # Helper Functions
         """
         Transform the command/message so the target is the value of the first key
         :param args: arguments to pass
