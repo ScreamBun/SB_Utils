@@ -5,7 +5,6 @@ import json
 import os
 import uuid
 import etcd
-import atexit
 
 from sb_utils import FrozenDict, safe_cast
 from typing import (
@@ -42,7 +41,7 @@ class ActuatorBase(object):
         # Initialize etcd client
         self.etcdClient = etcd.Client(
             host=os.environ.get('ETCD_HOST', 'etcd'),
-            port=safe_cast(os.environ.get('ETCD_PORT', '4003'), int, 4003),
+            port=safe_cast(os.environ.get('ETCD_PORT', 4001), int, 4001)
         )
 
         self._config = FrozenDict(
@@ -53,19 +52,19 @@ class ActuatorBase(object):
         self._dispatch.register(exceptions.action_not_implemented, "default")
         self._pairs = None
 
-        for nsid in self.nsid:
-            self.etcdClient.write(f"/actuator/{nsid}", self._config.actuator_id)
-
         # Get valid Actions & Targets from the schema
         self._profile = self._config.schema.get("title", "N/A").replace(" ", "_").lower()
-
         self._validator = general.ValidatorJSON(self._config.schema)
-
         schema_defs = self._config.schema.get("definitions", {})
+
+        self._prefix = '/actuator'
+        profiles = self.nsid if len(self.nsid) > 0 else [self._profile]
+
+        for profile in profiles:
+            self.etcdClient.write(f"{self._prefix}/{profile}", self._config.actuator_id)
 
         self._valid_actions = tuple(a["const"] for a in schema_defs.get("Action", {}).get("oneOf", []))
         self._valid_targets = tuple(schema_defs.get("Target", {}).get("properties", {}).keys())
-        atexit.register(self.removeActuatorId())
 
     def __repr__(self) -> str:
         return f"Actuator({self.profile})"
@@ -109,10 +108,6 @@ class ActuatorBase(object):
         """
         return self._config.schema
 
-    def removeActuatorId(self):
-        for nsid in self.nsid:
-            self.etcdClient.delete(f"/actuator/{nsid}")
-
     def action(self, msg_id: Union[str, int] = None, msg: dict = None) -> Union[dict, None]:
         """
         Process command message
@@ -155,3 +150,8 @@ class ActuatorBase(object):
             return None, exceptions.action_exception(action, except_msg="Invalid target format")
 
         return args, kwargs
+
+    def shutdown(self) -> None:
+        profiles = self.nsid if len(self.nsid) > 0 else [self._profile]
+        for profile in profiles:
+            self.etcdClient.delete(f"{self._prefix}/{profile}")
