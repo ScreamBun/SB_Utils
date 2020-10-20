@@ -1,7 +1,24 @@
 import etcd
 
+from functools import partial
+from inspect import isfunction
 from threading import Event, Thread
+from typing import (
+    Callable,
+    List,
+    Tuple,
+    Union
+)
+
 from .ext_dicts import FrozenDict, QueryDict
+
+
+# Type Hinting
+Callback = Callable[[FrozenDict], None]
+Callbacks = Union[
+    List[Callback],
+    Tuple[Callback, ...]
+]
 
 
 class ReusableThread(Thread):
@@ -66,14 +83,19 @@ class ReusableThread(Thread):
 
 
 class EtcdCache:
+    _callbacks: List[Callback]
     _data: QueryDict
     _etcd_client: etcd.Client
     _etcd_updater: ReusableThread
     _root: str
     _timeout: int
 
-    def __init__(self, host: str, port: int, base: str, timeout: int = 60):
+    def __init__(self, host: str, port: int, base: str, timeout: int = 60, callbacks: Callbacks = None):
         super().__init__()
+        if isinstance(callbacks, (list, tuple)):
+            self._callbacks = [f for f in callbacks if isfunction(f) or isinstance(f, partial)]
+        else:
+            self._callbacks = []
         self._data = QueryDict()
         self._etcd_client = etcd.Client(
             host=host,
@@ -114,8 +136,11 @@ class EtcdCache:
         """
         root = base or self._root
         kwargs = dict(wait=True, timeout=self._timeout) if wait else {}
+        update = False
+
         try:
             for k in self._etcd_client.read(root, recursive=True, sorted=True, **kwargs).children:
+                update = True
                 key = k.key.replace(self._root, '').replace('/', '.')
                 t_id = key.split('.')[0]
                 if t_id not in self._data:
@@ -125,8 +150,13 @@ class EtcdCache:
                         del self._data[key]
                     else:
                         self._data[key] = k.value
+            update = True
         except (etcd.EtcdKeyNotFound, etcd.EtcdWatchTimedOut) as e:
             print(f'Error: {e}')
+
+        if update:
+            for func in self._callbacks:
+                func(self.cache)
 
         if self._etcd_updater.is_alive():
             self._etcd_updater.join(5)
