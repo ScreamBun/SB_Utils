@@ -3,6 +3,7 @@ import etcd
 from functools import partial
 from inspect import isfunction
 from threading import Event, Thread
+from time import sleep
 from typing import (
     Callable,
     List,
@@ -127,8 +128,8 @@ class EtcdCache:
             for k in self._etcd_client.read(root, recursive=True, sorted=True).children:
                 key = k.key.replace(self._root, '').replace('/', '.')
                 self._data[key] = k.value
-        except (etcd.EtcdKeyNotFound, etcd.EtcdWatchTimedOut) as e:
-            print(f'Error: {e}')
+        except (etcd.EtcdKeyNotFound, etcd.EtcdWatchTimedOut):
+            pass
 
     def _update(self, wait: bool = False, base: str = None) -> None:
         """
@@ -144,6 +145,7 @@ class EtcdCache:
                 key = k.key.replace(self._root, '').replace('/', '.')
                 t_id = key.split('.')[0]
                 if t_id not in self._data:
+                    sleep(0.5)
                     self._initial(base=f'{root}{t_id}')
                 else:
                     if k.value is None:
@@ -151,8 +153,8 @@ class EtcdCache:
                     else:
                         self._data[key] = k.value
             update = True
-        except (etcd.EtcdKeyNotFound, etcd.EtcdWatchTimedOut) as e:
-            print(f'Error: {e}')
+        except (etcd.EtcdKeyNotFound, etcd.EtcdWatchTimedOut):
+            pass
 
         if update:
             for func in self._callbacks:
