@@ -9,7 +9,7 @@ def get_requirements():
 
 
 setup(
-    name='ScreamingBunny Utils.Twisted',
+    name='SB Utils.Twisted',
     package_data={
         'SB_Utils': [
             './sb_utils/*',

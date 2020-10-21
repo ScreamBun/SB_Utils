@@ -9,7 +9,7 @@ def get_requirements():
 
 
 setup(
-    name='ScreamingBunny Utils.Actuator',
+    name='SB Utils.Actuator',
     package_data={
         'SB_Utils': [
             './sb_utils/*',
