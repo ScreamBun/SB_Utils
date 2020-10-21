@@ -93,10 +93,10 @@ class EtcdCache:
 
     def __init__(self, host: str, port: int, base: str, timeout: int = 60, callbacks: Callbacks = None):
         super().__init__()
+        self._callbacks = []
         if isinstance(callbacks, (list, tuple)):
-            self._callbacks = [f for f in callbacks if isFunction(f)]
-        else:
-            self._callbacks = []
+            self._callbacks.extend([f for f in callbacks if isFunction(f)])
+
         self._data = QueryDict()
         self._etcd_client = etcd.Client(
             host=host,
