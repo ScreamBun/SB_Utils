@@ -1,7 +1,5 @@
 import etcd
 
-from functools import partial
-from inspect import isfunction
 from threading import Event, Thread
 from time import sleep
 from typing import (
@@ -12,6 +10,7 @@ from typing import (
 )
 
 # Local imports
+from .general import isFunction
 from .ext_dicts import FrozenDict, QueryDict
 
 
@@ -95,7 +94,7 @@ class EtcdCache:
     def __init__(self, host: str, port: int, base: str, timeout: int = 60, callbacks: Callbacks = None):
         super().__init__()
         if isinstance(callbacks, (list, tuple)):
-            self._callbacks = [f for f in callbacks if isfunction(f) or isinstance(f, partial)]
+            self._callbacks = [f for f in callbacks if isFunction(f)]
         else:
             self._callbacks = []
         self._data = QueryDict()
