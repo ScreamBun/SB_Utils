@@ -11,9 +11,7 @@ def get_requirements():
 setup(
     name='SB Utils.Twisted',
     package_data={
-        'SB_Utils': [
-            './sb_utils/*',
-        ]
+        'SB_Utils': ['./sb_utils/*']
     },
     install_requires=get_requirements()
 )
