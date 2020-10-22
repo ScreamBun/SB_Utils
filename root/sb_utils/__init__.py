@@ -2,9 +2,6 @@
 Screaming Bunny Utils
 Root Namespace
 """
-from pkgutil import extend_path
-__path__ = extend_path(__path__, __name__)
-
 from .amqp_tools import Consumer, Producer
 from .auth import Auth
 from .general import toBytes, toStr, prefixUUID, default_decode, default_encode, safe_cast, safe_json
