@@ -44,9 +44,10 @@ class ActuatorBase(object):
             port=safe_cast(os.environ.get('ETCD_PORT', 4001), int, 4001)
         )
 
+        schema = general.safe_load(schema_file)
         self._config = FrozenDict(
             **config,
-            schema=general.safe_load(schema_file)
+            schema=schema
         )
         self._dispatch = dispatch.Dispatch(act=self, dispatch_transform=self._dispatch_transform)
         self._dispatch.register(exceptions.action_not_implemented, "default")
@@ -54,7 +55,7 @@ class ActuatorBase(object):
 
         # Get valid Actions & Targets from the schema
         self._profile = self._config.schema.get("title", "N/A").replace(" ", "_").lower()
-        self._validator = general.ValidatorJSON(self._config.schema)
+        self._validator = general.ValidatorJSON(schema)
         schema_defs = self._config.schema.get("definitions", {})
 
         self._prefix = '/actuator'
