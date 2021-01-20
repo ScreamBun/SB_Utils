@@ -64,3 +64,15 @@ def oc2Verify(msg: dict, pubKey: str) -> bool:
         return True
     except jws.exceptions.SignatureError:
         return False
+
+def sign(self, privKey: str) -> Any:
+    if sign := getattr(signature, f'{self.content_type.name.lower()}_sign', None):
+        print(sign)
+        return
+    raise AttributeError(f'{self.content_type.name} does not have a valid signature function')
+
+def verify(self, pubKey: str = None) -> Any:
+    if verify := getattr(signature, f'{self.content_type.name.lower()}_verify', None):
+        print(verify)
+        return
+    raise AttributeError(f'{self.content_type.name} does not have a valid verify function')

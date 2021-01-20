@@ -5,6 +5,7 @@ from datetime import datetime
 from io import BytesIO
 from typing import Dict, List, Union
 
+from . import signature
 from .enums import MessageType, SerialTypes
 from ..general import toBytes, unixTimeMillis
 from ..serialize import decode_msg, encode_msg, SerialFormats
@@ -205,3 +206,15 @@ class Message:
             serialization=SerialFormats.from_value(SerialTypes.from_value(struct.unpack("B", serialization)[0]).name),
             content=decode_msg(content, SerialFormats.CBOR, raw=True)
         )
+
+    def sign(self, privKey: str) -> Any:
+        if sign := getattr(signature, f'{self.content_type.name.lower()}_sign', None):
+            print(sign)
+            return
+        raise AttributeError(f'{self.content_type.name} does not have a valid signature function')
+
+    def verify(self, pubKey: str = None) -> Any:
+        if verify := getattr(signature, f'{self.content_type.name.lower()}_verify', None):
+            print(verify)
+            return
+        raise AttributeError(f'{self.content_type.name} does not have a valid verify function')
