@@ -3,11 +3,7 @@ import canonicaljson
 import json
 
 from authlib.jose import JsonWebSignature, errors
-from Crypto.Hash import SHA
-from Crypto.PublicKey import RSA
-from Crypto.Signature import PKCS1_v1_5
 from typing import Union
-# TODO: prep for varying serialization signatures
 
 
 def json_sign(msg: Union[dict, str], privKey: str) -> dict:
@@ -38,7 +34,7 @@ def json_verify(msg: Union[bytes, dict, str], pubKey: str = None) -> bool:
         sig[1] = base64.b64encode(b'.'.join([
             base64.b64encode(canonicaljson.encode_canonical_json(header)),
             base64.b64encode(canonicaljson.encode_canonical_json(msg))
-        ])).decode('utf-8').rstrip('=')
+        ])).decode('utf-8').rstrip("=")
 
         def load_key(header, payload):
             if pubKey:

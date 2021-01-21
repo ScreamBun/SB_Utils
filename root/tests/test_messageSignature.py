@@ -37,7 +37,6 @@ rsp_args = {
 class SignatureTests(unittest.TestCase):
     def test_signature_json(self):
         msg = Message(**cmd_args, serialization=SerialFormats.JSON).sign(os.path.join(test_dir, 'keys/private.pem'))
-        print(msg)
         self.assertTrue(Message.verify(msg, SerialFormats.JSON, os.path.join(test_dir, 'keys/public.pem')))
 
 
