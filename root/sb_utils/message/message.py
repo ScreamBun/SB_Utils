@@ -99,6 +99,7 @@ class Message:
         msg = {
             "headers": self.oc2_headers,
             "body": self.oc2_body
+            # signature??
         }
         return encode_msg(msg, self.content_type, raw=True) if serialize else msg
 

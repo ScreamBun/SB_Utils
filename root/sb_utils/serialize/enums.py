@@ -11,11 +11,11 @@ class SerialFormats(str, Enum):
     CBOR = 'cbor'
     MSGPACK = 'msgpack'
     SMILE = 'smile'
-    VPACK = 'vpack'
+    # VPACK = 'vpack'
     # Text Format
     BENCODE = 'bencode'
     JSON = 'json'
-    S_EXPRESSION = 's_expression'
+    S_EXPRESSION = 'sexp'
     TOML = 'toml'
     UBJSON = 'ubjson'
     XML = 'xml'

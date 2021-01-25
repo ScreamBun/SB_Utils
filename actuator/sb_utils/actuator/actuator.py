@@ -66,7 +66,7 @@ class ActuatorBase:
         self._dispatch = dispatch.Dispatch(act=self, dispatch_transform=self._dispatch_transform)
         self._dispatch.register(exceptions.action_not_implemented, "default")
 
-        # Get valid Actions & Targets from the schema
+        # Get good Actions & Targets from the schema
         self._profile = self._config.schema.get("title", "N/A").replace(" ", "_").lower()
         self._validator = general.ValidatorJSON(schema)
         schema_defs = self._config.schema.get("definitions", {})

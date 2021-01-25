@@ -11,7 +11,7 @@ py-ubjson==0.16.1
 pycrypto==2.6.1
 pyrabbit==1.1.0
 python-etcd==0.4.5
-pyyaml==5.4
+pyyaml==5.4.1
 sexpdata==0.0.3
 toml==0.10.2
 xmltodict==0.12.0

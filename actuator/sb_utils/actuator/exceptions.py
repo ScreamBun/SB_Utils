@@ -27,12 +27,12 @@ def target_not_implemented(*args, **kwargs) -> dict:
 
 def not_implemented(*args, **kwargs) -> dict:
     """
-    Default response if pair is valid, but no action is taken
+    Default response if pair is good, but no action is taken
     :return: OpenC2 response message - dict
     """
     return dict(
         status=501,
-        status_text="command valid, no action taken"
+        status_text="command good, no action taken"
     )
 
 

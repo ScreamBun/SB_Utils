@@ -1,99 +1,82 @@
 """
 Test Format Conversion
 """
-import json
 import os
 import unittest
-import uuid
 
-from datetime import datetime
 from tempfile import TemporaryFile
 from typing import Dict
-from sb_utils import Message, MessageType, SerialFormats
+from sb_utils import Message, SerialFormats
 from beautifultable import BeautifulTable
+from .utils import MetaTests, sizeof_fmt
 
 test_dir = os.path.dirname(os.path.realpath(__file__))
-created = datetime.utcfromtimestamp(1611227337)
-request_id = uuid.UUID("15e2de83-61c2-4857-991a-fc50f2d51da8")
-cmd_args = {
-    "recipients": [],
-    "origin": "",
-    "created": created,
-    "msg_type": MessageType.Request,
-    "request_id": request_id,
-    "content": {}
-}
-rsp_args = {
-    "recipients": [],
-    "origin": "",
-    "created": created,
-    "msg_type": MessageType.Response,
-    "request_id": request_id,
-    "content": {}
-}
 
 
-def sizeof_fmt(num, suffix='B'):
-    for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
-        if abs(num) < 1024.0:
-            return f'{num:3.1f}{unit}{suffix}'
-        num /= 1024.0
-    return f'{num:.1f}Yi{suffix}'
-
-
-class FormatTests(unittest.TestCase):
-    sizes: BeautifulTable
+class FormatTests(unittest.TestCase, metaclass=MetaTests):
+    msg_dir = os.path.join(test_dir, 'messages')
+    msg_files: Dict[str, dict]
+    sizes: Dict[str, Dict[str, Dict[str, int]]]
 
     @classmethod
     def setUpClass(cls) -> None:
+        cls.msg_files = {}
         cls.sizes = {}
 
     @classmethod
     def tearDownClass(cls) -> None:
-        # Print sizes and smallest/largest sizes
-        stats = {
-            "Request": {
-                "Smallest": min(cls.sizes["Request"].items(), key=lambda i: i[1]),
-                "Largest": max(cls.sizes["Request"].items(), key=lambda i: i[1])
-            },
-            "Response": {
-                "Smallest": min(cls.sizes["Response"].items(), key=lambda i: i[1]),
-                "Largest": max(cls.sizes["Response"].items(), key=lambda i: i[1])
-            }
-        }
-        print(cls.sizes)
-        print(stats)
+        with open(os.path.join(test_dir, '../sizes.md'), 'w') as f:
+            f.write('# Message Sizes\n\n')
+            for test, results in cls.sizes.items():
+                f.write(f'## {test}')
+                # Format Sizes
+                size_table = BeautifulTable()
+                size_table.set_style(BeautifulTable.STYLE_MARKDOWN)
+                size_table.columns.header = ["Request", "Response", "Notification"]
+                row_headers = []
 
-    def _getSize(self, msg: Message) -> None:
+                for fmt, msgs in results.items():
+                    row_headers.append(fmt)
+                    size_table.rows.append([sizeof_fmt(msgs[c]) if c in msgs else 'N/A' for c in size_table.columns.header])
+                size_table.rows.header = row_headers
+                f.write(f'\n{size_table}\n\n')
+
+    def _getSize(self, msg: Message, file: str) -> None:
         m = msg.oc2_message(True)
-        with TemporaryFile(mode='wb' if isinstance(m, bytes) else 'w') as f:
-            f.write(m)
-            f.flush()
-            self.sizes.setdefault(msg.msg_type.name, {})[msg.content_type.name] = f.tell()
+        f = ' '.join(map(str.capitalize, os.path.splitext(os.path.split(file)[1])[0].split('_')))
+        with TemporaryFile(mode='wb' if isinstance(m, bytes) else 'w') as tf:
+            tf.write(m)
+            tf.flush()
+            self.sizes.setdefault(f, {}).setdefault(msg.content_type.name, {})[msg.msg_type.name] = tf.tell()
 
-    def test_cmd_json(self) -> None:
-        cmd = Message(**cmd_args, serialization=SerialFormats.JSON)
-        self._getSize(cmd)
-        with open(os.path.join(test_dir, 'formats/request.json'), 'r') as f:
-            self.assertDictEqual(json.load(f), cmd.oc2_message())
+    def _load_msg(self, msg_file: str, fmt: SerialFormats) -> Message:
+        if msg_file in self.msg_files:
+            m = self.msg_files[msg_file]
+        else:
+            with open(msg_file, 'r') as f:
+                m = f.read()
+        msg = Message.oc2_loads(m, SerialFormats.JSON)
+        msg.content_type = fmt
+        self._getSize(msg, msg_file)
+        return msg
 
-    def test_rsp_json(self) -> None:
-        rsp = Message(**rsp_args, serialization=SerialFormats.JSON)
-        self._getSize(rsp)
-        with open(os.path.join(test_dir, 'formats/response.json'), 'r') as f:
-            self.assertDictEqual(json.load(f), rsp.oc2_message())
+    # Base tests for all messages
+    def _test_good_msg(self, msg_file: str, fmt: SerialFormats) -> None:
+        msg = self._load_msg(msg_file, fmt)
+        file = os.path.splitext(msg_file.replace('messages/input/', 'messages/output/'))[0] + f'.{fmt}'
+        if os.path.isfile(file):
+            with open(file, 'r') as f:
+                self.assertEqual(f.read(), msg.oc2_message(True))
 
-    def test_cmd_cbor(self) -> None:
-        cmd = Message(**cmd_args, serialization=SerialFormats.CBOR)
-        self._getSize(cmd)
-        with open(os.path.join(test_dir, 'formats/request.cbor'), 'rb') as f:
-            self.assertEqual(f.read(), cmd.oc2_message(True))
+    def _test_bad_msg(self, msg_file: str, fmt: SerialFormats) -> None:
+        with self.assertRaises(Exception):
+            msg = self._load_msg(msg_file, fmt)
+            file = os.path.splitext(msg_file.replace('messages/input/', 'messages/output/'))[0] + f'.{fmt}'
+            if os.path.isfile(file):
+                with open(file, 'rb') as f:
+                    self.assertNotEqual(f.read(), msg.oc2_message(True))
 
-    def test_rsp_cbor(self) -> None:
-        rsp = Message(**rsp_args, serialization=SerialFormats.CBOR)
-        self._getSize(rsp)
-        with open(os.path.join(test_dir, 'formats/response.cbor'), 'rb') as f:
-            self.assertEqual(f.read(), rsp.oc2_message(True))
+    # Tests are generated via the metaclass
 
 
 if __name__ == "__main__":

@@ -72,7 +72,7 @@ class ValidatorJSON(Draft7Validator):
 
     def is_valid_as(self, instance: dict, _type: str) -> bool:
         """
-        Check if the instance is valid under the current schema
+        Check if the instance is good under the current schema
         :param instance: message to validate
         :param _type: type to validate against
         :return: bool - Valid/Invalid
@@ -85,7 +85,7 @@ class ValidatorJSON(Draft7Validator):
 
     def validate_as(self, instance: dict, _type: str):
         """
-        Check if the instance is valid under the current schema
+        Check if the instance is good under the current schema
         :param instance: message to validate
         :param _type: type to validate against
         :return: ...

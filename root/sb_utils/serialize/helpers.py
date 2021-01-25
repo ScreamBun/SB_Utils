@@ -114,7 +114,7 @@ def xml_encode(msg: dict) -> str:
     :param msg: message to convert
     :return: XML formatted message
     """
-    return xmltodict.unparse({_xml_root(msg): msg})
+    return xmltodict.unparse({"message": msg})
 
 
 def xml_decode(msg: str) -> dict:
@@ -123,7 +123,7 @@ def xml_decode(msg: str) -> dict:
     :param msg: message to convert
     :return: JSON formatted message
     """
-    return _xml_root(_xml_to_dict(xmltodict.parse(msg)))
+    return _xml_to_dict(xmltodict.parse(msg))["message"]
 
 
 # Message Conversion helpers for VelocityPack (VPack)
