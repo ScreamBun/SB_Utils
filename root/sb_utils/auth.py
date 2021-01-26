@@ -2,9 +2,9 @@
 import base64
 import os
 
-from cryptography.fernet import Fernet
 from tempfile import TemporaryDirectory
 from typing import Dict, Union
+from cryptography.fernet import Fernet
 from .general import (
     camelCase,
     toBytes,

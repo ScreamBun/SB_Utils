@@ -83,7 +83,7 @@ class ValidatorJSON(Draft7Validator):
         except ValidationError:
             return False
 
-    def validate_as(self, instance: dict, _type: str):
+    def validate_as(self, instance: dict, _type: str) -> None:
         """
         Check if the instance is good under the current schema
         :param instance: message to validate
@@ -125,8 +125,6 @@ class ValidatorJSON(Draft7Validator):
             exported = list(exported)
         else:
             raise TypeError("Schema format invalid")
-
-        print(_type, exported)
         return any([e.endswith(f"{_type}") for e in exported])
 
     def _get_definition(self, _type: str) -> dict:

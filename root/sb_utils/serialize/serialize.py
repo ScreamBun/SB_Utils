@@ -11,16 +11,8 @@ import ubjson
 import yaml
 
 from typing import Union
-from . import (
-    enums,
-    helpers,
-    pybinn,
-    pysmile
-)
-from .. import (
-    ext_dicts,
-    general
-)
+from . import enums, helpers, pybinn, pysmile
+from .. import ext_dicts, general
 
 try:
     from yaml import CLoader as Loader, CDumper as Dumper

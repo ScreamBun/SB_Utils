@@ -172,7 +172,6 @@ class QueryDict(ObjectDict):
                     ObjectDict.__setitem__(obj, key, val)
                 else:
                     print(f"Other - {type(obj)}")
-
             elif key in obj:
                 obj = obj[key]
             elif isinstance(obj, list) and isinstance(key, int):
@@ -192,7 +191,6 @@ class QueryDict(ObjectDict):
         :param path: key/path to delete
         :return: None
         """
-
         if any(k.startswith(path) for k in self.compositeKeys()):
             ref = self
             keys = self._pathSplit(path)
@@ -208,7 +206,6 @@ class QueryDict(ObjectDict):
                         ObjectDict.__delitem__(ref, key)
                     else:
                         print(f"Other - {type(ref)}")
-
                 elif key in ref:
                     ref = ref[key]
                 elif isinstance(ref, list) and isinstance(key, int):
@@ -234,7 +231,7 @@ class QueryDict(ObjectDict):
         :param memo: ...
         :return: copy of QueryDict
         """
-        return QueryDict(copy.deepcopy(dict(self), memo))
+        return QueryDict(copy.deepcopy(dict(self)))
 
     __getattr__ = get
     __getitem__ = get

@@ -1,7 +1,7 @@
-from enum import Enum
+from ..utils import EnumBase
 
 
-class SerialFormats(str, Enum):
+class SerialFormats(str, EnumBase):
     """
     The format of an OpenC2 Serialization
     """
@@ -22,18 +22,9 @@ class SerialFormats(str, Enum):
     YAML = 'yaml'
 
     @classmethod
-    def from_name(cls, fmt: str):
-        name = fmt.upper()
-        members = dict(cls.__members__)
-        if name in members:
-            return cls.__getattr__(name)
-        raise ValueError(f'{name} is not a valid format name')
-
-    @classmethod
-    def from_value(cls, fmt: str):
-        name = fmt.lower()
-        members = dict(cls.__members__)
-        for k, v in members.items():
-            if name == v:
-                return cls.__getattr__(k)
-        raise ValueError(f'{name} is not a valid format value')
+    def is_binary(cls, fmt: 'SerialFormats') -> bool:
+        """
+        Determine if the format is binary or text based
+        :param fmt: Serialization
+        """
+        return fmt in (cls.BINN, cls.BSON, cls.CBOR, cls.MSGPACK, cls.SMILE)

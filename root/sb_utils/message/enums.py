@@ -1,7 +1,7 @@
-from enum import Enum
+from ..utils import EnumBase
 
 
-class MessageType(int, Enum):
+class MessageType(int, EnumBase):
     """
     The type of an OpenC2 Message
     """
@@ -9,24 +9,8 @@ class MessageType(int, Enum):
     Response = 145      # A response linked to a request in a two-way message exchange.
     Notification = 146  # A (one-way) message that is not a request or response.  (Placeholder)
 
-    @classmethod
-    def from_name(cls, fmt: str):
-        name = fmt.capitalize()
-        members = dict(cls.__members__)
-        if name in members:
-            return cls.__getattr__(name)
-        raise ValueError(f'{name} is not a valid format name')
 
-    @classmethod
-    def from_value(cls, fmt: int):
-        members = dict(cls.__members__)
-        for k, v in members.items():
-            if fmt == v:
-                return cls.__getattr__(k)
-        raise ValueError(f'{fmt} is not a valid format value')
-
-
-class SerialTypes(int, Enum):
+class SerialTypes(int, EnumBase):
     """
     The type of an OpenC2 Serialization
     """
@@ -48,19 +32,3 @@ class SerialTypes(int, Enum):
     TOML = 132
     UBJSON = 133
     YAML = 134
-
-    @classmethod
-    def from_name(cls, fmt: str):
-        name = fmt.upper()
-        members = dict(cls.__members__)
-        if name in members:
-            return cls.__getattr__(name)
-        raise ValueError(f'{name} is not a valid format name')
-
-    @classmethod
-    def from_value(cls, fmt: int):
-        members = dict(cls.__members__)
-        for k, v in members.items():
-            if fmt == v:
-                return cls.__getattr__(k)
-        raise ValueError(f'{fmt} is not a valid format value')

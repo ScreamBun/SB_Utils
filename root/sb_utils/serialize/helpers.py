@@ -10,15 +10,8 @@ import tempfile
 import xmltodict
 
 from subprocess import Popen, PIPE
-from typing import (
-    Union
-)
-
-from ..general import (
-    check_values,
-    default_encode,
-    floatByte
-)
+from typing import Union
+from ..general import check_values, default_encode, floatByte
 
 
 # Message Conversion helpers for Bencode

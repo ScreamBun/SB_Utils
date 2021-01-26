@@ -2,8 +2,10 @@ import base64
 import canonicaljson
 import json
 
+from functools import partial
+from pathlib import Path
 from authlib.jose import JsonWebSignature, errors
-from typing import Union
+from typing import Dict, Union
 
 
 def json_sign(msg: Union[dict, str], privKey: str) -> dict:
@@ -20,13 +22,22 @@ def json_sign(msg: Union[dict, str], privKey: str) -> dict:
         base64.b64encode(canonicaljson.encode_canonical_json(msg))
     ])
     jws = JsonWebSignature()
-    with open(privKey, 'r') as f:
-        sig = jws.serialize_compact(header, sig_payload, f.read()).decode('utf-8').split('.')
+    key = Path(privKey).read_bytes()
+    sig = jws.serialize_compact(header, sig_payload, key).decode('utf-8').split('.')
     msg['signature'] = f'{sig[0]}..{sig[2]}'
     return msg
 
 
-def json_verify(msg: Union[bytes, dict, str], pubKey: str = None) -> bool:
+def load_key(header: dict, payload: dict, keys: Dict[str, str]) -> bytes:
+    if kid := header.get("kid"):
+        print(f'Get key for {kid}')
+        if k := keys.get(kid):
+            return Path(k).read_bytes()
+        return b''
+    return b''
+
+
+def json_verify(msg: Union[bytes, dict, str], pubKey: Union[str, Dict[str, str]] = None) -> bool:
     msg: dict = msg if isinstance(msg, dict) else json.loads(msg)
     if signature := msg.pop('signature', None):
         sig = signature.split('.')
@@ -36,18 +47,10 @@ def json_verify(msg: Union[bytes, dict, str], pubKey: str = None) -> bool:
             base64.b64encode(canonicaljson.encode_canonical_json(msg))
         ])).decode('utf-8').rstrip("=")
 
-        def load_key(header, payload):
-            if pubKey:
-                with open(pubKey, 'rb') as f:
-                    return f.read()
-            if kid := header.get("kid"):
-                print(f'Get key for {kid}')
-                return ''
-            return ''
-
         jws = JsonWebSignature()
+        key = Path(pubKey).read_bytes() if isinstance(pubKey, str) else partial(load_key, keys=pubKey)
         try:
-            jws.deserialize_compact('.'.join(sig), load_key)
+            jws.deserialize_compact('.'.join(sig), key)
             return True
         except errors.BadSignatureError:
             return False

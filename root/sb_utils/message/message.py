@@ -45,14 +45,23 @@ class Message:
         self.content_type = serialization or SerialFormats.JSON
         self.content = content or {}
 
-    def __setattr__(self, key, val):
+    def __setattr__(self, key: str, val):
+        val = self._validate_content(val) if key == 'content' else val
         if key in self.__slots__:
             object.__setattr__(self, key, val)
             return
         raise AttributeError(f'Cannot set an unknown attribute of {key}')
 
     def __str__(self):
-        return f"Message: <{self.msg_type.name}: {self.content}>"
+        msg = self.content.copy()
+        if self.msg_type == MessageType.Request:
+            target = list(msg.pop('target', {'TARGET': ''}).keys())[0]
+            m_type = f"{msg.pop('action', 'ACTION').capitalize()}:{target.capitalize()}"
+        elif self.msg_type == MessageType.Response:
+            m_type = f"Status:{msg.pop('status', 'STATUS')}"
+        else:
+            m_type = 'Notif'
+        return f"Message: <{self.msg_type.name}({m_type}) - {msg}>"
 
     @property
     def mimetype(self) -> str:
@@ -219,3 +228,21 @@ class Message:
         if verify := getattr(signature, f'{fmt.name.lower()}_verify', None):
             return verify(msg, pubKey)
         raise AttributeError(f'{fmt.name} does not have a valid verify function')
+
+    # Utility Functions
+    def _validate_content(self, val: dict) -> dict:
+        msg_keys = {*val.keys()}
+        if self.msg_type == MessageType.Request:
+            if req_keys := ({'action', 'target'} - msg_keys):
+                print(req_keys)
+                raise KeyError(f"Message is missing a required key(s) of {', '.join(req_keys)}")
+        elif self.msg_type == MessageType.Response:
+            if req_keys := ({'status', } - msg_keys):
+                print(req_keys)
+                raise KeyError(f"Message is missing a required key(s) of {', '.join(req_keys)}")
+            pass
+        elif self.msg_type == MessageType.Notification:
+            pass
+        else:
+            print('Message property `msg_type` not set, cannot validate message')
+        return val
