@@ -1,16 +1,24 @@
 {
-  "action": "query",
-  "target": {
-    "features": [
-      "profiles",
-      "versions",
-      "pairs",
-      "rate_limit"
-    ]
+  "headers": {
+    "to": [],
+    "from": "",
+    "created": 1611227337000,
+    "request_id": "15e2de83-61c2-4857-991a-fc50f2d51da8"
   },
-  "args": {
-    "x-mycompany_with_underscore": {
-      "debug_logging": true
+  "body": {
+    "action": "query",
+    "target": {
+      "features": [
+        "profiles",
+        "versions",
+        "pairs",
+        "rate_limit"
+      ]
+    },
+    "args": {
+      "x-mycompany_with_underscore": {
+        "debug_logging": true
+      }
     }
   }
 }

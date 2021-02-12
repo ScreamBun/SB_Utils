@@ -30,12 +30,12 @@ class MetaTests(type):
         # Make tests
         new_attrs = dict(attrs)
         if msg_dir := attrs.get('msg_dir', None):
-            for msg in ext_glob(os.path.join(msg_dir, 'input/good/*/*'), SerialFormats):
+            for msg in ext_glob(os.path.join(msg_dir, 'input/good/*/*/*'), SerialFormats):
                 test, ext = os.path.splitext(msg.replace(f'{msg_dir}/input/', ''))
                 test = test.replace(os.path.sep, '_')
                 new_attrs.update({f'test_{ext[1:]}_{f}_{test}': partialmethod(good_test, msg_file=msg, fmt=f) for f in SerialFormats})
 
-            for msg in ext_glob(os.path.join(msg_dir, 'input/bad/*/*'), SerialFormats):
+            for msg in ext_glob(os.path.join(msg_dir, 'input/bad/*/*/*'), SerialFormats):
                 test, ext = os.path.splitext(msg.replace(f'{msg_dir}/input/', ''))
                 test = test.replace(os.path.sep, '_')
                 new_attrs.update({f'test_{ext[1:]}_{f}_{test}': partialmethod(bad_test, msg_file=msg, fmt=f) for f in SerialFormats})
