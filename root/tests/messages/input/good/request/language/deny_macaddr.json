@@ -6,9 +6,13 @@
     "request_id": "15e2de83-61c2-4857-991a-fc50f2d51da8"
   },
   "body": {
-    "action": "deny",
-    "target": {
-      "mac_addr": "8c:85:90:72:31:af"
+    "openc2": {
+      "request": {
+        "action": "deny",
+        "target": {
+          "mac_addr": "8c:85:90:72:31:af"
+        }
+      }
     }
   }
 }

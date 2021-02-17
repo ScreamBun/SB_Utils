@@ -7,9 +7,11 @@
   },
   "body": {
     "openc2": {
-      "action": "allow",
-      "target": {
-        "ipv6_net": "::ffff:c000:0280"
+      "request": {
+        "action": "allow",
+        "target": {
+          "ipv6_net": "::ffff:c000:0280"
+        }
       }
     }
   }

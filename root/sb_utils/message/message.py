@@ -34,10 +34,12 @@ class Message:
     # Message body as specified by serialization and msg_type
     content: dict
 
-    __slots__ = ("recipients", "origin", "created", "msg_type", "request_id", "content_type", "content")
+    __slots__ = ("recipients", "origin", "created", "msg_type",
+                 "request_id", "content_type", "content")
 
     def __init__(self, recipients: Union[str, List[str]] = "", origin: str = "", created: datetime = None, msg_type: MessageType = None, request_id: uuid.UUID = None, serialization: SerialFormats = None, content: dict = None):
-        self.recipients = (recipients if isinstance(recipients, list) else [recipients]) if recipients else []
+        self.recipients = (recipients if isinstance(recipients, list) else [
+                           recipients]) if recipients else []
         self.origin = origin
         self.created = created or datetime.utcnow()
         self.msg_type = msg_type or MessageType.Request
@@ -118,7 +120,8 @@ class Message:
         headers = msg.get('headers', None)
         body = msg.get('body', None)
         if None in [headers, body]:
-            raise KeyError('Message is not properly formatted with keys of `headers` and `body`')
+            raise KeyError(
+                'Message is not properly formatted with keys of `headers` and `body`')
 
         if created := headers.get('created', None):
             created = datetime.fromtimestamp(created / 1000.0)
@@ -151,7 +154,8 @@ class Message:
         headers = msg.get('headers', None)
         body = msg.get('body', None)
         if None in [headers, body]:
-            raise KeyError('Message is not properly formatted with keys of `headers` and `body`')
+            raise KeyError(
+                'Message is not properly formatted with keys of `headers` and `body`')
 
         if created := headers.get('created', None):
             created = datetime.fromtimestamp(created / 1000.0)
@@ -177,14 +181,16 @@ class Message:
                 f.write(self.dumps())
         elif isinstance(file, BytesIO):
             file.write(self.dumps())
-        raise TypeError(f'File is not expected string/BytesIO object, given {type(file)}')
+        raise TypeError(
+            f'File is not expected string/BytesIO object, given {type(file)}')
 
     def dumps(self) -> bytes:
         fmt = SerialTypes.from_name(self.content_type)
         return b"\xF5\xBE".join([  # §¥
             b"\xF5\xBD".join(map(str.encode, self.recipients)),  # §¢
             self.origin.encode(),
-            struct.pack('LI', *map(int, str(self.created.timestamp()).split("."))),
+            struct.pack(
+                'LI', *map(int, str(self.created.timestamp()).split("."))),
             struct.pack("B", self.msg_type),
             self.request_id.bytes,
             struct.pack("B", fmt),
@@ -198,22 +204,27 @@ class Message:
                 return cls.loads(f.read())
         elif isinstance(file, BytesIO):
             return cls.loads(file.read())
-        raise TypeError(f'File is not expected string/BytesIO object, given {type(file)}')
+        raise TypeError(
+            f'File is not expected string/BytesIO object, given {type(file)}')
 
     @classmethod
     def loads(cls, m: bytes) -> 'Message':
         msg = m.split(b"\xF5\xBE")
         if len(msg) != 7:
             raise ValueError("The OpenC2 message was not properly loaded")
-        [recipients, origin, created, msg_type, request_id, serialization, content] = msg
+        [recipients, origin, created, msg_type,
+            request_id, serialization, content] = msg
 
         return cls(
-            recipients=list(filter(None, map(bytes.decode, recipients.split(b"\xF5\xBD")))),
+            recipients=list(
+                filter(None, map(bytes.decode, recipients.split(b"\xF5\xBD")))),
             origin=origin.decode(),
-            created=datetime.fromtimestamp(float(".".join(map(str, struct.unpack('LI', created))))),
+            created=datetime.fromtimestamp(
+                float(".".join(map(str, struct.unpack('LI', created))))),
             msg_type=MessageType(struct.unpack("B", msg_type)[0]),
             request_id=uuid.UUID(bytes=request_id),
-            serialization=SerialFormats.from_value(SerialTypes.from_value(struct.unpack("B", serialization)[0]).name),
+            serialization=SerialFormats.from_value(
+                SerialTypes.from_value(struct.unpack("B", serialization)[0]).name),
             content=decode_msg(content, SerialFormats.CBOR, raw=True)
         )
 
@@ -221,26 +232,27 @@ class Message:
     def sign(self, privKey: str) -> Any:
         if sign := getattr(signature, f'{self.content_type.name.lower()}_sign', None):
             return sign(self.serialize(), privKey)
-        raise AttributeError(f'{self.content_type.name} does not have a valid signature function')
+        raise AttributeError(
+            f'{self.content_type.name} does not have a valid signature function')
 
     @classmethod
     def verify(cls, msg: Union[bytes, str], fmt: SerialFormats, pubKey: str = None) -> Any:
         if verify := getattr(signature, f'{fmt.name.lower()}_verify', None):
             return verify(msg, pubKey)
-        raise AttributeError(f'{fmt.name} does not have a valid verify function')
+        raise AttributeError(
+            f'{fmt.name} does not have a valid verify function')
 
     # Utility Functions
     def _validate_content(self, val: dict) -> dict:
         msg_keys = {*val.keys()}
         if self.msg_type == MessageType.Request:
             if req_keys := ({'action', 'target'} - msg_keys):
-                print(req_keys)
-                raise KeyError(f"Message is missing a required key(s) of {', '.join(req_keys)}")
+                raise KeyError(
+                    f"Message is missing a required key(s) of {', '.join(req_keys)}")
         elif self.msg_type == MessageType.Response:
             if req_keys := ({'status', } - msg_keys):
-                print(req_keys)
-                raise KeyError(f"Message is missing a required key(s) of {', '.join(req_keys)}")
-            pass
+                raise KeyError(
+                    f"Message is missing a required key(s) of {', '.join(req_keys)}")
         elif self.msg_type == MessageType.Notification:
             pass
         else:

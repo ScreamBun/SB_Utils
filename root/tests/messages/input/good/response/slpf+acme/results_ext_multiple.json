@@ -6,21 +6,25 @@
     "request_id": "15e2de83-61c2-4857-991a-fc50f2d51da8"
   },
   "body": {
-    "status": 201,
-    "status_text": "Some description",
-    "results": {
-      "x-mycompany": {
-        "stuff": {
-          "some": 100,
-          "values": [
-            true,
-            false
-          ],
-          "defined": "by the profile docs"
+    "openc2": {
+      "response": {
+        "status": 201,
+        "status_text": "Some description",
+        "results": {
+          "x-mycompany": {
+            "stuff": {
+              "some": 100,
+              "values": [
+                true,
+                false
+              ],
+              "defined": "by the profile docs"
+            }
+          },
+          "x-acme": {
+            "status_detail": "this profile defines additional status info for each response"
+          }
         }
-      },
-      "x-acme": {
-        "status_detail": "this profile defines additional status info for each response"
       }
     }
   }

@@ -6,14 +6,18 @@
     "request_id": "15e2de83-61c2-4857-991a-fc50f2d51da8"
   },
   "body": {
-    "action": "query",
-    "target": {
-      "x-acme:features": {
-        "features": [
-          "versions",
-          "profiles",
-          "schema"
-        ]
+    "openc2": {
+      "request": {
+        "action": "query",
+        "target": {
+          "x-acme:features": {
+            "features": [
+              "versions",
+              "profiles",
+              "schema"
+            ]
+          }
+        }
       }
     }
   }

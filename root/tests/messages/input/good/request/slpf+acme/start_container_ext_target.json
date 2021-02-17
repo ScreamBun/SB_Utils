@@ -6,10 +6,14 @@
     "request_id": "15e2de83-61c2-4857-991a-fc50f2d51da8"
   },
   "body": {
-    "action": "start",
-    "target": {
-      "x-acme:container": {
-        "container_id": "E57C0116-D291-4AF3-BEF9-0F5B604A2C85"
+    "openc2": {
+      "request": {
+        "action": "start",
+        "target": {
+          "x-acme:container": {
+            "container_id": "E57C0116-D291-4AF3-BEF9-0F5B604A2C85"
+          }
+        }
       }
     }
   }

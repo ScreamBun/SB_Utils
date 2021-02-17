@@ -6,9 +6,13 @@
     "request_id": "15e2de83-61c2-4857-991a-fc50f2d51da8"
   },
   "body": {
-    "action": "allow",
-    "target": {
-      "ipv6_net": "ff01::2"
+    "openc2": {
+      "request": {
+        "action": "allow",
+        "target": {
+          "ipv6_net": "ff01::2"
+        }
+      }
     }
   }
 }

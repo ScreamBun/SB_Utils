@@ -7,7 +7,7 @@
   },
   "body": {
     "openc2": {
-      "response": {
+      "request": {
         "action": "allow",
         "target": {
           "device": {
