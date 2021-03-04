@@ -1,4 +1,4 @@
-image: gitlab.ad.tsdcloudprojects.com:5005/screamingbunny/docker/plus:alpine-python3
+image: ccoe-gitlab-registry.hii-tsd.com/screamingbunny/docker/plus:alpine-python3
 
 variables:
   GIT_SSL_NO_VERIFY: "true"
