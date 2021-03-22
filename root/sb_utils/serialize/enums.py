@@ -1,3 +1,4 @@
+from shutil import which
 from ..utils import EnumBase
 
 
@@ -6,15 +7,19 @@ class SerialFormats(str, EnumBase):
     The format of an OpenC2 Serialization
     """
     # Binary Format
+    CBOR = 'cbor'
+    # Text Format
+    JSON = 'json'
+    # Extra
+    # Binary
     BINN = 'binn'
     BSON = 'bson'
-    CBOR = 'cbor'
+    ION = 'ion'
     MSGPACK = 'msgpack'
     SMILE = 'smile'
-    # VPACK = 'vpack'
-    # Text Format
+    # Text
     BENCODE = 'bencode'
-    JSON = 'json'
+    EDN = 'edn'
     S_EXPRESSION = 'sexp'
     TOML = 'toml'
     UBJSON = 'ubjson'
@@ -27,4 +32,15 @@ class SerialFormats(str, EnumBase):
         Determine if the format is binary or text based
         :param fmt: Serialization
         """
-        return fmt in (cls.BINN, cls.BSON, cls.CBOR, cls.MSGPACK, cls.SMILE)
+        bins = (cls.BINN, cls.BSON, cls.CBOR, cls.ION, cls.MSGPACK, cls.SMILE, cls.UBJSON)
+        if vp := getattr(cls, 'VPACK', None):
+            bins = (*bins, vp)
+
+        return fmt in bins
+
+    def _optional_values(self):
+        vals = {}
+        # VPACK - Binary
+        if which("json-to-vpack") and which("vpack-to-json"):
+            vals['VPACK'] = 'vpack'
+        return vals

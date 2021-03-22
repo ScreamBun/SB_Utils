@@ -1,3 +1,4 @@
+from shutil import which
 from ..utils import EnumBase
 
 
@@ -18,17 +19,25 @@ class SerialTypes(int, EnumBase):
     CBOR = 0
     # Text Format
     JSON = 128
-    XML = 129
     # Extra
-    # Bin
+    # Binary
     BINN = 1
     BSON = 2
+    ION = 5
     MSGPACK = 3
     SMILE = 4
-    VPACK = 5
-    # Txt
+    # Text
     BENCODE = 130
+    EDN = 135
     S_EXPRESSION = 131
     TOML = 132
     UBJSON = 133
+    XML = 129
     YAML = 134
+
+    def _optional_values(self):
+        vals = {}
+        # VPACK - Binary
+        if which("json-to-vpack") and which("vpack-to-json"):
+            vals['VPACK'] = 5
+        return vals

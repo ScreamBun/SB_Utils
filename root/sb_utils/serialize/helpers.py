@@ -15,16 +15,16 @@ from ..general import check_values, default_encode, floatByte
 
 
 # Message Conversion helpers for Bencode
-def bencode_encode(msg: dict) -> bytes:
+def bencode_encode(msg: dict) -> str:
     """
     Encode the given message to Bencode format
     :param msg: message to convert
     :return: Bencode formatted message
     """
-    return bencode.bencode(default_encode(msg, {float: floatByte}))
+    return bencode.bencode(default_encode(msg, {float: floatByte})).decode('utf-8')
 
 
-def bencode_decode(msg: bytes) -> dict:
+def bencode_decode(msg: str) -> dict:
     """
     Decode the given message to Bencode format
     :param msg: message to convert

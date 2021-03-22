@@ -40,8 +40,7 @@ class FormatTests(unittest.TestCase, metaclass=MetaTests):
 
                 for fmt, msgs in results.items():
                     row_headers.append(fmt)
-                    table.rows.append(
-                        [sizeof_fmt(msgs[c]) if c in msgs else 'N/A' for c in table.columns.header])
+                    table.rows.append([sizeof_fmt(msgs[c]) if c in msgs else 'N/A' for c in table.columns.header])
                 table.rows.header = row_headers
                 f.write(f'\n{table}\n\n')
 

@@ -1,8 +1,10 @@
+amazon.ion@git+https://github.com/amzn/ion-python.git
 Authlib==0.15.3
 bson==0.5.10
 canonicaljson==1.4.0
 cbor2==5.2.0
-cryptography==3.3.1
+cryptography==3.4.6
+edn_format==0.7.5
 kombu==5.0.2
 msgpack==1.0.2
 py3-bencode==0.0.3

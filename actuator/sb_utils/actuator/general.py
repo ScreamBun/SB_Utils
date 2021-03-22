@@ -125,7 +125,7 @@ class ValidatorJSON(Draft7Validator):
             exported = list(exported)
         else:
             raise TypeError("Schema format invalid")
-        return any([e.endswith(f"{_type}") for e in exported])
+        return any(list(e.endswith(f"{_type}") for e in exported))
 
     def _get_definition(self, _type: str) -> dict:
         """

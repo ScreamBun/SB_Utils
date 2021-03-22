@@ -4,6 +4,7 @@ Message Conversion functions
 import base64
 import bson
 import cbor2
+import edn_format
 import json
 import msgpack
 import toml
@@ -11,6 +12,7 @@ import ubjson
 import yaml
 
 from typing import Union
+from amazon.ion import simpleion as ion
 from . import enums, helpers, pybinn, pysmile
 from .. import ext_dicts, general
 
@@ -21,36 +23,40 @@ except ImportError:
 
 
 serializations = ext_dicts.FrozenDict(
-    encode={
-        "binn": pybinn.dumps,
-        "bencode": helpers.bencode_encode,
-        "bson": bson.dumps,
-        "cbor": cbor2.dumps,
-        "json": json.dumps,
-        "msgpack": lambda m: msgpack.packb(m, use_bin_type=True),
-        "sexp": helpers.sp_encode,  # S-Expression
-        "smile": pysmile.encode,
-        "toml": toml.dumps,
-        "xml": helpers.xml_encode,
-        "ubjson": ubjson.dumpb,
-        "vpack": helpers.vpack_encode,
-        "yaml": lambda m: yaml.dump(m, Dumper=Dumper)
-    },
-    decode={
-        "binn": pybinn.loads,
-        "bencode": helpers.bencode_decode,
-        "bson": bson.loads,
-        "cbor": cbor2.loads,
-        "json": json.loads,
-        "msgpack": msgpack.unpackb,
-        "sexp": helpers.sp_decode,  # S-Expression
-        "smile": pysmile.decode,
-        "toml": toml.loads,
-        "xml": helpers.xml_decode,
-        "ubjson": ubjson.loadb,
-        "vpack": helpers.vpack_decode,
-        "yaml": lambda m: yaml.load(m, Loader=Loader)
-    }
+    encode=ext_dicts.FrozenDict(
+        binn=pybinn.dumps,
+        bencode=helpers.bencode_encode,
+        bson=bson.dumps,
+        cbor=cbor2.dumps,
+        edn=edn_format.dumps,
+        json=json.dumps,
+        ion=lambda m: ion.dumps(m, binary=True),
+        msgpack=lambda m: msgpack.packb(m, use_bin_type=True),
+        sexp=helpers.sp_encode,  # S-Expression
+        smile=pysmile.encode,
+        toml=toml.dumps,
+        xml=helpers.xml_encode,
+        ubjson=ubjson.dumpb,
+        vpack=helpers.vpack_encode,
+        yaml=lambda m: yaml.dump(m, Dumper=Dumper)
+    ),
+    decode=ext_dicts.FrozenDict(
+        binn=pybinn.loads,
+        bencode=helpers.bencode_decode,
+        bson=bson.loads,
+        cbor=cbor2.loads,
+        edn=edn_format.loads,
+        json=json.loads,
+        ion=ion.loads,
+        msgpack=msgpack.unpackb,
+        sexp=helpers.sp_decode,  # S-Expression
+        smile=pysmile.decode,
+        toml=toml.loads,
+        xml=helpers.xml_decode,
+        ubjson=ubjson.loadb,
+        vpack=helpers.vpack_decode,
+        yaml=lambda m: yaml.load(m, Loader=Loader)
+    )
 )
 
 

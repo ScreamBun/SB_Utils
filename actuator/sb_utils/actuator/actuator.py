@@ -152,5 +152,5 @@ class ActuatorBase:
         return args, kwargs
 
     def shutdown(self) -> None:
-        for profile in (self.nsid if len(self.nsid) > 0 else [self._profile]):
+        for profile in self.nsid if len(self.nsid) > 0 else [self._profile]:
             self._etcd.delete(f"{self._prefix}/{profile}")
