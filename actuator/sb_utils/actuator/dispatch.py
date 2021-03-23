@@ -97,7 +97,8 @@ class Dispatch:
             if dispatch.namespace in self._registered:
                 raise NameError(f"Cannot register a namespace twice, {dispatch.namespace} already exists")
             self._registered[dispatch.namespace] = dispatch._registered
-        raise AttributeError("Cannot register a dispatch without a namespace")
+        else:
+            raise AttributeError("Cannot register a dispatch without a namespace")
 
     # Helper Functions
     def _dispatch(self, key="", rem_key: Tuple[str, ...] = (), init=False) -> Callable[[tuple, dict], dict]:
