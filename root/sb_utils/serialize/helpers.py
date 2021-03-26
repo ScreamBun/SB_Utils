@@ -10,28 +10,21 @@ import tempfile
 import xmltodict
 
 from subprocess import Popen, PIPE
-from typing import (
-    Union
-)
-
-from ..general import (
-    check_values,
-    default_encode,
-    floatByte
-)
+from typing import Union
+from ..general import check_values, default_encode, floatByte
 
 
 # Message Conversion helpers for Bencode
-def bencode_encode(msg: dict) -> bytes:
+def bencode_encode(msg: dict) -> str:
     """
     Encode the given message to Bencode format
     :param msg: message to convert
     :return: Bencode formatted message
     """
-    return bencode.bencode(default_encode(msg, {float: floatByte}))
+    return bencode.bencode(default_encode(msg, {float: floatByte})).decode('utf-8')
 
 
-def bencode_decode(msg: bytes) -> dict:
+def bencode_decode(msg: str) -> dict:
     """
     Decode the given message to Bencode format
     :param msg: message to convert
@@ -114,7 +107,7 @@ def xml_encode(msg: dict) -> str:
     :param msg: message to convert
     :return: XML formatted message
     """
-    return xmltodict.unparse({_xml_root(msg): msg})
+    return xmltodict.unparse({"message": msg})
 
 
 def xml_decode(msg: str) -> dict:
@@ -123,7 +116,7 @@ def xml_decode(msg: str) -> dict:
     :param msg: message to convert
     :return: JSON formatted message
     """
-    return _xml_root(_xml_to_dict(xmltodict.parse(msg)))
+    return _xml_to_dict(xmltodict.parse(msg))["message"]
 
 
 # Message Conversion helpers for VelocityPack (VPack)

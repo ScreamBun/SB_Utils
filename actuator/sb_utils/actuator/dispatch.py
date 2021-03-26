@@ -15,13 +15,16 @@ from typing import (
 from sb_utils import QueryDict
 
 
+DispatchTransform = Callable[[tuple, dict], Tuple[Union[tuple, None], dict]]
+
+
 class Dispatch:
     _dispatch_transform: Callable[[tuple, dict], Tuple[Union[tuple, None], dict]]
     _func_kwargs: Dict[str, Any]
     _namespace: str
     _registered: QueryDict
 
-    def __init__(self, namespace: str = "Dispatch", dispatch_transform: Callable[[tuple, dict], Tuple[Union[tuple, None], dict]] = None, **kwargs) -> None:
+    def __init__(self, namespace="Dispatch", dispatch_transform: DispatchTransform = None, **kwargs) -> None:
         """
         Initialize a Dispatch object
         :param namespace: Namespace of the dispatch - default 'Dispatch'
@@ -61,13 +64,13 @@ class Dispatch:
         :param kwargs: key word args to pass to the function
         :return: function results - dict
         """
-        fun = self._dispatch(key, init=True)
         fun_kwargs = self._func_kwargs.copy()
         fun_kwargs.update(kwargs)
 
         if fun_trans := self._dispatch_transform:
             args, fun_kwargs = fun_trans(*args, **fun_kwargs)
 
+        fun = self._dispatch(key, init=True)
         return fun(*args, **fun_kwargs) if isinstance(args, tuple) else kwargs
 
     # pylint: disable=keyword-arg-before-vararg
@@ -85,19 +88,20 @@ class Dispatch:
         self._registered[key] = fun
         return fun
 
-    def register_dispatch(self, dispatch: 'Dispatch' = None) -> None:
+    def register_dispatch(self, dispatch: 'Dispatch') -> None:
         """
         Register another Dispatch as a key
         :param dispatch: Dispatch instance to register
         """
         if dispatch.namespace:
             if dispatch.namespace in self._registered:
-                raise NameError(f"Cannot register a namespace twice, { dispatch.namespace } already exists")
+                raise NameError(f"Cannot register a namespace twice, {dispatch.namespace} already exists")
             self._registered[dispatch.namespace] = dispatch._registered
-        raise AttributeError("Cannot register a dispatch without a namespace")
+        else:
+            raise AttributeError("Cannot register a dispatch without a namespace")
 
     # Helper Functions
-    def _dispatch(self, key: str = "", rem_key: tuple = (), init: bool = False) -> Callable[[tuple, dict], dict]:
+    def _dispatch(self, key="", rem_key: Tuple[str, ...] = (), init=False) -> Callable[[tuple, dict], dict]:
         """
         dispatch function helper, get nested function if available
         :param key: key/namespace of the function to call

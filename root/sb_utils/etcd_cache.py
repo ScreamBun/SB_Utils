@@ -54,16 +54,13 @@ class ReusableThread(Thread):
         while True:
             # wait until we should process
             self._startSignal.wait()
-
             self._startSignal.clear()
-
             if self._finishIndicator:  # check, if we want to stop
                 self._oneRunFinished.set()
                 return
 
             # call the threaded function
             self._callable(*self._callableArgs, **self._callableKwargs)
-
             # notify about the run's end
             self._oneRunFinished.set()
 
@@ -102,7 +99,6 @@ class EtcdCache:
         )
         self._root = base if base.endswith('/') else f'{base}/'
         self._timeout = timeout
-
         self._initial()
         self._etcd_updater = ReusableThread(target=self._update, kwargs={'wait': True})
         self._etcd_updater.setDaemon(True)

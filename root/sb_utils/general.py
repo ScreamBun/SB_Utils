@@ -28,8 +28,7 @@ from typing import (
 def camelCase(s: str, delim: str = '_') -> str:
     s = s.split(delim)
     camel = s[0]
-    for p in s[1:]:
-        camel += f'{p[0].upper()}{p[1:]}'
+    camel += ''.join(map(str.capitalize, s[1:]))
     return camel
 
 
