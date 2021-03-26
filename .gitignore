@@ -168,4 +168,5 @@ fabric.properties
 
 # Custom Ignore
 .idea
+.DS_Store
 root/sizes.md
