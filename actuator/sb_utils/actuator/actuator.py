@@ -49,15 +49,6 @@ class ActuatorBase:
             schema=schema
         )
 
-        # Initialize etcd client and set profiles
-        self._etcd = etcd.Client(
-            host=os.environ.get('ETCD_HOST', 'etcd'),
-            port=safe_cast(os.environ.get('ETCD_PORT', 4001), int, 4001)
-        )
-        profiles = self.nsid if len(self.nsid) > 0 else [self._profile]
-        for profile in profiles:
-            self._etcd.write(f"{self._prefix}/{profile}", self._config.actuator_id)
-
         # Configure Action/Target functions
         self._dispatch = dispatch.Dispatch(act=self, dispatch_transform=self._dispatch_transform)
         self._dispatch.register(exceptions.action_not_implemented, "default")
@@ -68,6 +59,15 @@ class ActuatorBase:
         schema_defs = self._config.schema.get("definitions", {})
         self._valid_actions = tuple(a["const"] for a in schema_defs.get("Action", {}).get("oneOf", []))
         self._valid_targets = tuple(schema_defs.get("Target", {}).get("properties", {}).keys())
+
+        # Initialize etcd client and set profiles
+        self._etcd = etcd.Client(
+            host=os.environ.get('ETCD_HOST', 'etcd'),
+            port=safe_cast(os.environ.get('ETCD_PORT', 4001), int, 4001)
+        )
+        profiles = self.nsid if len(self.nsid) > 0 else [self._profile]
+        for profile in profiles:
+            self._etcd.write(f"{self._prefix}/{profile}", self._config.actuator_id)
 
     def __repr__(self) -> str:
         return f"Actuator({self._profile})"
