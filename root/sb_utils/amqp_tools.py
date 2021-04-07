@@ -7,8 +7,6 @@ import socket
 import os
 
 from datetime import datetime
-from functools import partial
-from inspect import isfunction
 from multiprocessing import Event, Process
 from typing import (
     Callable,
@@ -18,7 +16,7 @@ from typing import (
     Tuple,
     Union
 )
-from .general import safe_cast
+from .general import isFunction, safe_cast
 
 # Type Hinting
 Callback = Callable[[any, any], None]
@@ -87,7 +85,7 @@ class Consumer(Process):
         self._queues = []
 
         if isinstance(callbacks, (list, tuple)):
-            self._callbacks = [f for f in callbacks if isfunction(f) or isinstance(f, partial)]
+            self._callbacks = [f for f in callbacks if isFunction(f)]
         else:
             self._callbacks = []
 

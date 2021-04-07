@@ -3,11 +3,11 @@ import uuid
 
 from datetime import datetime
 from io import BytesIO
-from typing import Any, Dict, List, Union
+from typing import Any, List, Union
 
 from . import signature
 from .enums import MessageType
-from ..general import toBytes, unixTimeMillis
+from ..general import unixTimeMillis
 from ..serialize import decode_msg, encode_msg, SerialFormats
 
 
@@ -37,8 +37,7 @@ class Message:
     __slots__ = ("recipients", "origin", "created", "msg_type", "request_id", "content_type", "content")
 
     def __init__(self, recipients: Union[str, List[str]] = "", origin: str = "", created: datetime = None, msg_type: MessageType = None, request_id: uuid.UUID = None, serialization: SerialFormats = None, content: dict = None):
-        self.recipients = (recipients if isinstance(recipients, list) else [
-                           recipients]) if recipients else []
+        self.recipients = (recipients if isinstance(recipients, list) else [recipients]) if recipients else []
         self.origin = origin
         self.created = created or datetime.utcnow()
         self.msg_type = msg_type or MessageType.Request
