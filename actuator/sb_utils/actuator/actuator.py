@@ -120,9 +120,8 @@ class ActuatorBase:
         """
         msg = msg or {}
         errors = list(self._validator.iter_errors_as(msg, "OpenC2_Command"))
-        val_cmd = len(errors) == 0
 
-        if val_cmd:
+        if len(errors) == 0:
             action = msg.get("action", "action_not_implemented")
             targets = list(msg.get("target", {}).keys())
             response_requested = msg.get("args", {}).get("response_requested", "complete")
