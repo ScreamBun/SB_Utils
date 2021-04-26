@@ -17,6 +17,7 @@ from types import (
 )
 from typing import (
     Any,
+    AnyStr,
     Callable,
     Dict,
     Tuple,
@@ -141,7 +142,6 @@ def default_decode(itm: Any, decoders: Dict[Type, Callable[[Any], Any]] = None) 
     :param decoders: custom type decoding - Ex) -> {bytes: lambda b: b.decode('utf-8', 'backslashreplace')}
     :return: default system encoded object
     """
-    print(itm)
     if decoders and isinstance(itm, tuple(decoders.keys())):
         return decoders[type(itm)](itm)
 
@@ -230,7 +230,7 @@ def unixTimeMillis(dt: datetime):
     return (dt - epoch).total_seconds() * 1000.0
 
 
-def destructure(d: dict, *keys: Union[str, Tuple[str, Any]]) -> Tuple[str, ...]:
+def destructure(d: dict, *keys: Union[AnyStr, Tuple[AnyStr, Any]]) -> Tuple[Any, ...]:
     """
     Destructure the dict using the given keys
     :param d: dict to destructure
@@ -239,7 +239,7 @@ def destructure(d: dict, *keys: Union[str, Tuple[str, Any]]) -> Tuple[str, ...]:
     """
     rslt = []
     for k in keys:
-        if isinstance(k, str):
+        if isinstance(k, (bytes, str)):
             rslt.append(d.get(k, None))
         elif isinstance(k, tuple):
             rslt.append(d.get(*k))

@@ -22,14 +22,14 @@ class ActuatorBase:
     # Dynamically set vars
     _config: FrozenDict
     _dispatch: dispatch.Dispatch
-    _etcd: etcd.Client
+    _etcd: etcd.Client = None
     _pairs: FrozenDict
     _profile: str
     _valid_actions: Tuple[str, ...]
     _valid_targets: Tuple[str, ...]
     _validator: general.ValidatorJSON
 
-    def __init__(self, root=ROOT_DIR, act_id=ACT_ID) -> None:
+    def __init__(self, root=ROOT_DIR, act_id=ACT_ID, enable_etcd=True) -> None:
         """
         Initialize and start the Actuator Process
         :param root: rood directory of actuator - default CWD
@@ -61,13 +61,14 @@ class ActuatorBase:
         self._valid_targets = tuple(schema_defs.get("Target", {}).get("properties", {}).keys())
 
         # Initialize etcd client and set profiles
-        self._etcd = etcd.Client(
-            host=os.environ.get('ETCD_HOST', 'etcd'),
-            port=safe_cast(os.environ.get('ETCD_PORT', 4001), int, 4001)
-        )
-        profiles = self.nsid if len(self.nsid) > 0 else [self._profile]
-        for profile in profiles:
-            self._etcd.write(f"{self._prefix}/{profile}", self._config.actuator_id)
+        if enable_etcd:
+            self._etcd = etcd.Client(
+                host=os.environ.get('ETCD_HOST', 'etcd'),
+                port=safe_cast(os.environ.get('ETCD_PORT', 4001), int, 4001)
+            )
+            profiles = self.nsid if len(self.nsid) > 0 else [self._profile]
+            for profile in profiles:
+                self._etcd.write(f"{self._prefix}/{profile}", self._config.actuator_id)
 
     def __repr__(self) -> str:
         return f"Actuator({self._profile})"
@@ -151,5 +152,6 @@ class ActuatorBase:
         return args, kwargs
 
     def shutdown(self) -> None:
-        for profile in self.nsid if len(self.nsid) > 0 else [self._profile]:
-            self._etcd.delete(f"{self._prefix}/{profile}")
+        if self._etcd:
+            for profile in self.nsid if len(self.nsid) > 0 else [self._profile]:
+                self._etcd.delete(f"{self._prefix}/{profile}")
