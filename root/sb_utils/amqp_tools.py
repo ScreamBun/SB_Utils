@@ -8,18 +8,11 @@ import os
 
 from datetime import datetime
 from multiprocessing import Event, Process
-from typing import (
-    Callable,
-    Dict,
-    List,
-    Literal,
-    Tuple,
-    Union
-)
+from typing import Any, Callable, Dict, List, Literal, Tuple, Union
 from .general import isFunction, safe_cast
 
 # Type Hinting
-Callback = Callable[[any, any], None]
+Callback = Callable[[Any, kombu.Message], None]
 Callbacks = Union[
     List[Callback],
     Tuple[Callback, ...]
@@ -129,7 +122,7 @@ class Consumer(Process):
                 except KeyboardInterrupt:
                     self.shutdown()
 
-    def _on_message(self, body, message) -> None:
+    def _on_message(self, body: Any, message: kombu.Message) -> None:
         """
         Default option for a consumer callback, prints out message and message data.
         :param body: contains the body of the message sent

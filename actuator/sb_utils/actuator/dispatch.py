@@ -3,28 +3,19 @@ Multiple dispatch on namespace
 """
 from functools import partial
 from inspect import isfunction
-from typing import (
-    Any,
-    Callable,
-    Dict,
-    List,
-    Tuple,
-    Union
-)
-
+from typing import Any, Callable, Dict, List, Tuple, Union
 from sb_utils import QueryDict
-
 
 DispatchTransform = Callable[[tuple, dict], Tuple[Union[tuple, None], dict]]
 
 
 class Dispatch:
-    _dispatch_transform: Callable[[tuple, dict], Tuple[Union[tuple, None], dict]]
+    _dispatch_transform: DispatchTransform
     _func_kwargs: Dict[str, Any]
     _namespace: str
     _registered: QueryDict
 
-    def __init__(self, namespace="Dispatch", dispatch_transform: DispatchTransform = None, **kwargs) -> None:
+    def __init__(self, namespace: str, dispatch_transform: DispatchTransform = None, **kwargs) -> None:
         """
         Initialize a Dispatch object
         :param namespace: Namespace of the dispatch - default 'Dispatch'
@@ -56,7 +47,7 @@ class Dispatch:
         return self._registered.compositeKeys()
 
     # pylint: disable=keyword-arg-before-vararg
-    def dispatch(self, key: str = None, *args, **kwargs) -> dict:
+    def dispatch(self, key: str, *args, **kwargs) -> dict:
         """
         Dispatch function based on the given key with the args and kwargs
         :param key: key/namespace of the function to call

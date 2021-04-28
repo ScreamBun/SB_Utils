@@ -1,3 +1,4 @@
+# General
 import base64
 import binascii
 import json
@@ -8,22 +9,8 @@ import uuid
 
 from datetime import datetime
 from functools import partial
-from types import (
-    BuiltinFunctionType,
-    BuiltinMethodType,
-    FunctionType,
-    MethodType,
-    LambdaType
-)
-from typing import (
-    Any,
-    AnyStr,
-    Callable,
-    Dict,
-    Tuple,
-    Type,
-    Union
-)
+from types import BuiltinFunctionType, BuiltinMethodType, FunctionType, MethodType, LambdaType
+from typing import Any, AnyStr, Callable, Dict, Tuple, Type, Union
 
 
 # Util Functions
