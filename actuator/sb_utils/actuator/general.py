@@ -108,14 +108,15 @@ class ValidatorJSON(Draft7Validator):
         :param _type: name of type to check if exported
         :return: bool - type is exported type
         """
-        exported: List[str] = []
+        exported: List[str]
         if "oneOf" in self.schema:
             exported = [e.get("$ref", "") for e in self.schema.get("oneOf", [])]
         elif "properties" in self.schema:
             _type = _type.lower()
-            exp = {*self.schema.get("properties", {}).keys()}
-            exp.update({exp.get("$ref", "") for exp in self.schema.get("properties", {}).values()})
-            exported = list(exported)
+            exp = set()
+            for k, v in self.schema.get("properties", {}).items():
+                exp.update({k, v.get("$ref", "")})
+            exported = list(exp)
         else:
             raise TypeError("Schema format invalid")
         return any(list(e.endswith(f"{_type}") for e in exported))

@@ -36,13 +36,13 @@ class Message:
 
     __slots__ = ("recipients", "origin", "created", "msg_type", "request_id", "content_type", "content")
 
-    def __init__(self, recipients: Union[str, List[str]] = "", origin: str = "", created: datetime = None, msg_type: MessageType = None, request_id: uuid.UUID = None, serialization: SerialFormats = None, content: dict = None):
+    def __init__(self, recipients: Union[str, List[str]] = "", origin: str = "", created: datetime = None, msg_type: MessageType = None, request_id: uuid.UUID = None, content_type: SerialFormats = None, content: dict = None):
         self.recipients = (recipients if isinstance(recipients, list) else [recipients]) if recipients else []
         self.origin = origin
         self.created = created or datetime.utcnow()
         self.msg_type = msg_type or MessageType.Request
         self.request_id = request_id or uuid.uuid4()
-        self.content_type = serialization or SerialFormats.JSON
+        self.content_type = content_type or SerialFormats.JSON
         self.content = content or {}
 
     def __setattr__(self, key: str, val):
