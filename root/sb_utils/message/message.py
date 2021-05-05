@@ -128,7 +128,7 @@ class Message:
             created=created,
             msg_type=MessageType.from_name(msg_type),
             request_id=request_id,
-            serialization=serial,
+            content_type=serial,
             content=body["openc2"][msg_type]
         )
 
@@ -174,7 +174,7 @@ class Message:
             created=datetime.fromtimestamp(float(".".join(map(str, struct.unpack("LI", created))))),
             msg_type=MessageType(struct.unpack("s", msg_type)[0]),
             request_id=uuid.UUID(bytes=request_id),
-            serialization=SerialFormats.from_value(struct.unpack("s", serialization)[0]),
+            content_type=SerialFormats.from_value(struct.unpack("s", serialization)[0]),
             content=decode_msg(content, SerialFormats.CBOR, raw=True)
         )
 
