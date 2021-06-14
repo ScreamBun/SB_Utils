@@ -119,7 +119,7 @@ class ActuatorBase:
         :return: message results
         """
         msg = msg or {}
-        errors = list(self._validator.iter_errors_as(msg, "OpenC2_Command"))
+        errors = list(self._validator.iter_errors_as(msg, "OpenC2-Command"))
 
         if len(errors) == 0:
             action = msg.get("action", "action_not_implemented")
