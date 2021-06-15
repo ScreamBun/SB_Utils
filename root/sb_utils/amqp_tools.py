@@ -7,12 +7,13 @@ import socket
 import os
 
 from datetime import datetime
+from functools import partial
 from multiprocessing import Event, Process
 from typing import Any, Callable, Dict, List, Literal, Tuple, Union
 from .general import isFunction, safe_cast
 
 # Type Hinting
-Callback = Callable[[Any, kombu.Message], None]
+Callback = Union[Callable[[Any, kombu.Message], None], partial]
 Callbacks = Union[
     List[Callback],
     Tuple[Callback, ...]
