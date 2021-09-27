@@ -9,10 +9,8 @@ class UserGroups(BaseModel):
     """
     Local system user group relationships.
     """
-    # User ID
-    uid = BigIntegerField()  # {'index': True}
-    # Group ID
-    gid = BigIntegerField()  # {'index': True}
+    uid = BigIntegerField(help_text="User ID")  # {'index': True}
+    gid = BigIntegerField(help_text="Group ID")  # {'index': True}
 
     class Meta:
         table_name = "user_groups"

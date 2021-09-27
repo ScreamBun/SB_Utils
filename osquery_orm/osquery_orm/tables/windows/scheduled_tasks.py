@@ -12,26 +12,16 @@ class ScheduledTasks(BaseModel):
         select * from scheduled_tasks
         select * from scheduled_tasks where hidden=1 and enabled=1
     """
-    # Name of the scheduled task
-    name = TextField()
-    # Actions executed by the scheduled task
-    action = TextField()
-    # Path to the executable to be run
-    path = TextField()
-    # Whether or not the scheduled task is enabled
-    enabled = IntegerField()
-    # State of the scheduled task
-    state = TextField()
-    # Whether or not the task is visible in the UI
-    hidden = IntegerField()
-    # Timestamp the task last ran
-    last_run_time = BigIntegerField()
-    # Timestamp the task is scheduled to run next
-    next_run_time = BigIntegerField()
-    # Exit status message of the last task run
-    last_run_message = TextField()
-    # Exit status code of the last task run
-    last_run_code = TextField()
+    name = TextField(help_text="Name of the scheduled task")
+    action = TextField(help_text="Actions executed by the scheduled task")
+    path = TextField(help_text="Path to the executable to be run")
+    enabled = IntegerField(help_text="Whether or not the scheduled task is enabled")
+    state = TextField(help_text="State of the scheduled task")
+    hidden = IntegerField(help_text="Whether or not the task is visible in the UI")
+    last_run_time = BigIntegerField(help_text="Timestamp the task last ran")
+    next_run_time = BigIntegerField(help_text="Timestamp the task is scheduled to run next")
+    last_run_message = TextField(help_text="Exit status message of the last task run")
+    last_run_code = TextField(help_text="Exit status code of the last task run")
 
     class Meta:
         table_name = "scheduled_tasks"

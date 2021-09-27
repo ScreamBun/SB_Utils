@@ -2,7 +2,7 @@
 OSQuery browser_plugins ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import IntegerField, BigIntegerField, ForeignKeyField, TextField
+from peewee import ForeignKeyField, IntegerField, BigIntegerField, TextField
 from ..cross_platform import MacOS_Users
 
 
@@ -12,26 +12,16 @@ class BrowserPlugins(BaseModel):
     Examples:
         select * from users join browser_plugins using (uid)
     """
-    # The local user that owns the plugin
-    uid = BigIntegerField()  # {'index': True}
-    # Plugin display name
-    name = TextField()
-    # Plugin identifier
-    identifier = TextField()
-    # Plugin short version
-    version = TextField()
-    # Build SDK used to compile plugin
-    sdk = TextField()
-    # Plugin description text
-    description = TextField()
-    # Plugin language-localization
-    development_region = TextField()
-    # Plugin requires native execution
-    native = IntegerField()
-    # Path to plugin bundle
-    path = TextField()  # {'index': True}
-    # Is the plugin disabled. 1 = Disabled
-    disabled = IntegerField()
+    uid = BigIntegerField(help_text="The local user that owns the plugin")  # {'index': True}
+    name = TextField(help_text="Plugin display name")
+    identifier = TextField(help_text="Plugin identifier")
+    version = TextField(help_text="Plugin short version")
+    sdk = TextField(help_text="Build SDK used to compile plugin")
+    description = TextField(help_text="Plugin description text")
+    development_region = TextField(help_text="Plugin language-localization")
+    native = IntegerField(help_text="Plugin requires native execution")
+    path = TextField(help_text="Path to plugin bundle")  # {'index': True}
+    disabled = IntegerField(help_text="Is the plugin disabled. 1 = Disabled")
     browser_plugins = ForeignKeyField(MacOS_Users, backref='uid')
 
     class Meta:

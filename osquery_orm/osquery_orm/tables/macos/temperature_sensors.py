@@ -8,16 +8,12 @@ from .smc_keys import SmcKeys
 
 class TemperatureSensors(BaseModel):
     """
-    Machine's temperature sensors.
+    Machine\'s temperature sensors.
     """
-    # The SMC key on OS X
-    key = TextField()  # {'index': True}
-    # Name of temperature source
-    name = TextField()
-    # Temperature in Celsius
-    celsius = DoubleField()
-    # Temperature in Fahrenheit
-    fahrenheit = DoubleField()
+    key = TextField(help_text="The SMC key on OS X")  # {'index': True}
+    name = TextField(help_text="Name of temperature source")
+    celsius = DoubleField(help_text="Temperature in Celsius")
+    fahrenheit = DoubleField(help_text="Temperature in Fahrenheit")
     temperature_sensors = ForeignKeyField(SmcKeys, backref='key')
 
     class Meta:

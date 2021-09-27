@@ -9,18 +9,12 @@ class ChocolateyPackages(BaseModel):
     """
     Chocolatey packages installed in a system.
     """
-    # Package display name
-    name = TextField()
-    # Package-supplied version
-    version = TextField()
-    # Package-supplied summary
-    summary = TextField()
-    # Optional package author
-    author = TextField()
-    # License under which package is launched
-    license = TextField()
-    # Path at which this package resides
-    path = TextField()
+    name = TextField(help_text="Package display name")
+    version = TextField(help_text="Package-supplied version")
+    summary = TextField(help_text="Package-supplied summary")
+    author = TextField(help_text="Optional package author")
+    license = TextField(help_text="License under which package is launched")
+    path = TextField(help_text="Path at which this package resides")
 
     class Meta:
         table_name = "chocolatey_packages"

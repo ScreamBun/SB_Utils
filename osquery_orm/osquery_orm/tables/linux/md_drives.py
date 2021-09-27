@@ -9,14 +9,10 @@ class MdDrives(BaseModel):
     """
     Drive devices used for Software RAID.
     """
-    # md device name
-    md_device_name = TextField()
-    # Drive device name
-    drive_name = TextField()
-    # Slot position of disk
-    slot = IntegerField()
-    # State of the drive
-    state = TextField()
+    md_device_name = TextField(help_text="md device name")
+    drive_name = TextField(help_text="Drive device name")
+    slot = IntegerField(help_text="Slot position of disk")
+    state = TextField(help_text="State of the drive")
 
     class Meta:
         table_name = "md_drives"

@@ -9,8 +9,7 @@ class MdPersonalities(BaseModel):
     """
     Software RAID setting supported by the kernel.
     """
-    # Name of personality supported by kernel
-    name = TextField()
+    name = TextField(help_text="Name of personality supported by kernel")
 
     class Meta:
         table_name = "md_personalities"

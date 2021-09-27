@@ -9,20 +9,13 @@ class MemoryArrays(BaseModel):
     """
     Data associated with collection of memory devices that operate to form a memory address.
     """
-    # Handle, or instance number, associated with the array
-    handle = TextField()
-    # Physical location of the memory array
-    location = TextField()
-    # Function for which the array is used
-    use = TextField()
-    # Primary hardware error correction or detection method supported
-    memory_error_correction = TextField()
-    # Maximum capacity of array in gigabytes
-    max_capacity = IntegerField()
-    # Handle, or instance number, associated with any error that was detected for the array
-    memory_error_info_handle = TextField()
-    # Number of memory devices on array
-    number_memory_devices = IntegerField()
+    handle = TextField(help_text="Handle, or instance number, associated with the array")
+    location = TextField(help_text="Physical location of the memory array")
+    use = TextField(help_text="Function for which the array is used")
+    memory_error_correction = TextField(help_text="Primary hardware error correction or detection method supported")
+    max_capacity = IntegerField(help_text="Maximum capacity of array in gigabytes")
+    memory_error_info_handle = TextField(help_text="Handle, or instance number, associated with any error that was detected for the array")
+    number_memory_devices = IntegerField(help_text="Number of memory devices on array")
 
     class Meta:
         table_name = "memory_arrays"

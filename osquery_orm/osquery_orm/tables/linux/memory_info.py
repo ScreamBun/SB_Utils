@@ -9,24 +9,15 @@ class MemoryInfo(BaseModel):
     """
     Main memory information in bytes.
     """
-    # Total amount of physical RAM, in bytes
-    memory_total = BigIntegerField()
-    # The amount of physical RAM, in bytes, left unused by the system
-    memory_free = BigIntegerField()
-    # The amount of physical RAM, in bytes, used for file buffers
-    buffers = BigIntegerField()
-    # The amount of physical RAM, in bytes, used as cache memory
-    cached = BigIntegerField()
-    # The amount of swap, in bytes, used as cache memory
-    swap_cached = BigIntegerField()
-    # The total amount of buffer or page cache memory, in bytes, that is in active use
-    active = BigIntegerField()
-    # The total amount of buffer or page cache memory, in bytes, that are free and available
-    inactive = BigIntegerField()
-    # The total amount of swap available, in bytes
-    swap_total = BigIntegerField()
-    # The total amount of swap free, in bytes
-    swap_free = BigIntegerField()
+    memory_total = BigIntegerField(help_text="Total amount of physical RAM, in bytes")
+    memory_free = BigIntegerField(help_text="The amount of physical RAM, in bytes, left unused by the system")
+    buffers = BigIntegerField(help_text="The amount of physical RAM, in bytes, used for file buffers")
+    cached = BigIntegerField(help_text="The amount of physical RAM, in bytes, used as cache memory")
+    swap_cached = BigIntegerField(help_text="The amount of swap, in bytes, used as cache memory")
+    active = BigIntegerField(help_text="The total amount of buffer or page cache memory, in bytes, that is in active use")
+    inactive = BigIntegerField(help_text="The total amount of buffer or page cache memory, in bytes, that are free and available")
+    swap_total = BigIntegerField(help_text="The total amount of swap available, in bytes")
+    swap_free = BigIntegerField(help_text="The total amount of swap free, in bytes")
 
     class Meta:
         table_name = "memory_info"

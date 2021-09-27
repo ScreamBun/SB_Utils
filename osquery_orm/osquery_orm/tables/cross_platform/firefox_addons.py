@@ -2,7 +2,7 @@
 OSQuery firefox_addons ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import IntegerField, BigIntegerField, ForeignKeyField, TextField
+from peewee import ForeignKeyField, IntegerField, BigIntegerField, TextField
 from .users import Users
 
 
@@ -12,36 +12,21 @@ class FirefoxAddons(BaseModel):
     Examples:
         select * from users join firefox_addons using (uid)
     """
-    # The local user that owns the addon
-    uid = BigIntegerField()  # {'additional': True}
-    # Addon display name
-    name = TextField()
-    # Addon identifier
-    identifier = TextField()  # {'index': True}
-    # Addon-supported creator string
-    creator = TextField()
-    # Extension, addon, webapp
-    type = TextField()
-    # Addon-supplied version string
-    version = TextField()
-    # Addon-supplied description string
-    description = TextField()
-    # URL that installed the addon
-    source_url = TextField()
-    # 1 If the addon is shown in browser else 0
-    visible = IntegerField()
-    # 1 If the addon is active else 0
-    active = IntegerField()
-    # 1 If the addon is application-disabled else 0
-    disabled = IntegerField()
-    # 1 If the addon applies background updates else 0
-    autoupdate = IntegerField()
-    # 1 If the addon includes binary components else 0
-    native = IntegerField()
-    # Global, profile location
-    location = TextField()
-    # Path to plugin bundle
-    path = TextField()
+    uid = BigIntegerField(help_text="The local user that owns the addon")  # {'additional': True}
+    name = TextField(help_text="Addon display name")
+    identifier = TextField(help_text="Addon identifier")  # {'index': True}
+    creator = TextField(help_text="Addon-supported creator string")
+    type = TextField(help_text="Extension, addon, webapp")
+    version = TextField(help_text="Addon-supplied version string")
+    description = TextField(help_text="Addon-supplied description string")
+    source_url = TextField(help_text="URL that installed the addon")
+    visible = IntegerField(help_text="1 If the addon is shown in browser else 0")
+    active = IntegerField(help_text="1 If the addon is active else 0")
+    disabled = IntegerField(help_text="1 If the addon is application-disabled else 0")
+    autoupdate = IntegerField(help_text="1 If the addon applies background updates else 0")
+    native = IntegerField(help_text="1 If the addon includes binary components else 0")
+    location = TextField(help_text="Global, profile location")
+    path = TextField(help_text="Path to plugin bundle")
     firefox_addons = ForeignKeyField(Users, backref='uid')
 
     class Meta:

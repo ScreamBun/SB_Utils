@@ -9,8 +9,7 @@ class LocationServices(BaseModel):
     """
     Reports the status of the Location Services feature of the OS.
     """
-    # 1 if Location Services are enabled, else 0
-    enabled = IntegerField()
+    enabled = IntegerField(help_text="1 if Location Services are enabled, else 0")
 
     class Meta:
         table_name = "location_services"

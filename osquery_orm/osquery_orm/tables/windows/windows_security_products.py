@@ -11,18 +11,12 @@ class WindowsSecurityProducts(BaseModel):
     Examples:
         select * from windows_security_products
     """
-    # Type of security product
-    type = TextField()
-    # Name of product
-    name = TextField()
-    # State of protection
-    state = TextField()
-    # Timestamp for the product state
-    state_timestamp = TextField()
-    # Remediation path
-    remediation_path = TextField()
-    # 1 if product signatures are up to date, else 0
-    signatures_up_to_date = IntegerField()
+    type = TextField(help_text="Type of security product")
+    name = TextField(help_text="Name of product")
+    state = TextField(help_text="State of protection")
+    state_timestamp = TextField(help_text="Timestamp for the product state")
+    remediation_path = TextField(help_text="Remediation path")
+    signatures_up_to_date = IntegerField(help_text="1 if product signatures are up to date, else 0")
 
     class Meta:
         table_name = "windows_security_products"

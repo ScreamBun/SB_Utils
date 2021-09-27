@@ -9,10 +9,8 @@ class EtcHosts(BaseModel):
     """
     Line-parsed /etc/hosts.
     """
-    # IP address mapping
-    address = TextField()
-    # Raw hosts mapping
-    hostnames = TextField()
+    address = TextField(help_text="IP address mapping")
+    hostnames = TextField(help_text="Raw hosts mapping")
 
     class Meta:
         table_name = "etc_hosts"

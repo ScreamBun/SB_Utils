@@ -9,38 +9,22 @@ class SocketEvents(BaseModel):
     """
     Track network socket opens and closes.
     """
-    # The socket action (bind, listen, close)
-    action = TextField()
-    # Process (or thread) ID
-    pid = BigIntegerField()
-    # Path of executed file
-    path = TextField()
-    # The file description for the process socket
-    fd = TextField()
-    # Audit User ID
-    auid = BigIntegerField()
-    # The socket open attempt status
-    success = IntegerField()
-    # The Internet protocol family ID
-    family = IntegerField()
-    # The network protocol ID
-    protocol = IntegerField()  # {'hidden': True}
-    # Local address associated with socket
-    local_address = TextField()
-    # Remote address associated with socket
-    remote_address = TextField()
-    # Local network protocol port number
-    local_port = IntegerField()
-    # Remote network protocol port number
-    remote_port = IntegerField()
-    # The local path (UNIX domain socket only)
-    socket = TextField()  # {'hidden': True}
-    # Time of execution in UNIX time
-    time = BigIntegerField()
-    # Time of execution in system uptime
-    uptime = BigIntegerField()
-    # Event ID
-    eid = TextField()  # {'hidden': True}
+    action = TextField(help_text="The socket action (bind, listen, close)")
+    pid = BigIntegerField(help_text="Process (or thread) ID")
+    path = TextField(help_text="Path of executed file")
+    fd = TextField(help_text="The file description for the process socket")
+    auid = BigIntegerField(help_text="Audit User ID")
+    success = IntegerField(help_text="The socket open attempt status")
+    family = IntegerField(help_text="The Internet protocol family ID")
+    protocol = IntegerField(help_text="The network protocol ID")  # {'hidden': True}
+    local_address = TextField(help_text="Local address associated with socket")
+    remote_address = TextField(help_text="Remote address associated with socket")
+    local_port = IntegerField(help_text="Local network protocol port number")
+    remote_port = IntegerField(help_text="Remote network protocol port number")
+    socket = TextField(help_text="The local path (UNIX domain socket only)")  # {'hidden': True}
+    time = BigIntegerField(help_text="Time of execution in UNIX time")
+    uptime = BigIntegerField(help_text="Time of execution in system uptime")
+    eid = TextField(help_text="Event ID")  # {'hidden': True}
 
     class Meta:
         table_name = "socket_events"

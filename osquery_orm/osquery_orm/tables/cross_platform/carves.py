@@ -13,22 +13,14 @@ class Carves(BaseModel):
         select * from carves where status like '%FAIL%'
         select * from carves where path like '/Users/%/Downloads/%' and carve=1
     """
-    # Time at which the carve was kicked off
-    time = BigIntegerField()
-    # A SHA256 sum of the carved archive
-    sha256 = TextField()
-    # Size of the carved archive
-    size = IntegerField()
-    # The path of the requested carve
-    path = TextField()  # {'additional': True}
-    # Status of the carve, can be STARTING, PENDING, SUCCESS, or FAILED
-    status = TextField()
-    # Identifying value of the carve session
-    carve_guid = TextField()  # {'index': True}
-    # Identifying value of the carve request (e.g., scheduled query name, distributed request, etc)
-    request_id = TextField()
-    # Set this value to '1' to start a file carve
-    carve = IntegerField()  # {'additional': True}
+    time = BigIntegerField(help_text="Time at which the carve was kicked off")
+    sha256 = TextField(help_text="A SHA256 sum of the carved archive")
+    size = IntegerField(help_text="Size of the carved archive")
+    path = TextField(help_text="The path of the requested carve")  # {'additional': True}
+    status = TextField(help_text="Status of the carve, can be STARTING, PENDING, SUCCESS, or FAILED")
+    carve_guid = TextField(help_text="Identifying value of the carve session")  # {'index': True}
+    request_id = TextField(help_text="Identifying value of the carve request (e.g., scheduled query name, distributed request, etc)")
+    carve = IntegerField(help_text="Set this value to \'1\' to start a file carve")  # {'additional': True}
 
     class Meta:
         table_name = "carves"

@@ -11,10 +11,8 @@ class LoadAverage(BaseModel):
     Examples:
         select * from load_average;
     """
-    # Period over which the average is calculated.
-    period = TextField()
-    # Load average over the specified period.
-    average = TextField()
+    period = TextField(help_text="Period over which the average is calculated.")
+    average = TextField(help_text="Load average over the specified period.")
 
     class Meta:
         table_name = "load_average"

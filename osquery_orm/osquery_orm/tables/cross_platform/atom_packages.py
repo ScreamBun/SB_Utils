@@ -11,20 +11,13 @@ class AtomPackages(BaseModel):
     Examples:
         select * from atom_packages
     """
-    # Package display name
-    name = TextField()
-    # Package supplied version
-    version = TextField()
-    # Package supplied description
-    description = TextField()
-    # Package's package.json path
-    path = TextField()
-    # License for package
-    license = TextField()
-    # Package supplied homepage
-    homepage = TextField()
-    # The local user that owns the plugin
-    uid = BigIntegerField()  # {'index': True}
+    name = TextField(help_text="Package display name")
+    version = TextField(help_text="Package supplied version")
+    description = TextField(help_text="Package supplied description")
+    path = TextField(help_text="Package\'s package.json path")
+    license = TextField(help_text="License for package")
+    homepage = TextField(help_text="Package supplied homepage")
+    uid = BigIntegerField(help_text="The local user that owns the plugin")  # {'index': True}
 
     class Meta:
         table_name = "atom_packages"

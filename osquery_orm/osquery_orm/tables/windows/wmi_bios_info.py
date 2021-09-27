@@ -12,10 +12,8 @@ class WmiBiosInfo(BaseModel):
         select * from wmi_bios_info
         select * from wmi_bios_info where name = 'AMTControl'
     """
-    # Name of the Bios setting
-    name = TextField()
-    # Value of the Bios setting
-    value = TextField()
+    name = TextField(help_text="Name of the Bios setting")
+    value = TextField(help_text="Value of the Bios setting")
 
     class Meta:
         table_name = "wmi_bios_info"

@@ -9,16 +9,11 @@ class DnsResolvers(BaseModel):
     """
     Resolvers used by this host.
     """
-    # Address type index or order
-    id = IntegerField()
-    # Address type: sortlist, nameserver, search
-    type = TextField()
-    # Resolver IP/IPv6 address
-    address = TextField()
-    # Address (sortlist) netmask length
-    netmask = TextField()
-    # Resolver options
-    options = BigIntegerField()
+    id = IntegerField(help_text="Address type index or order")
+    type = TextField(help_text="Address type: sortlist, nameserver, search")
+    address = TextField(help_text="Resolver IP/IPv6 address")
+    netmask = TextField(help_text="Address (sortlist) netmask length")
+    options = BigIntegerField(help_text="Resolver options")
 
     class Meta:
         table_name = "dns_resolvers"

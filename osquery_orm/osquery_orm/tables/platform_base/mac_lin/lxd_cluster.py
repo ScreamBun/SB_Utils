@@ -11,20 +11,13 @@ class LxdCluster(BaseModel):
     Examples:
         select * from lxd_cluster
     """
-    # Name of the LXD server node
-    server_name = TextField()
-    # Whether clustering enabled (1) or not (0) on this node
-    enabled = IntegerField()
-    # Type of configuration parameter for this node
-    member_config_entity = TextField()
-    # Name of configuration parameter
-    member_config_name = TextField()
-    # Config key
-    member_config_key = TextField()
-    # Config value
-    member_config_value = TextField()
-    # Config description
-    member_config_description = TextField()
+    server_name = TextField(help_text="Name of the LXD server node")
+    enabled = IntegerField(help_text="Whether clustering enabled (1) or not (0) on this node")
+    member_config_entity = TextField(help_text="Type of configuration parameter for this node")
+    member_config_name = TextField(help_text="Name of configuration parameter")
+    member_config_key = TextField(help_text="Config key")
+    member_config_value = TextField(help_text="Config value")
+    member_config_description = TextField(help_text="Config description")
 
     class Meta:
         table_name = "lxd_cluster"

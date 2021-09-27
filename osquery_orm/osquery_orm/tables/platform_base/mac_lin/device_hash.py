@@ -9,18 +9,12 @@ class DeviceHash(BaseModel):
     """
     Similar to the hash table, but use TSK and allow block address access.
     """
-    # Absolute file path to device node
-    device = TextField()  # {'required': True}
-    # A partition number
-    partition = TextField()  # {'required': True}
-    # Filesystem inode number
-    inode = BigIntegerField()  # {'required': True}
-    # MD5 hash of provided inode data
-    md5 = TextField()
-    # SHA1 hash of provided inode data
-    sha1 = TextField()
-    # SHA256 hash of provided inode data
-    sha256 = TextField()
+    device = TextField(help_text="Absolute file path to device node")  # {'required': True}
+    partition = TextField(help_text="A partition number")  # {'required': True}
+    inode = BigIntegerField(help_text="Filesystem inode number")  # {'required': True}
+    md5 = TextField(help_text="MD5 hash of provided inode data")
+    sha1 = TextField(help_text="SHA1 hash of provided inode data")
+    sha256 = TextField(help_text="SHA256 hash of provided inode data")
 
     class Meta:
         table_name = "device_hash"

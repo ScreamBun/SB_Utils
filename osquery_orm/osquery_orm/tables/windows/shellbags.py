@@ -11,22 +11,14 @@ class Shellbags(BaseModel):
     Examples:
         select * from shellbags;
     """
-    # User SID
-    sid = TextField()
-    # Shellbags source Registry file
-    source = TextField()
-    # Directory name.
-    path = TextField()
-    # Directory Modified time.
-    modified_time = BigIntegerField()
-    # Directory Created time.
-    created_time = BigIntegerField()
-    # Directory Accessed time.
-    accessed_time = BigIntegerField()
-    # Directory master file table entry.
-    mft_entry = BigIntegerField()
-    # Directory master file table sequence.
-    mft_sequence = IntegerField()
+    sid = TextField(help_text="User SID")
+    source = TextField(help_text="Shellbags source Registry file")
+    path = TextField(help_text="Directory name.")
+    modified_time = BigIntegerField(help_text="Directory Modified time.")
+    created_time = BigIntegerField(help_text="Directory Created time.")
+    accessed_time = BigIntegerField(help_text="Directory Accessed time.")
+    mft_entry = BigIntegerField(help_text="Directory master file table entry.")
+    mft_sequence = IntegerField(help_text="Directory master file table sequence.")
 
     class Meta:
         table_name = "shellbags"

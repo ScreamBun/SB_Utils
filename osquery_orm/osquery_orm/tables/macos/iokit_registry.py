@@ -9,20 +9,13 @@ class IokitRegistry(BaseModel):
     """
     The full IOKit registry without selecting a plane.
     """
-    # Default name of the node
-    name = TextField()
-    # Best matching device class (most-specific category)
-    class_ = TextField(column_name="class")
-    # IOKit internal registry ID
-    id = BigIntegerField()
-    # Parent registry ID
-    parent = BigIntegerField()
-    # 1 if the node is in a busy state else 0
-    busy_state = IntegerField()
-    # The node reference count
-    retain_count = IntegerField()
-    # Node nested depth
-    depth = IntegerField()
+    name = TextField(help_text="Default name of the node")
+    class_ = TextField(help_text="Best matching device class (most-specific category)", column_name="class")
+    id = BigIntegerField(help_text="IOKit internal registry ID")
+    parent = BigIntegerField(help_text="Parent registry ID")
+    busy_state = IntegerField(help_text="1 if the node is in a busy state else 0")
+    retain_count = IntegerField(help_text="The node reference count")
+    depth = IntegerField(help_text="Node nested depth")
 
     class Meta:
         table_name = "iokit_registry"

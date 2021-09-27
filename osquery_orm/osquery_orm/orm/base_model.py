@@ -12,5 +12,3 @@ class BaseModel(Model):
 
     class Meta:
         primary_key = False
-
-

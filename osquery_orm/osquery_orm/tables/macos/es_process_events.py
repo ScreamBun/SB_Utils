@@ -9,58 +9,32 @@ class EsProcessEvents(BaseModel):
     """
     Process execution events from EndpointSecurity.
     """
-    # Version of EndpointSecurity event
-    version = IntegerField()
-    # Per event sequence number
-    seq_num = BigIntegerField()
-    # Global sequence number
-    global_seq_num = BigIntegerField()
-    # Process (or thread) ID
-    pid = BigIntegerField()
-    # Path of executed file
-    path = TextField()
-    # Parent process ID
-    parent = BigIntegerField()
-    # Original parent process ID in case of reparenting
-    original_parent = BigIntegerField()
-    # Command line arguments (argv)
-    cmdline = TextField()
-    # Number of command line arguments
-    cmdline_count = BigIntegerField()
-    # Environment variables delimited by spaces
-    env = TextField()
-    # Number of environment variables
-    env_count = BigIntegerField()
-    # The process current working directory
-    cwd = TextField()
-    # User ID of the process
-    uid = BigIntegerField()
-    # Effective User ID of the process
-    euid = BigIntegerField()
-    # Group ID of the process
-    gid = BigIntegerField()
-    # Effective Group ID of the process
-    egid = BigIntegerField()
-    # Username
-    username = TextField()
-    # Signature identifier of the process
-    signing_id = TextField()
-    # Team identifier of thd process
-    team_id = TextField()
-    # Codesigning hash of the process
-    cdhash = TextField()
-    # Indicates if the binary is Apple signed binary (1) or not (0)
-    platform_binary = IntegerField()
-    # Exit code of a process in case of an exit event
-    exit_code = IntegerField()
-    # Process ID of a child process in case of a fork event
-    child_pid = BigIntegerField()
-    # Time of execution in UNIX time
-    time = BigIntegerField()
-    # Type of EndpointSecurity event
-    event_type = TextField()
-    # Event ID
-    eid = TextField()  # {'hidden': True}
+    version = IntegerField(help_text="Version of EndpointSecurity event")
+    seq_num = BigIntegerField(help_text="Per event sequence number")
+    global_seq_num = BigIntegerField(help_text="Global sequence number")
+    pid = BigIntegerField(help_text="Process (or thread) ID")
+    path = TextField(help_text="Path of executed file")
+    parent = BigIntegerField(help_text="Parent process ID")
+    original_parent = BigIntegerField(help_text="Original parent process ID in case of reparenting")
+    cmdline = TextField(help_text="Command line arguments (argv)")
+    cmdline_count = BigIntegerField(help_text="Number of command line arguments")
+    env = TextField(help_text="Environment variables delimited by spaces")
+    env_count = BigIntegerField(help_text="Number of environment variables")
+    cwd = TextField(help_text="The process current working directory")
+    uid = BigIntegerField(help_text="User ID of the process")
+    euid = BigIntegerField(help_text="Effective User ID of the process")
+    gid = BigIntegerField(help_text="Group ID of the process")
+    egid = BigIntegerField(help_text="Effective Group ID of the process")
+    username = TextField(help_text="Username")
+    signing_id = TextField(help_text="Signature identifier of the process")
+    team_id = TextField(help_text="Team identifier of thd process")
+    cdhash = TextField(help_text="Codesigning hash of the process")
+    platform_binary = IntegerField(help_text="Indicates if the binary is Apple signed binary (1) or not (0)")
+    exit_code = IntegerField(help_text="Exit code of a process in case of an exit event")
+    child_pid = BigIntegerField(help_text="Process ID of a child process in case of a fork event")
+    time = BigIntegerField(help_text="Time of execution in UNIX time")
+    event_type = TextField(help_text="Type of EndpointSecurity event")
+    eid = TextField(help_text="Event ID")  # {'hidden': True}
 
     class Meta:
         table_name = "es_process_events"

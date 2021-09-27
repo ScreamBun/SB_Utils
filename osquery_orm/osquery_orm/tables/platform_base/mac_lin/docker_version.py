@@ -11,24 +11,15 @@ class DockerVersion(BaseModel):
     Examples:
         select version from docker_version
     """
-    # Docker version
-    version = TextField()
-    # API version
-    api_version = TextField()
-    # Minimum API version supported
-    min_api_version = TextField()
-    # Docker build git commit
-    git_commit = TextField()
-    # Go version
-    go_version = TextField()
-    # Operating system
-    os = TextField()
-    # Hardware architecture
-    arch = TextField()
-    # Kernel version
-    kernel_version = TextField()
-    # Build time
-    build_time = TextField()
+    version = TextField(help_text="Docker version")
+    api_version = TextField(help_text="API version")
+    min_api_version = TextField(help_text="Minimum API version supported")
+    git_commit = TextField(help_text="Docker build git commit")
+    go_version = TextField(help_text="Go version")
+    os = TextField(help_text="Operating system")
+    arch = TextField(help_text="Hardware architecture")
+    kernel_version = TextField(help_text="Kernel version")
+    build_time = TextField(help_text="Build time")
 
     class Meta:
         table_name = "docker_version"

@@ -7,22 +7,15 @@ from peewee import IntegerField, TextField
 
 class XprotectEntries(BaseModel):
     """
-    Database of the machine's XProtect signatures.
+    Database of the machine\'s XProtect signatures.
     """
-    # Description of XProtected malware
-    name = TextField()
-    # Launch services content type
-    launch_type = TextField()
-    # XProtect identity (SHA1) of content
-    identity = TextField()
-    # Use this file name to match
-    filename = TextField()
-    # Use this file type to match
-    filetype = TextField()
-    # Match any of the identities/patterns for this XProtect name
-    optional = IntegerField()
-    # Uses a match pattern instead of identity
-    uses_pattern = IntegerField()
+    name = TextField(help_text="Description of XProtected malware")
+    launch_type = TextField(help_text="Launch services content type")
+    identity = TextField(help_text="XProtect identity (SHA1) of content")
+    filename = TextField(help_text="Use this file name to match")
+    filetype = TextField(help_text="Use this file type to match")
+    optional = IntegerField(help_text="Match any of the identities/patterns for this XProtect name")
+    uses_pattern = IntegerField(help_text="Uses a match pattern instead of identity")
 
     class Meta:
         table_name = "xprotect_entries"

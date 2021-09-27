@@ -9,28 +9,17 @@ class UserEvents(BaseModel):
     """
     Track user events from the audit framework.
     """
-    # User ID
-    uid = BigIntegerField()
-    # Audit User ID
-    auid = BigIntegerField()
-    # Process (or thread) ID
-    pid = BigIntegerField()
-    # Message from the event
-    message = TextField()
-    # The file description for the process socket
-    type = IntegerField()
-    # Supplied path from event
-    path = TextField()
-    # The Internet protocol address or family ID
-    address = TextField()
-    # The network protocol ID
-    terminal = TextField()
-    # Time of execution in UNIX time
-    time = BigIntegerField()
-    # Time of execution in system uptime
-    uptime = BigIntegerField()
-    # Event ID
-    eid = TextField()  # {'hidden': True}
+    uid = BigIntegerField(help_text="User ID")
+    auid = BigIntegerField(help_text="Audit User ID")
+    pid = BigIntegerField(help_text="Process (or thread) ID")
+    message = TextField(help_text="Message from the event")
+    type = IntegerField(help_text="The file description for the process socket")
+    path = TextField(help_text="Supplied path from event")
+    address = TextField(help_text="The Internet protocol address or family ID")
+    terminal = TextField(help_text="The network protocol ID")
+    time = BigIntegerField(help_text="Time of execution in UNIX time")
+    uptime = BigIntegerField(help_text="Time of execution in system uptime")
+    eid = TextField(help_text="Event ID")  # {'hidden': True}
 
     class Meta:
         table_name = "user_events"

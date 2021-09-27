@@ -9,14 +9,10 @@ class HomebrewPackages(BaseModel):
     """
     The installed homebrew package database.
     """
-    # Package name
-    name = TextField()
-    # Package install path
-    path = TextField()
-    # Current 'linked' version
-    version = TextField()
-    # Homebrew install prefix
-    prefix = TextField()  # {'hidden': True, 'additional': True}
+    name = TextField(help_text="Package name")
+    path = TextField(help_text="Package install path")
+    version = TextField(help_text="Current \'linked\' version")
+    prefix = TextField(help_text="Homebrew install prefix")  # {'hidden': True, 'additional': True}
 
     class Meta:
         table_name = "homebrew_packages"

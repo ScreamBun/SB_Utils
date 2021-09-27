@@ -9,16 +9,11 @@ class InterfaceIpv6(BaseModel):
     """
     IPv6 configuration and stats of network interfaces.
     """
-    # Interface name
-    interface = TextField()
-    # Current Hop Limit
-    hop_limit = IntegerField()
-    # Enable IP forwarding
-    forwarding_enabled = IntegerField()
-    # Accept ICMP redirect messages
-    redirect_accept = IntegerField()
-    # Accept ICMP Router Advertisement
-    rtadv_accept = IntegerField()
+    interface = TextField(help_text="Interface name")
+    hop_limit = IntegerField(help_text="Current Hop Limit")
+    forwarding_enabled = IntegerField(help_text="Enable IP forwarding")
+    redirect_accept = IntegerField(help_text="Accept ICMP redirect messages")
+    rtadv_accept = IntegerField(help_text="Accept ICMP Router Advertisement")
 
     class Meta:
         table_name = "interface_ipv6"

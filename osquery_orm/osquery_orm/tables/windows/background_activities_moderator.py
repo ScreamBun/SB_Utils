@@ -11,12 +11,9 @@ class BackgroundActivitiesModerator(BaseModel):
     Examples:
         select * from background_activities_moderator;
     """
-    # Application file path.
-    path = TextField()
-    # Most recent time application was executed.
-    last_execution_time = BigIntegerField()
-    # User SID.
-    sid = TextField()
+    path = TextField(help_text="Application file path.")
+    last_execution_time = BigIntegerField(help_text="Most recent time application was executed.")
+    sid = TextField(help_text="User SID.")
 
     class Meta:
         table_name = "background_activities_moderator"

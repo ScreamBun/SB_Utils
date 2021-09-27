@@ -11,16 +11,11 @@ class OfficeMru(BaseModel):
     Examples:
         select * from office_mru;
     """
-    # Associated Office application
-    application = TextField()
-    # Office application version number
-    version = TextField()
-    # File path
-    path = TextField()
-    # Most recent opened time file was opened
-    last_opened_time = BigIntegerField()
-    # User SID
-    sid = TextField()
+    application = TextField(help_text="Associated Office application")
+    version = TextField(help_text="Office application version number")
+    path = TextField(help_text="File path")
+    last_opened_time = BigIntegerField(help_text="Most recent opened time file was opened")
+    sid = TextField(help_text="User SID")
 
     class Meta:
         table_name = "office_mru"

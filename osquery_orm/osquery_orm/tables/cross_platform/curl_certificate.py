@@ -11,70 +11,38 @@ class CurlCertificate(BaseModel):
     Examples:
         select * from curl_certificate where hostname = 'osquery.io'select * from curl_certificate where hostname = 'osquery.io' and dump_certificate = 1
     """
-    # Hostname (domain[:port]) to CURL
-    hostname = TextField()  # {'required': True}
-    # Common name of company issued to
-    common_name = TextField()
-    # Organization issued to
-    organization = TextField()
-    # Organization unit issued to
-    organization_unit = TextField()
-    # Certificate serial number
-    serial_number = TextField()
-    # Issuer common name
-    issuer_common_name = TextField()
-    # Issuer organization
-    issuer_organization = TextField()
-    # Issuer organization unit
-    issuer_organization_unit = TextField()
-    # Period of validity start date
-    valid_from = TextField()
-    # Period of validity end date
-    valid_to = TextField()
-    # SHA-256 fingerprint
-    sha256_fingerprint = TextField()
-    # SHA1 fingerprint
-    sha1_fingerprint = TextField()
-    # Version Number
-    version = IntegerField()
-    # Signature Algorithm
-    signature_algorithm = TextField()
-    # Signature
-    signature = TextField()
-    # Subject Key Identifier
-    subject_key_identifier = TextField()
-    # Authority Key Identifier
-    authority_key_identifier = TextField()
-    # Usage of key in certificate
-    key_usage = TextField()
-    # Extended usage of key in certificate
-    extended_key_usage = TextField()
-    # Certificate Policies
-    policies = TextField()
-    # Subject Alternative Name
-    subject_alternative_names = TextField()
-    # Issuer Alternative Name
-    issuer_alternative_names = TextField()
-    # Authority Information Access
-    info_access = TextField()
-    # Subject Information Access
-    subject_info_access = TextField()
-    # Policy Mappings
-    policy_mappings = TextField()
-    # 1 if the certificate has expired, 0 otherwise
-    has_expired = IntegerField()
-    # Basic Constraints
-    basic_constraint = TextField()
-    # Name Constraints
-    name_constraints = TextField()
-    # Policy Constraints
-    policy_constraints = TextField()
-    # Set this value to '1' to dump certificate
-    dump_certificate = IntegerField()  # {'additional': True, 'hidden': True}
-    # Set this value to the timeout in seconds to complete the TLS handshake (default 4s, use 0 for no timeout)
-    timeout = IntegerField()  # {'additional': True, 'hidden': True}
-    # Certificate PEM format
-    pem = TextField()
+    hostname = TextField(help_text="Hostname (domain[:port]) to CURL")  # {'required': True}
+    common_name = TextField(help_text="Common name of company issued to")
+    organization = TextField(help_text="Organization issued to")
+    organization_unit = TextField(help_text="Organization unit issued to")
+    serial_number = TextField(help_text="Certificate serial number")
+    issuer_common_name = TextField(help_text="Issuer common name")
+    issuer_organization = TextField(help_text="Issuer organization")
+    issuer_organization_unit = TextField(help_text="Issuer organization unit")
+    valid_from = TextField(help_text="Period of validity start date")
+    valid_to = TextField(help_text="Period of validity end date")
+    sha256_fingerprint = TextField(help_text="SHA-256 fingerprint")
+    sha1_fingerprint = TextField(help_text="SHA1 fingerprint")
+    version = IntegerField(help_text="Version Number")
+    signature_algorithm = TextField(help_text="Signature Algorithm")
+    signature = TextField(help_text="Signature")
+    subject_key_identifier = TextField(help_text="Subject Key Identifier")
+    authority_key_identifier = TextField(help_text="Authority Key Identifier")
+    key_usage = TextField(help_text="Usage of key in certificate")
+    extended_key_usage = TextField(help_text="Extended usage of key in certificate")
+    policies = TextField(help_text="Certificate Policies")
+    subject_alternative_names = TextField(help_text="Subject Alternative Name")
+    issuer_alternative_names = TextField(help_text="Issuer Alternative Name")
+    info_access = TextField(help_text="Authority Information Access")
+    subject_info_access = TextField(help_text="Subject Information Access")
+    policy_mappings = TextField(help_text="Policy Mappings")
+    has_expired = IntegerField(help_text="1 if the certificate has expired, 0 otherwise")
+    basic_constraint = TextField(help_text="Basic Constraints")
+    name_constraints = TextField(help_text="Name Constraints")
+    policy_constraints = TextField(help_text="Policy Constraints")
+    dump_certificate = IntegerField(help_text="Set this value to \'1\' to dump certificate")  # {'additional': True, 'hidden': True}
+    timeout = IntegerField(help_text="Set this value to the timeout in seconds to complete the TLS handshake (default 4s, use 0 for no timeout)")  # {'additional': True, 'hidden': True}
+    pem = TextField(help_text="Certificate PEM format")
 
     class Meta:
         table_name = "curl_certificate"

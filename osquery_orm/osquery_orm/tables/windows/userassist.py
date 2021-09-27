@@ -11,14 +11,10 @@ class Userassist(BaseModel):
     Examples:
         select * from userassist;
     """
-    # Application file path.
-    path = TextField()
-    # Most recent time application was executed.
-    last_execution_time = BigIntegerField()
-    # Number of times the application has been executed.
-    count = IntegerField()
-    # User SID.
-    sid = TextField()
+    path = TextField(help_text="Application file path.")
+    last_execution_time = BigIntegerField(help_text="Most recent time application was executed.")
+    count = IntegerField(help_text="Number of times the application has been executed.")
+    sid = TextField(help_text="User SID.")
 
     class Meta:
         table_name = "userassist"

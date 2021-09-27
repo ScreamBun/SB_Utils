@@ -11,14 +11,10 @@ class Plist(BaseModel):
     Examples:
         select * from plist where path = '/Library/Preferences/loginwindow.plist'
     """
-    # Preference top-level key
-    key = TextField()
-    # Intermediate key path, includes lists/dicts
-    subkey = TextField()
-    # String value of most CF types
-    value = TextField()
-    # (required) read preferences from a plist
-    path = TextField()  # {'required': True}
+    key = TextField(help_text="Preference top-level key")
+    subkey = TextField(help_text="Intermediate key path, includes lists/dicts")
+    value = TextField(help_text="String value of most CF types")
+    path = TextField(help_text="(required) read preferences from a plist")  # {'required': True}
 
     class Meta:
         table_name = "plist"

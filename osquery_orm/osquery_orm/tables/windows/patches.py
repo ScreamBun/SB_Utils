@@ -11,22 +11,14 @@ class Patches(BaseModel):
     Examples:
         select * from patches
     """
-    # The name of the host the patch is installed on.
-    csname = TextField()
-    # The KB ID of the patch.
-    hotfix_id = TextField()
-    # Short description of the patch.
-    caption = TextField()
-    # Fuller description of the patch.
-    description = TextField()
-    # Additional comments about the patch.
-    fix_comments = TextField()
-    # The system context in which the patch as installed.
-    installed_by = TextField()
-    # Indicates when the patch was installed. Lack of a value does not indicate that the patch was not installed.
-    install_date = TextField()
-    # The date when the patch was installed.
-    installed_on = TextField()
+    csname = TextField(help_text="The name of the host the patch is installed on.")
+    hotfix_id = TextField(help_text="The KB ID of the patch.")
+    caption = TextField(help_text="Short description of the patch.")
+    description = TextField(help_text="Fuller description of the patch.")
+    fix_comments = TextField(help_text="Additional comments about the patch.")
+    installed_by = TextField(help_text="The system context in which the patch as installed.")
+    install_date = TextField(help_text="Indicates when the patch was installed. Lack of a value does not indicate that the patch was not installed.")
+    installed_on = TextField(help_text="The date when the patch was installed.")
 
     class Meta:
         table_name = "patches"

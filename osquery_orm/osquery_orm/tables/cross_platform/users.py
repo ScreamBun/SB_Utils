@@ -1,7 +1,6 @@
 """
 OSQuery users ORM
 """
-import platform as pfm
 from osquery_orm.orm import BaseModel
 from peewee import IntegerField, BigIntegerField, TextField
 
@@ -14,24 +13,15 @@ class Users(BaseModel):
         select * from users where username = 'root'
         select count(*) from users u, user_groups ug where u.uid = ug.uid
     """
-    # User ID
-    uid = BigIntegerField()  # {'index': True}
-    # Group ID (unsigned)
-    gid = BigIntegerField()
-    # User ID as int64 signed (Apple)
-    uid_signed = BigIntegerField()
-    # Default group ID as int64 signed (Apple)
-    gid_signed = BigIntegerField()
-    # Username
-    username = TextField()  # {'additional': True}
-    # Optional user description
-    description = TextField()
-    # User's home directory
-    directory = TextField()
-    # User's configured default shell
-    shell = TextField()
-    # User's UUID (Apple) or SID (Windows)
-    uuid = TextField()  # {'index': True}
+    uid = BigIntegerField(help_text="User ID")  # {'index': True}
+    gid = BigIntegerField(help_text="Group ID (unsigned)")
+    uid_signed = BigIntegerField(help_text="User ID as int64 signed (Apple)")
+    gid_signed = BigIntegerField(help_text="Default group ID as int64 signed (Apple)")
+    username = TextField(help_text="Username")  # {'additional': True}
+    description = TextField(help_text="Optional user description")
+    directory = TextField(help_text="User\'s home directory")
+    shell = TextField(help_text="User\'s configured default shell")
+    uuid = TextField(help_text="User\'s UUID (Apple) or SID (Windows)")  # {'index': True}
 
     class Meta:
         table_name = "users"
@@ -39,11 +29,9 @@ class Users(BaseModel):
 
 # OS specific properties for Windows
 class Windows_Users(Users):
-    # Whether the account is roaming (domain), local, or a system profile
-    type = TextField()
+    type = TextField(help_text="Whether the account is roaming (domain), local, or a system profile")
 
 
 # OS specific properties for MacOS
 class MacOS_Users(Users):
-    # IsHidden attribute set in OpenDirectory
-    is_hidden = IntegerField()
+    is_hidden = IntegerField(help_text="IsHidden attribute set in OpenDirectory")

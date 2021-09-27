@@ -17,18 +17,12 @@ class Registry(BaseModel):
         select name, type, data from registry where path like 'HKEY_USERS\%\Software\Microsoft\Windows\CurrentVersion\Explorer\Wallpapers\%';  -- list all of the desktop wallpapers
         select name, type, data from registry where key like 'HKEY_USERS\%\Software\Microsoft\Windows\CurrentVersion\Explorer\Wallpapers'; -- same, but filtering by key instead of path
     """
-    # Name of the key to search for
-    key = TextField()  # {'additional': True}
-    # Full path to the value
-    path = TextField()  # {'index': True}
-    # Name of the registry value entry
-    name = TextField()
-    # Type of the registry value, or 'subkey' if item is a subkey
-    type = TextField()
-    # Data content of registry value
-    data = TextField()
-    # timestamp of the most recent registry write
-    mtime = BigIntegerField()
+    key = TextField(help_text="Name of the key to search for")  # {'additional': True}
+    path = TextField(help_text="Full path to the value")  # {'index': True}
+    name = TextField(help_text="Name of the registry value entry")
+    type = TextField(help_text="Type of the registry value, or \'subkey\' if item is a subkey")
+    data = TextField(help_text="Data content of registry value")
+    mtime = BigIntegerField(help_text="timestamp of the most recent registry write")
 
     class Meta:
         table_name = "registry"

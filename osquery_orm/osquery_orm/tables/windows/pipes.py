@@ -11,16 +11,11 @@ class Pipes(BaseModel):
     Examples:
         select * from pipes
     """
-    # Process ID of the process to which the pipe belongs
-    pid = BigIntegerField()  # {'index': True}
-    # Name of the pipe
-    name = TextField()
-    # Number of instances of the named pipe
-    instances = IntegerField()
-    # The maximum number of instances creatable for this pipe
-    max_instances = IntegerField()
-    # The flags indicating whether this pipe connection is a server or client end, and if the pipe for sending messages or bytes
-    flags = TextField()
+    pid = BigIntegerField(help_text="Process ID of the process to which the pipe belongs")  # {'index': True}
+    name = TextField(help_text="Name of the pipe")
+    instances = IntegerField(help_text="Number of instances of the named pipe")
+    max_instances = IntegerField(help_text="The maximum number of instances creatable for this pipe")
+    flags = TextField(help_text="The flags indicating whether this pipe connection is a server or client end, and if the pipe for sending messages or bytes")
 
     class Meta:
         table_name = "pipes"

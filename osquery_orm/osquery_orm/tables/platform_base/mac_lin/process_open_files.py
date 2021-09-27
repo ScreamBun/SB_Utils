@@ -11,12 +11,9 @@ class ProcessOpenFiles(BaseModel):
     Examples:
         select * from process_open_files where pid = 1
     """
-    # Process (or thread) ID
-    pid = BigIntegerField()  # {'index': True}
-    # Process-specific file descriptor number
-    fd = BigIntegerField()
-    # Filesystem path of descriptor
-    path = TextField()
+    pid = BigIntegerField(help_text="Process (or thread) ID")  # {'index': True}
+    fd = BigIntegerField(help_text="Process-specific file descriptor number")
+    path = TextField(help_text="Filesystem path of descriptor")
 
     class Meta:
         table_name = "process_open_files"

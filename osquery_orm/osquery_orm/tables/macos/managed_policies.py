@@ -9,18 +9,12 @@ class ManagedPolicies(BaseModel):
     """
     The managed configuration policies from AD, MDM, MCX, etc.
     """
-    # System or manager-chosen domain key
-    domain = TextField()
-    # Optional UUID assigned to policy set
-    uuid = TextField()
-    # Policy key name
-    name = TextField()
-    # Policy value
-    value = TextField()
-    # Policy applies only this user
-    username = TextField()
-    # 1 if policy was loaded manually, otherwise 0
-    manual = IntegerField()
+    domain = TextField(help_text="System or manager-chosen domain key")
+    uuid = TextField(help_text="Optional UUID assigned to policy set")
+    name = TextField(help_text="Policy key name")
+    value = TextField(help_text="Policy value")
+    username = TextField(help_text="Policy applies only this user")
+    manual = IntegerField(help_text="1 if policy was loaded manually, otherwise 0")
 
     class Meta:
         table_name = "managed_policies"

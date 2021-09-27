@@ -1,7 +1,6 @@
 """
 OSQuery time ORM
 """
-import platform as pfm
 from osquery_orm.orm import BaseModel
 from peewee import IntegerField, BigIntegerField, TextField
 
@@ -10,34 +9,20 @@ class Time(BaseModel):
     """
     Track current date and time in the system.
     """
-    # Current weekday in the system
-    weekday = TextField()
-    # Current year in the system
-    year = IntegerField()
-    # Current month in the system
-    month = IntegerField()
-    # Current day in the system
-    day = IntegerField()
-    # Current hour in the system
-    hour = IntegerField()
-    # Current minutes in the system
-    minutes = IntegerField()
-    # Current seconds in the system
-    seconds = IntegerField()
-    # Current timezone in the system
-    timezone = TextField()
-    # Current local UNIX time in the system
-    local_time = IntegerField()  # {'aliases': ['localtime']}
-    # Current local timezone in the system
-    local_timezone = TextField()
-    # Current UNIX time in the system, converted to UTC if --utc enabled
-    unix_time = IntegerField()
-    # Current timestamp (log format) in the system
-    timestamp = TextField()
-    # Current date and time (ISO format) in the system
-    datetime = TextField()  # {'aliases': ['date_time']}
-    # Current time (ISO format) in the system
-    iso_8601 = TextField()
+    weekday = TextField(help_text="Current weekday in the system")
+    year = IntegerField(help_text="Current year in the system")
+    month = IntegerField(help_text="Current month in the system")
+    day = IntegerField(help_text="Current day in the system")
+    hour = IntegerField(help_text="Current hour in the system")
+    minutes = IntegerField(help_text="Current minutes in the system")
+    seconds = IntegerField(help_text="Current seconds in the system")
+    timezone = TextField(help_text="Current timezone in the system")
+    local_time = IntegerField(help_text="Current local UNIX time in the system")  # {'aliases': ['localtime']}
+    local_timezone = TextField(help_text="Current local timezone in the system")
+    unix_time = IntegerField(help_text="Current UNIX time in the system, converted to UTC if --utc enabled")
+    timestamp = TextField(help_text="Current timestamp (log format) in the system")
+    datetime = TextField(help_text="Current date and time (ISO format) in the system")  # {'aliases': ['date_time']}
+    iso_8601 = TextField(help_text="Current time (ISO format) in the system")
 
     class Meta:
         table_name = "time"
@@ -45,5 +30,4 @@ class Time(BaseModel):
 
 # OS specific properties for Windows
 class Windows_Time(Time):
-    # Timestamp value in 100 nanosecond units.
-    win_timestamp = BigIntegerField()
+    win_timestamp = BigIntegerField(help_text="Timestamp value in 100 nanosecond units.")

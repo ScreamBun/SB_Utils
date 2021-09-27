@@ -9,12 +9,9 @@ class DefaultEnvironment(BaseModel):
     """
     Default environment variables and values.
     """
-    # Name of the environment variable
-    variable = TextField()
-    # Value of the environment variable
-    value = TextField()
-    # 1 if the variable needs expanding, 0 otherwise
-    expand = IntegerField()
+    variable = TextField(help_text="Name of the environment variable")
+    value = TextField(help_text="Value of the environment variable")
+    expand = IntegerField(help_text="1 if the variable needs expanding, 0 otherwise")
 
     class Meta:
         table_name = "default_environment"

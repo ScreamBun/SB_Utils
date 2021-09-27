@@ -11,16 +11,11 @@ class WmiEventFilters(BaseModel):
     Examples:
         select * from wmi_event_filters
     """
-    # Unique identifier of an event filter.
-    name = TextField()
-    # Windows Management Instrumentation Query Language (WQL) event query that specifies the set of events for consumer notification, and the specific conditions for notification.
-    query = TextField()
-    # Query language that the query is written in.
-    query_language = TextField()
-    # The name of the class.
-    class_ = TextField(column_name="class")
-    # Relative path to the class or instance.
-    relative_path = TextField()
+    name = TextField(help_text="Unique identifier of an event filter.")
+    query = TextField(help_text="Windows Management Instrumentation Query Language (WQL) event query that specifies the set of events for consumer notification, and the specific conditions for notification.")
+    query_language = TextField(help_text="Query language that the query is written in.")
+    class_ = TextField(help_text="The name of the class.", column_name="class")
+    relative_path = TextField(help_text="Relative path to the class or instance.")
 
     class Meta:
         table_name = "wmi_event_filters"

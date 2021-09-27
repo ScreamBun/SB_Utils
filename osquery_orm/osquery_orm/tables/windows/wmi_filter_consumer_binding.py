@@ -11,14 +11,10 @@ class WmiFilterConsumerBinding(BaseModel):
     Examples:
         select * from wmi_filter_consumer_binding
     """
-    # Reference to an instance of __EventConsumer that represents the object path to a logical consumer, the recipient of an event.
-    consumer = TextField()
-    # Reference to an instance of __EventFilter that represents the object path to an event filter which is a query that specifies the type of event to be received.
-    filter = TextField()
-    # The name of the class.
-    class_ = TextField(column_name="class")
-    # Relative path to the class or instance.
-    relative_path = TextField()
+    consumer = TextField(help_text="Reference to an instance of __EventConsumer that represents the object path to a logical consumer, the recipient of an event.")
+    filter = TextField(help_text="Reference to an instance of __EventFilter that represents the object path to an event filter which is a query that specifies the type of event to be received.")
+    class_ = TextField(help_text="The name of the class.", column_name="class")
+    relative_path = TextField(help_text="Relative path to the class or instance.")
 
     class Meta:
         table_name = "wmi_filter_consumer_binding"

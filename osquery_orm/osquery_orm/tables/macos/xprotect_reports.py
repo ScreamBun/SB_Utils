@@ -9,12 +9,9 @@ class XprotectReports(BaseModel):
     """
     Database of XProtect matches (if user generated/sent an XProtect report).
     """
-    # Description of XProtected malware
-    name = TextField()
-    # Action taken by user after prompted
-    user_action = TextField()
-    # Quarantine alert time
-    time = TextField()
+    name = TextField(help_text="Description of XProtected malware")
+    user_action = TextField(help_text="Action taken by user after prompted")
+    time = TextField(help_text="Quarantine alert time")
 
     class Meta:
         table_name = "xprotect_reports"

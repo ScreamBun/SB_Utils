@@ -6,25 +6,14 @@ from peewee import IntegerField, BigIntegerField, TextField
 
 
 class SyslogEvents(BaseModel):
-    """
-    
-    """
-    # Current unix epoch time
-    time = BigIntegerField()
-    # Time known to syslog
-    datetime = TextField()
-    # Hostname configured for syslog
-    host = TextField()
-    # Syslog severity
-    severity = IntegerField()
-    # Syslog facility
-    facility = TextField()
-    # The syslog tag
-    tag = TextField()
-    # The syslog message
-    message = TextField()
-    # Event ID
-    eid = TextField()  # {'hidden': True}
+    time = BigIntegerField(help_text="Current unix epoch time")
+    datetime = TextField(help_text="Time known to syslog")
+    host = TextField(help_text="Hostname configured for syslog")
+    severity = IntegerField(help_text="Syslog severity")
+    facility = TextField(help_text="Syslog facility")
+    tag = TextField(help_text="The syslog tag")
+    message = TextField(help_text="The syslog message")
+    eid = TextField(help_text="Event ID")  # {'hidden': True}
 
     class Meta:
         table_name = "syslog_events"

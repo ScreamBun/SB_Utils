@@ -13,24 +13,15 @@ class DockerContainerMounts(BaseModel):
         select * from docker_container_mounts where id = '1234567890abcdef'
         select * from docker_container_mounts where id = '11b2399e1426d906e62a0c357650e363426d6c56dbe2f35cbaa9b452250e3355'
     """
-    # Container ID
-    id = TextField()  # {'index': True}
-    # Type of mount (bind, volume)
-    type = TextField()
-    # Optional mount name
-    name = TextField()  # {'index': True}
-    # Source path on host
-    source = TextField()
-    # Destination path inside container
-    destination = TextField()
-    # Driver providing the mount
-    driver = TextField()
-    # Mount options (rw, ro)
-    mode = TextField()
-    # 1 if read/write. 0 otherwise
-    rw = IntegerField()
-    # Mount propagation
-    propagation = TextField()
+    id = TextField(help_text="Container ID")  # {'index': True}
+    type = TextField(help_text="Type of mount (bind, volume)")
+    name = TextField(help_text="Optional mount name")  # {'index': True}
+    source = TextField(help_text="Source path on host")
+    destination = TextField(help_text="Destination path inside container")
+    driver = TextField(help_text="Driver providing the mount")
+    mode = TextField(help_text="Mount options (rw, ro)")
+    rw = IntegerField(help_text="1 if read/write. 0 otherwise")
+    propagation = TextField(help_text="Mount propagation")
 
     class Meta:
         table_name = "docker_container_mounts"

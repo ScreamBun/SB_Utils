@@ -9,16 +9,11 @@ class Uptime(BaseModel):
     """
     Track time passed since last boot.
     """
-    # Days of uptime
-    days = IntegerField()
-    # Hours of uptime
-    hours = IntegerField()
-    # Minutes of uptime
-    minutes = IntegerField()
-    # Seconds of uptime
-    seconds = IntegerField()
-    # Total uptime seconds
-    total_seconds = BigIntegerField()
+    days = IntegerField(help_text="Days of uptime")
+    hours = IntegerField(help_text="Hours of uptime")
+    minutes = IntegerField(help_text="Minutes of uptime")
+    seconds = IntegerField(help_text="Seconds of uptime")
+    total_seconds = BigIntegerField(help_text="Total uptime seconds")
 
     class Meta:
         table_name = "uptime"

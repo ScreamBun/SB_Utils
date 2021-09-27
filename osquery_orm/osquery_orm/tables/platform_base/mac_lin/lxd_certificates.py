@@ -11,14 +11,10 @@ class LxdCertificates(BaseModel):
     Examples:
         select * from lxd_certificates
     """
-    # Name of the certificate
-    name = TextField()
-    # Type of the certificate
-    type = TextField()
-    # SHA256 hash of the certificate
-    fingerprint = TextField()
-    # Certificate content
-    certificate = TextField()
+    name = TextField(help_text="Name of the certificate")
+    type = TextField(help_text="Type of the certificate")
+    fingerprint = TextField(help_text="SHA256 hash of the certificate")
+    certificate = TextField(help_text="Certificate content")
 
     class Meta:
         table_name = "lxd_certificates"

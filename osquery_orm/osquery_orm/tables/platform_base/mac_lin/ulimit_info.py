@@ -11,12 +11,9 @@ class UlimitInfo(BaseModel):
     Examples:
         select * from ulimit_info
     """
-    # System resource to be limited
-    type = TextField()
-    # Current limit value
-    soft_limit = TextField()
-    # Maximum limit value
-    hard_limit = TextField()
+    type = TextField(help_text="System resource to be limited")
+    soft_limit = TextField(help_text="Current limit value")
+    hard_limit = TextField(help_text="Maximum limit value")
 
     class Meta:
         table_name = "ulimit_info"

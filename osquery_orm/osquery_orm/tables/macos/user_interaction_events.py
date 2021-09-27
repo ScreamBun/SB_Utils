@@ -7,10 +7,9 @@ from peewee import BigIntegerField
 
 class UserInteractionEvents(BaseModel):
     """
-    Track user interaction events from macOS' event tapping framework.
+    Track user interaction events from macOS\' event tapping framework.
     """
-    # Time
-    time = BigIntegerField()
+    time = BigIntegerField(help_text="Time")
 
     class Meta:
         table_name = "user_interaction_events"

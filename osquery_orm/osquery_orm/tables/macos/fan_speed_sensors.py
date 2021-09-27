@@ -9,18 +9,12 @@ class FanSpeedSensors(BaseModel):
     """
     Fan speeds.
     """
-    # Fan number
-    fan = TextField()
-    # Fan name
-    name = TextField()
-    # Actual speed
-    actual = IntegerField()
-    # Minimum speed
-    min = IntegerField()
-    # Maximum speed
-    max = IntegerField()
-    # Target speed
-    target = IntegerField()
+    fan = TextField(help_text="Fan number")
+    name = TextField(help_text="Fan name")
+    actual = IntegerField(help_text="Actual speed")
+    min = IntegerField(help_text="Minimum speed")
+    max = IntegerField(help_text="Maximum speed")
+    target = IntegerField(help_text="Target speed")
 
     class Meta:
         table_name = "fan_speed_sensors"

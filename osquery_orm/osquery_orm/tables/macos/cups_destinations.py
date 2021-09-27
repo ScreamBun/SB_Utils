@@ -9,12 +9,9 @@ class CupsDestinations(BaseModel):
     """
     Returns all configured printers.
     """
-    # Name of the printer
-    name = TextField()
-    # Option name
-    option_name = TextField()
-    # Option value
-    option_value = TextField()
+    name = TextField(help_text="Name of the printer")
+    option_name = TextField(help_text="Option name")
+    option_value = TextField(help_text="Option value")
 
     class Meta:
         table_name = "cups_destinations"

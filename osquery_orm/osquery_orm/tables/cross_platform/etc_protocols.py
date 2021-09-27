@@ -9,14 +9,10 @@ class EtcProtocols(BaseModel):
     """
     Line-parsed /etc/protocols.
     """
-    # Protocol name
-    name = TextField()
-    # Protocol number
-    number = IntegerField()
-    # Protocol alias
-    alias = TextField()
-    # Comment with protocol description
-    comment = TextField()
+    name = TextField(help_text="Protocol name")
+    number = IntegerField(help_text="Protocol number")
+    alias = TextField(help_text="Protocol alias")
+    comment = TextField(help_text="Comment with protocol description")
 
     class Meta:
         table_name = "etc_protocols"

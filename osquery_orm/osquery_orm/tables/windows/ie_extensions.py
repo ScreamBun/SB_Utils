@@ -9,14 +9,10 @@ class IeExtensions(BaseModel):
     """
     Internet Explorer browser extensions.
     """
-    # Extension display name
-    name = TextField()
-    # Extension identifier
-    registry_path = TextField()
-    # Version of the executable
-    version = TextField()
-    # Path to executable
-    path = TextField()
+    name = TextField(help_text="Extension display name")
+    registry_path = TextField(help_text="Extension identifier")
+    version = TextField(help_text="Version of the executable")
+    path = TextField(help_text="Path to executable")
 
     class Meta:
         table_name = "ie_extensions"

@@ -11,22 +11,14 @@ class ElfSegments(BaseModel):
     Examples:
         select * from elf_segments where path = '/usr/bin/grep'
     """
-    # Segment type/name
-    name = TextField()
-    # Segment offset in file
-    offset = IntegerField()
-    # Segment virtual address in memory
-    vaddr = IntegerField()
-    # Size of segment in file
-    psize = IntegerField()
-    # Segment offset in memory
-    msize = IntegerField()
-    # Segment attributes
-    flags = TextField()
-    # Segment alignment
-    align = IntegerField()
-    # Path to ELF file
-    path = TextField()  # {'required': True, 'index': True}
+    name = TextField(help_text="Segment type/name")
+    offset = IntegerField(help_text="Segment offset in file")
+    vaddr = IntegerField(help_text="Segment virtual address in memory")
+    psize = IntegerField(help_text="Size of segment in file")
+    msize = IntegerField(help_text="Segment offset in memory")
+    flags = TextField(help_text="Segment attributes")
+    align = IntegerField(help_text="Segment alignment")
+    path = TextField(help_text="Path to ELF file")  # {'required': True, 'index': True}
 
     class Meta:
         table_name = "elf_segments"

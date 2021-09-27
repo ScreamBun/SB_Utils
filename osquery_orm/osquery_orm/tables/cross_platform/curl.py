@@ -11,20 +11,13 @@ class Curl(BaseModel):
     Examples:
         select url, round_trip_time, response_code from curl where url = 'https://github.com/osquery/osquery'
     """
-    # The url for the request
-    url = TextField()  # {'required': True, 'index': True}
-    # The HTTP method for the request
-    method = TextField()
-    # The user-agent string to use for the request
-    user_agent = TextField()  # {'additional': True}
-    # The HTTP status code for the response
-    response_code = IntegerField()
-    # Time taken to complete the request
-    round_trip_time = BigIntegerField()
-    # Number of bytes in the response
-    bytes = BigIntegerField()
-    # The HTTP response body
-    result = TextField()
+    url = TextField(help_text="The url for the request")  # {'required': True, 'index': True}
+    method = TextField(help_text="The HTTP method for the request")
+    user_agent = TextField(help_text="The user-agent string to use for the request")  # {'additional': True}
+    response_code = IntegerField(help_text="The HTTP status code for the response")
+    round_trip_time = BigIntegerField(help_text="Time taken to complete the request")
+    bytes = BigIntegerField(help_text="Number of bytes in the response")
+    result = TextField(help_text="The HTTP response body")
 
     class Meta:
         table_name = "curl"

@@ -9,16 +9,11 @@ class AppSchemes(BaseModel):
     """
     OS X application schemes and handlers (e.g., http, file, mailto).
     """
-    # Name of the scheme/protocol
-    scheme = TextField()
-    # Application label for the handler
-    handler = TextField()
-    # 1 if this handler is the OS default, else 0
-    enabled = IntegerField()
-    # 1 if this handler does NOT exist on OS X by default, else 0
-    external = IntegerField()
-    # 1 if this handler is protected (reserved) by OS X, else 0
-    protected = IntegerField()
+    scheme = TextField(help_text="Name of the scheme/protocol")
+    handler = TextField(help_text="Application label for the handler")
+    enabled = IntegerField(help_text="1 if this handler is the OS default, else 0")
+    external = IntegerField(help_text="1 if this handler does NOT exist on OS X by default, else 0")
+    protected = IntegerField(help_text="1 if this handler is protected (reserved) by OS X, else 0")
 
     class Meta:
         table_name = "app_schemes"

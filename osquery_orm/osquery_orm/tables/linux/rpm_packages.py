@@ -1,7 +1,6 @@
 """
 OSQuery rpm_packages ORM
 """
-import platform as pfm
 from osquery_orm.orm import BaseModel
 from peewee import IntegerField, BigIntegerField, TextField
 
@@ -10,28 +9,17 @@ class RpmPackages(BaseModel):
     """
     RPM packages that are currently installed on the host system.
     """
-    # RPM package name
-    name = TextField()  # {'index': True}
-    # Package version
-    version = TextField()  # {'index': True}
-    # Package release
-    release = TextField()  # {'index': True}
-    # Source RPM package name (optional)
-    source = TextField()
-    # Package size in bytes
-    size = BigIntegerField()
-    # SHA1 hash of the package contents
-    sha1 = TextField()
-    # Architecture(s) supported
-    arch = TextField()  # {'index': True}
-    # Package epoch value
-    epoch = IntegerField()  # {'index': True}
-    # When the package was installed
-    install_time = IntegerField()
-    # Package vendor
-    vendor = TextField()
-    # Package group
-    package_group = TextField()
+    name = TextField(help_text="RPM package name")  # {'index': True}
+    version = TextField(help_text="Package version")  # {'index': True}
+    release = TextField(help_text="Package release")  # {'index': True}
+    source = TextField(help_text="Source RPM package name (optional)")
+    size = BigIntegerField(help_text="Package size in bytes")
+    sha1 = TextField(help_text="SHA1 hash of the package contents")
+    arch = TextField(help_text="Architecture(s) supported")  # {'index': True}
+    epoch = IntegerField(help_text="Package epoch value")  # {'index': True}
+    install_time = IntegerField(help_text="When the package was installed")
+    vendor = TextField(help_text="Package vendor")
+    package_group = TextField(help_text="Package group")
 
     class Meta:
         table_name = "rpm_packages"
@@ -39,7 +27,5 @@ class RpmPackages(BaseModel):
 
 # OS specific properties for Linux
 class Linux_RpmPackages(RpmPackages):
-    # Pids that contain a namespace
-    pid_with_namespace = IntegerField()  # {'additional': True, 'hidden': True}
-    # Mount namespace id
-    mount_namespace_id = TextField()  # {'hidden': True}
+    pid_with_namespace = IntegerField(help_text="Pids that contain a namespace")  # {'additional': True, 'hidden': True}
+    mount_namespace_id = TextField(help_text="Mount namespace id")  # {'hidden': True}

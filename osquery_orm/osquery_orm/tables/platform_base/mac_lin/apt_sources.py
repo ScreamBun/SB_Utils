@@ -9,22 +9,14 @@ class AptSources(BaseModel):
     """
     Current list of APT repositories or software channels.
     """
-    # Repository name
-    name = TextField()
-    # Source file
-    source = TextField()
-    # Repository base URI
-    base_uri = TextField()
-    # Release name
-    release = TextField()
-    # Repository source version
-    version = TextField()
-    # Repository maintainer
-    maintainer = TextField()
-    # Repository components
-    components = TextField()
-    # Repository architectures
-    architectures = TextField()
+    name = TextField(help_text="Repository name")
+    source = TextField(help_text="Source file")
+    base_uri = TextField(help_text="Repository base URI")
+    release = TextField(help_text="Release name")
+    version = TextField(help_text="Repository source version")
+    maintainer = TextField(help_text="Repository maintainer")
+    components = TextField(help_text="Repository components")
+    architectures = TextField(help_text="Repository architectures")
 
     class Meta:
         table_name = "apt_sources"

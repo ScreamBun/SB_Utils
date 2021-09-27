@@ -11,22 +11,14 @@ class Ntdomains(BaseModel):
     Examples:
         select * from ntdomains
     """
-    # The label by which the object is known.
-    name = TextField()
-    # The name of the site where the domain controller is configured.
-    client_site_name = TextField()
-    # The name of the site where the domain controller is located.
-    dc_site_name = TextField()
-    # The name of the root of the DNS tree.
-    dns_forest_name = TextField()
-    # The IP Address of the discovered domain controller..
-    domain_controller_address = TextField()
-    # The name of the discovered domain controller.
-    domain_controller_name = TextField()
-    # The name of the domain.
-    domain_name = TextField()
-    # The current status of the domain object.
-    status = TextField()
+    name = TextField(help_text="The label by which the object is known.")
+    client_site_name = TextField(help_text="The name of the site where the domain controller is configured.")
+    dc_site_name = TextField(help_text="The name of the site where the domain controller is located.")
+    dns_forest_name = TextField(help_text="The name of the root of the DNS tree.")
+    domain_controller_address = TextField(help_text="The IP Address of the discovered domain controller..")
+    domain_controller_name = TextField(help_text="The name of the discovered domain controller.")
+    domain_name = TextField(help_text="The name of the domain.")
+    status = TextField(help_text="The current status of the domain object.")
 
     class Meta:
         table_name = "ntdomains"

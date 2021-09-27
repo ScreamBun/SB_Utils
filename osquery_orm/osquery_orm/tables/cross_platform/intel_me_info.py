@@ -9,8 +9,7 @@ class IntelMeInfo(BaseModel):
     """
     Intel ME/CSE Info.
     """
-    # Intel ME version
-    version = TextField()
+    version = TextField(help_text="Intel ME version")
 
     class Meta:
         table_name = "intel_me_info"

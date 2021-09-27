@@ -11,44 +11,25 @@ class ShortcutFiles(BaseModel):
     Examples:
         select * from shortcut_files;
     """
-    # Directory name.
-    path = TextField()  # {'required': True}
-    # Target file path
-    target_path = TextField()
-    # Target Modified time.
-    target_modified = IntegerField()
-    # Target Created time.
-    target_created = IntegerField()
-    # Target Accessed time.
-    target_accessed = IntegerField()
-    # Size of target file.
-    target_size = BigIntegerField()
-    # Relative path to target file from lnk file.
-    relative_path = TextField()
-    # Local system path to target file.
-    local_path = TextField()
-    # Target file directory.
-    working_path = TextField()
-    # Lnk file icon location.
-    icon_path = TextField()
-    # Common system path to target file.
-    common_path = TextField()
-    # Command args passed to lnk file.
-    command_args = TextField()
-    # Optional hostname of the target file.
-    hostname = TextField()
-    # Share name of the target file.
-    share_name = TextField()
-    # Device containing the target file.
-    device_type = TextField()
-    # Volume serial number.
-    volume_serial = TextField()
-    # Target mft entry.
-    mft_entry = BigIntegerField()
-    # Target mft sequence.
-    mft_sequence = IntegerField()
-    # Lnk file description.
-    description = TextField()
+    path = TextField(help_text="Directory name.")  # {'required': True}
+    target_path = TextField(help_text="Target file path")
+    target_modified = IntegerField(help_text="Target Modified time.")
+    target_created = IntegerField(help_text="Target Created time.")
+    target_accessed = IntegerField(help_text="Target Accessed time.")
+    target_size = BigIntegerField(help_text="Size of target file.")
+    relative_path = TextField(help_text="Relative path to target file from lnk file.")
+    local_path = TextField(help_text="Local system path to target file.")
+    working_path = TextField(help_text="Target file directory.")
+    icon_path = TextField(help_text="Lnk file icon location.")
+    common_path = TextField(help_text="Common system path to target file.")
+    command_args = TextField(help_text="Command args passed to lnk file.")
+    hostname = TextField(help_text="Optional hostname of the target file.")
+    share_name = TextField(help_text="Share name of the target file.")
+    device_type = TextField(help_text="Device containing the target file.")
+    volume_serial = TextField(help_text="Volume serial number.")
+    mft_entry = BigIntegerField(help_text="Target mft entry.")
+    mft_sequence = IntegerField(help_text="Target mft sequence.")
+    description = TextField(help_text="Lnk file description.")
 
     class Meta:
         table_name = "shortcut_files"

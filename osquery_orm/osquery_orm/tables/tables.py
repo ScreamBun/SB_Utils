@@ -406,14 +406,14 @@ class Windows(CrossPlatform):
 
 
 class Tables:
-    cross_platform: CrossPlatform
+    _cross_platform: CrossPlatform
     freebsd: FreeBSD
     linux: Linux
     macos: MacOS
     windows: Windows
 
     def __init__(self, conn):
-        self.cross_platform = CrossPlatform(conn)
+        self._cross_platform = CrossPlatform(conn)
         self.freebsd = FreeBSD(conn)
         self.linux = Linux(conn)
         self.macos = MacOS(conn)

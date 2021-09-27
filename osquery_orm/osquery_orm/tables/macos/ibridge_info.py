@@ -9,14 +9,10 @@ class IbridgeInfo(BaseModel):
     """
     Information about the Apple iBridge hardware controller.
     """
-    # Boot UUID of the iBridge controller
-    boot_uuid = TextField()
-    # The manufacturer and chip version
-    coprocessor_version = TextField()
-    # The build version of the firmware
-    firmware_version = TextField()
-    # Unique id of the iBridge controller
-    unique_chip_id = TextField()
+    boot_uuid = TextField(help_text="Boot UUID of the iBridge controller")
+    coprocessor_version = TextField(help_text="The manufacturer and chip version")
+    firmware_version = TextField(help_text="The build version of the firmware")
+    unique_chip_id = TextField(help_text="Unique id of the iBridge controller")
 
     class Meta:
         table_name = "ibridge_info"

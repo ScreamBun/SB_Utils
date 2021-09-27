@@ -11,30 +11,18 @@ class WindowsEvents(BaseModel):
     Examples:
         select * from windows_events where eventid=4104 and source='Security'
     """
-    # Timestamp the event was received
-    time = BigIntegerField()
-    # System time at which the event occurred
-    datetime = TextField()
-    # Source or channel of the event
-    source = TextField()
-    # Provider name of the event
-    provider_name = TextField()
-    # Provider guid of the event
-    provider_guid = TextField()
-    # Hostname of system where event was generated
-    computer_name = TextField()
-    # Event ID of the event
-    eventid = IntegerField()
-    # Task value associated with the event
-    task = IntegerField()
-    # The severity level associated with the event
-    level = IntegerField()
-    # A bitmask of the keywords defined in the event
-    keywords = TextField()
-    # Data associated with the event
-    data = TextField()
-    # Event ID
-    eid = TextField()  # {'hidden': True}
+    time = BigIntegerField(help_text="Timestamp the event was received")
+    datetime = TextField(help_text="System time at which the event occurred")
+    source = TextField(help_text="Source or channel of the event")
+    provider_name = TextField(help_text="Provider name of the event")
+    provider_guid = TextField(help_text="Provider guid of the event")
+    computer_name = TextField(help_text="Hostname of system where event was generated")
+    eventid = IntegerField(help_text="Event ID of the event")
+    task = IntegerField(help_text="Task value associated with the event")
+    level = IntegerField(help_text="The severity level associated with the event")
+    keywords = TextField(help_text="A bitmask of the keywords defined in the event")
+    data = TextField(help_text="Data associated with the event")
+    eid = TextField(help_text="Event ID")  # {'hidden': True}
 
     class Meta:
         table_name = "windows_events"

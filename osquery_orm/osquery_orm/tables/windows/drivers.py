@@ -11,34 +11,20 @@ class Drivers(BaseModel):
     Examples:
         select * from drivers
     """
-    # Device ID
-    device_id = TextField()
-    # Device name
-    device_name = TextField()
-    # Path to driver image file
-    image = TextField()
-    # Driver description
-    description = TextField()
-    # Driver service name, if one exists
-    service = TextField()
-    # Driver service registry key
-    service_key = TextField()
-    # Driver version
-    version = TextField()
-    # Associated inf file
-    inf = TextField()
-    # Device/driver class name
-    class_ = TextField(column_name="class")
-    # Driver provider
-    provider = TextField()
-    # Device manufacturer
-    manufacturer = TextField()
-    # Driver key
-    driver_key = TextField()
-    # Driver date
-    date = BigIntegerField()
-    # Whether the driver is signed or not
-    signed = IntegerField()
+    device_id = TextField(help_text="Device ID")
+    device_name = TextField(help_text="Device name")
+    image = TextField(help_text="Path to driver image file")
+    description = TextField(help_text="Driver description")
+    service = TextField(help_text="Driver service name, if one exists")
+    service_key = TextField(help_text="Driver service registry key")
+    version = TextField(help_text="Driver version")
+    inf = TextField(help_text="Associated inf file")
+    class_ = TextField(help_text="Device/driver class name", column_name="class")
+    provider = TextField(help_text="Driver provider")
+    manufacturer = TextField(help_text="Device manufacturer")
+    driver_key = TextField(help_text="Driver key")
+    date = BigIntegerField(help_text="Driver date")
+    signed = IntegerField(help_text="Whether the driver is signed or not")
 
     class Meta:
         table_name = "drivers"

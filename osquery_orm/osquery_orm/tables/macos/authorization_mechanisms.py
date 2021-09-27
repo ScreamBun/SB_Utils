@@ -13,16 +13,11 @@ class AuthorizationMechanisms(BaseModel):
         select * from authorization_mechanisms where label = 'system.login.console';
         select * from authorization_mechanisms where label = 'authenticate';
     """
-    # Label of the authorization right
-    label = TextField()  # {'index': True}
-    # Authorization plugin name
-    plugin = TextField()
-    # Name of the mechanism that will be called
-    mechanism = TextField()
-    # If privileged it will run as root, else as an anonymous user
-    privileged = TextField()
-    # The whole string entry
-    entry = TextField()
+    label = TextField(help_text="Label of the authorization right")  # {'index': True}
+    plugin = TextField(help_text="Authorization plugin name")
+    mechanism = TextField(help_text="Name of the mechanism that will be called")
+    privileged = TextField(help_text="If privileged it will run as root, else as an anonymous user")
+    entry = TextField(help_text="The whole string entry")
 
     class Meta:
         table_name = "authorization_mechanisms"

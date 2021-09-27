@@ -65,6 +65,13 @@ def getOperatingSystemExtentions(_os: str, cls: str):
     return f"class {os_name}_{cls}({cls}):"
 
 
+def escapeText(txt: str) -> str:
+    txt = txt.replace("\"", "\\\"")
+    txt = txt.replace("'", "\\'")
+    # txt = re.sub(r"\\([uU])", "\\\\\1", txt)
+    return txt
+
+
 # Table functions
 def table_name(attrs: dict, _name: str, *args, **kwargs):
     attrs.update(
@@ -74,7 +81,7 @@ def table_name(attrs: dict, _name: str, *args, **kwargs):
 
 
 def description(attrs: dict, desc: str):
-    attrs["description"] = desc
+    attrs["description"] = escapeText(desc)
 
 
 def schema(attrs: dict, fields: List[str]):
@@ -88,11 +95,13 @@ def schema(attrs: dict, fields: List[str]):
 def schema_column(attrs: dict, _name: str, _type: str, desc: str, **kwargs):
     _type = TypeMap.get(_type, _type)
     attrs.setdefault("field_imports", set()).add(_type)
-    args = {}
+    args = {
+        "help_text": f'"{escapeText(desc)}"'
+    }
     if _name in AliasFields:
         args['column_name'] = f'"{_name}"'
         _name = f"{_name}_"
-    field = f"# {desc}\n{_name} = {_type}({', '.join(f'{k}={v}' for k, v in args.items())})"
+    field = f"{_name} = {_type}({', '.join(f'{k}={v}' for k, v in args.items())})"
     if kwargs:
         field += f"  # {kwargs}"
     return field
@@ -109,7 +118,6 @@ def schema_foreign_key(attrs: dict, column: str, table: str, **kwargs):
 
 
 def extended_schema(attrs: dict, _os: str, fields: List[str]):
-    attrs.setdefault("general_imports", set()).add("import platform as pfm")
     ext_schema = f"\n\n# OS specific properties for {_os}"
     ext_schema += f"\n{getOperatingSystemExtentions(_os, attrs['class_name'])}\n"
     columns = "\n".join(fields)
@@ -175,6 +183,7 @@ def doc2table(doc: str) -> dict:
         try:
             cc = compile(spec, doc, 'exec')
             eval(cc, eval_env)
+            attrs["description"] = f'''"""\n{attrs["description"]}\n"""''' if attrs["description"] else ""
             attrs["general_imports"] = ("\n".join(attrs["general_imports"]) + "\n") if attrs["general_imports"] else ""
             attrs["field_imports"] = attrs["field_imports"] - {"int", "str"}
             attrs["field_imports"] = f"from peewee import {', '.join(attrs['field_imports'])}\n" if attrs["field_imports"] else ""

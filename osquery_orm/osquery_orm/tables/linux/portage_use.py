@@ -9,12 +9,9 @@ class PortageUse(BaseModel):
     """
     List of enabled portage USE values for specific package.
     """
-    # Package name
-    package = TextField()
-    # The version of the installed package
-    version = TextField()
-    # USE flag which has been enabled for package
-    use = TextField()
+    package = TextField(help_text="Package name")
+    version = TextField(help_text="The version of the installed package")
+    use = TextField(help_text="USE flag which has been enabled for package")
 
     class Meta:
         table_name = "portage_use"

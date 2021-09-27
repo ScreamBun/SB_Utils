@@ -9,12 +9,9 @@ class Sudoers(BaseModel):
     """
     Rules for running commands as other users via sudo.
     """
-    # Source file containing the given rule
-    source = TextField()
-    # Symbol for given rule
-    header = TextField()
-    # Rule definition
-    rule_details = TextField()
+    source = TextField(help_text="Source file containing the given rule")
+    header = TextField(help_text="Symbol for given rule")
+    rule_details = TextField(help_text="Rule definition")
 
     class Meta:
         table_name = "sudoers"

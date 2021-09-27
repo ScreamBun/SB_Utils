@@ -13,12 +13,9 @@ class DockerImageLayers(BaseModel):
         select * from docker_images where id = '6a2f32de169d'
         select * from docker_images where id = '6a2f32de169d14e6f8a84538eaa28f2629872d7d4f580a303b296c60db36fbd7'
     """
-    # Image ID
-    id = TextField()  # {'index': True}
-    # Layer ID
-    layer_id = TextField()
-    # Layer Order (1 = base layer)
-    layer_order = IntegerField()
+    id = TextField(help_text="Image ID")  # {'index': True}
+    layer_id = TextField(help_text="Layer ID")
+    layer_order = IntegerField(help_text="Layer Order (1 = base layer)")
 
     class Meta:
         table_name = "docker_image_layers"

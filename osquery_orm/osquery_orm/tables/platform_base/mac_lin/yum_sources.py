@@ -9,16 +9,11 @@ class YumSources(BaseModel):
     """
     Current list of Yum repositories or software channels.
     """
-    # Repository name
-    name = TextField()
-    # Repository base URL
-    baseurl = TextField()
-    # Whether the repository is used
-    enabled = TextField()
-    # Whether packages are GPG checked
-    gpgcheck = TextField()
-    # URL to GPG key
-    gpgkey = TextField()
+    name = TextField(help_text="Repository name")
+    baseurl = TextField(help_text="Repository base URL")
+    enabled = TextField(help_text="Whether the repository is used")
+    gpgcheck = TextField(help_text="Whether packages are GPG checked")
+    gpgkey = TextField(help_text="URL to GPG key")
 
     class Meta:
         table_name = "yum_sources"

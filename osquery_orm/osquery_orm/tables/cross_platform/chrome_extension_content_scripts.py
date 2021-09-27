@@ -2,7 +2,7 @@
 OSQuery chrome_extension_content_scripts ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import BigIntegerField, ForeignKeyField, TextField
+from peewee import ForeignKeyField, BigIntegerField, TextField
 from .users import Users
 
 
@@ -12,24 +12,15 @@ class ChromeExtensionContentScripts(BaseModel):
     Examples:
         SELECT chrome_extension_content_scripts.* FROM users JOIN chrome_extension_content_scripts USING (uid) GROUP BY identifier, match
     """
-    # The browser type (Valid values: chrome, chromium, opera, yandex, brave)
-    browser_type = TextField()
-    # The local user that owns the extension
-    uid = BigIntegerField()  # {'index': True}
-    # Extension identifier
-    identifier = TextField()
-    # Extension-supplied version
-    version = TextField()
-    # The content script used by the extension
-    script = TextField()
-    # The pattern that the script is matched against
-    match = TextField()
-    # The profile path
-    profile_path = TextField()
-    # Path to extension folder
-    path = TextField()
-    # 1 if this extension is referenced by the Preferences file of the profile
-    referenced = BigIntegerField()
+    browser_type = TextField(help_text="The browser type (Valid values: chrome, chromium, opera, yandex, brave)")
+    uid = BigIntegerField(help_text="The local user that owns the extension")  # {'index': True}
+    identifier = TextField(help_text="Extension identifier")
+    version = TextField(help_text="Extension-supplied version")
+    script = TextField(help_text="The content script used by the extension")
+    match = TextField(help_text="The pattern that the script is matched against")
+    profile_path = TextField(help_text="The profile path")
+    path = TextField(help_text="Path to extension folder")
+    referenced = BigIntegerField(help_text="1 if this extension is referenced by the Preferences file of the profile")
     chrome_extension_content_scripts = ForeignKeyField(Users, backref='uid')
 
     class Meta:

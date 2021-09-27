@@ -9,10 +9,8 @@ class AlfExceptions(BaseModel):
     """
     OS X application layer firewall (ALF) service exceptions.
     """
-    # Path to the executable that is excepted
-    path = TextField()
-    # Firewall exception state
-    state = IntegerField()
+    path = TextField(help_text="Path to the executable that is excepted")
+    state = IntegerField(help_text="Firewall exception state")
 
     class Meta:
         table_name = "alf_exceptions"

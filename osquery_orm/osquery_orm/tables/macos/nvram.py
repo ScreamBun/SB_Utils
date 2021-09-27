@@ -9,12 +9,9 @@ class Nvram(BaseModel):
     """
     Apple NVRAM variable listing.
     """
-    # Variable name
-    name = TextField()  # {'additional': True, 'index': True}
-    # Data type (CFData, CFString, etc)
-    type = TextField()
-    # Raw variable data
-    value = TextField()
+    name = TextField(help_text="Variable name")  # {'additional': True, 'index': True}
+    type = TextField(help_text="Data type (CFData, CFString, etc)")
+    value = TextField(help_text="Raw variable data")
 
     class Meta:
         table_name = "nvram"

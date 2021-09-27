@@ -9,26 +9,16 @@ class YaraEvents(BaseModel):
     """
     Track YARA matches for files specified in configuration data.
     """
-    # The path scanned
-    target_path = TextField()
-    # The category of the file
-    category = TextField()
-    # Change action (UPDATE, REMOVE, etc)
-    action = TextField()
-    # ID used during bulk update
-    transaction_id = BigIntegerField()
-    # List of YARA matches
-    matches = TextField()
-    # Number of YARA matches
-    count = IntegerField()
-    # Matching strings
-    strings = TextField()
-    # Matching tags
-    tags = TextField()
-    # Time of the scan
-    time = BigIntegerField()
-    # Event ID
-    eid = TextField()  # {'hidden': True}
+    target_path = TextField(help_text="The path scanned")
+    category = TextField(help_text="The category of the file")
+    action = TextField(help_text="Change action (UPDATE, REMOVE, etc)")
+    transaction_id = BigIntegerField(help_text="ID used during bulk update")
+    matches = TextField(help_text="List of YARA matches")
+    count = IntegerField(help_text="Number of YARA matches")
+    strings = TextField(help_text="Matching strings")
+    tags = TextField(help_text="Matching tags")
+    time = BigIntegerField(help_text="Time of the scan")
+    eid = TextField(help_text="Event ID")  # {'hidden': True}
 
     class Meta:
         table_name = "yara_events"

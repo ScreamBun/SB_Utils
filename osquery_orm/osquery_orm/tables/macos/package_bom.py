@@ -11,20 +11,13 @@ class PackageBom(BaseModel):
     Examples:
         select * from package_bom where path = '/var/db/receipts/com.apple.pkg.MobileDevice.bom'
     """
-    # Package file or directory
-    filepath = TextField()
-    # Expected user of file or directory
-    uid = IntegerField()
-    # Expected group of file or directory
-    gid = IntegerField()
-    # Expected permissions
-    mode = IntegerField()
-    # Expected file size
-    size = BigIntegerField()
-    # Timestamp the file was installed
-    modified_time = IntegerField()
-    # Path of package bom
-    path = TextField()  # {'required': True}
+    filepath = TextField(help_text="Package file or directory")
+    uid = IntegerField(help_text="Expected user of file or directory")
+    gid = IntegerField(help_text="Expected group of file or directory")
+    mode = IntegerField(help_text="Expected permissions")
+    size = BigIntegerField(help_text="Expected file size")
+    modified_time = IntegerField(help_text="Timestamp the file was installed")
+    path = TextField(help_text="Path of package bom")  # {'required': True}
 
     class Meta:
         table_name = "package_bom"

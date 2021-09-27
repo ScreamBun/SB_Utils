@@ -11,12 +11,9 @@ class AzureInstanceTags(BaseModel):
     Examples:
         select * from ec2_instance_tags
     """
-    # Unique identifier for the VM
-    vm_id = TextField()
-    # The tag key
-    key = TextField()
-    # The tag value
-    value = TextField()
+    vm_id = TextField(help_text="Unique identifier for the VM")
+    key = TextField(help_text="The tag key")
+    value = TextField(help_text="The tag value")
 
     class Meta:
         table_name = "azure_instance_tags"

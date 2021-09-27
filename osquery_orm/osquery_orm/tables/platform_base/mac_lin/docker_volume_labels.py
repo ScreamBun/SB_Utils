@@ -12,12 +12,9 @@ class DockerVolumeLabels(BaseModel):
         select * from docker_volume_labels
         select * from docker_volume_labels where name = 'btrfs'
     """
-    # Volume name
-    name = TextField()  # {'index': True}
-    # Label key
-    key = TextField()  # {'index': True}
-    # Optional label value
-    value = TextField()
+    name = TextField(help_text="Volume name")  # {'index': True}
+    key = TextField(help_text="Label key")  # {'index': True}
+    value = TextField(help_text="Optional label value")
 
     class Meta:
         table_name = "docker_volume_labels"

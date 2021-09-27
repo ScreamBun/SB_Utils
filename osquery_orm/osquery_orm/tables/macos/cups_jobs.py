@@ -9,22 +9,14 @@ class CupsJobs(BaseModel):
     """
     Returns all completed print jobs from cups.
     """
-    # Title of the printed job
-    title = TextField()
-    # The printer the job was sent to
-    destination = TextField()
-    # The user who printed the job
-    user = TextField()
-    # The format of the print job
-    format = TextField()
-    # The size of the print job
-    size = IntegerField()
-    # When the job completed printing
-    completed_time = IntegerField()
-    # How long the job took to process
-    processing_time = IntegerField()
-    # When the print request was initiated
-    creation_time = IntegerField()
+    title = TextField(help_text="Title of the printed job")
+    destination = TextField(help_text="The printer the job was sent to")
+    user = TextField(help_text="The user who printed the job")
+    format = TextField(help_text="The format of the print job")
+    size = IntegerField(help_text="The size of the print job")
+    completed_time = IntegerField(help_text="When the job completed printing")
+    processing_time = IntegerField(help_text="How long the job took to process")
+    creation_time = IntegerField(help_text="When the print request was initiated")
 
     class Meta:
         table_name = "cups_jobs"

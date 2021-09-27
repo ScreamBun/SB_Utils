@@ -11,12 +11,9 @@ class LxdInstanceConfig(BaseModel):
     Examples:
         select * from lxd_instance_config where name = 'hello'
     """
-    # Instance name
-    name = TextField()  # {'index': True, 'required': True}
-    # Configuration parameter name
-    key = TextField()
-    # Configuration parameter value
-    value = TextField()
+    name = TextField(help_text="Instance name")  # {'index': True, 'required': True}
+    key = TextField(help_text="Configuration parameter name")
+    value = TextField(help_text="Configuration parameter value")
 
     class Meta:
         table_name = "lxd_instance_config"

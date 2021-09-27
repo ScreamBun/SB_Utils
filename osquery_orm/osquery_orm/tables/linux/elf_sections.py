@@ -11,24 +11,15 @@ class ElfSections(BaseModel):
     Examples:
         select * from elf_sections where path = '/usr/bin/grep'
     """
-    # Section name
-    name = TextField()
-    # Section type
-    type = IntegerField()
-    # Section virtual address in memory
-    vaddr = IntegerField()
-    # Offset of section in file
-    offset = IntegerField()
-    # Size of section
-    size = IntegerField()
-    # Section attributes
-    flags = TextField()
-    # Link to other section
-    link = TextField()
-    # Segment alignment
-    align = IntegerField()
-    # Path to ELF file
-    path = TextField()  # {'required': True, 'index': True}
+    name = TextField(help_text="Section name")
+    type = IntegerField(help_text="Section type")
+    vaddr = IntegerField(help_text="Section virtual address in memory")
+    offset = IntegerField(help_text="Offset of section in file")
+    size = IntegerField(help_text="Size of section")
+    flags = TextField(help_text="Section attributes")
+    link = TextField(help_text="Link to other section")
+    align = IntegerField(help_text="Segment alignment")
+    path = TextField(help_text="Path to ELF file")  # {'required': True, 'index': True}
 
     class Meta:
         table_name = "elf_sections"

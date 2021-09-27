@@ -9,12 +9,9 @@ class MemoryMap(BaseModel):
     """
     OS memory region map.
     """
-    # Region name
-    name = TextField()
-    # Start address of memory region
-    start = TextField()
-    # End address of memory region
-    end = TextField()
+    name = TextField(help_text="Region name")
+    start = TextField(help_text="Start address of memory region")
+    end = TextField(help_text="End address of memory region")
 
     class Meta:
         table_name = "memory_map"

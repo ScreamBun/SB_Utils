@@ -9,12 +9,9 @@ class NfsShares(BaseModel):
     """
     NFS shares exported by the host.
     """
-    # Filesystem path to the share
-    share = TextField()
-    # Options string set on the export share
-    options = TextField()
-    # 1 if the share is exported readonly else 0
-    readonly = IntegerField()
+    share = TextField(help_text="Filesystem path to the share")
+    options = TextField(help_text="Options string set on the export share")
+    readonly = IntegerField(help_text="1 if the share is exported readonly else 0")
 
     class Meta:
         table_name = "nfs_shares"

@@ -12,14 +12,10 @@ class WindowsOptionalFeatures(BaseModel):
         select * from windows_optional_features
         select * from windows_optional_features where name = 'SMB1Protocol' AND state = 1
     """
-    # Name of the feature
-    name = TextField()
-    # Caption of feature in settings UI
-    caption = TextField()
-    # Installation state value. 1 == Enabled, 2 == Disabled, 3 == Absent
-    state = IntegerField()
-    # Installation state name. 'Enabled','Disabled','Absent'
-    statename = TextField()
+    name = TextField(help_text="Name of the feature")
+    caption = TextField(help_text="Caption of feature in settings UI")
+    state = IntegerField(help_text="Installation state value. 1 == Enabled, 2 == Disabled, 3 == Absent")
+    statename = TextField(help_text="Installation state name. \'Enabled\',\'Disabled\',\'Absent\'")
 
     class Meta:
         table_name = "windows_optional_features"

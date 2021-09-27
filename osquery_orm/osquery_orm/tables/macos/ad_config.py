@@ -9,14 +9,10 @@ class AdConfig(BaseModel):
     """
     OS X Active Directory configuration.
     """
-    # The OS X-specific configuration name
-    name = TextField()
-    # Active Directory trust domain
-    domain = TextField()
-    # Canonical name of option
-    option = TextField()
-    # Variable typed option value
-    value = TextField()
+    name = TextField(help_text="The OS X-specific configuration name")
+    domain = TextField(help_text="Active Directory trust domain")
+    option = TextField(help_text="Canonical name of option")
+    value = TextField(help_text="Variable typed option value")
 
     class Meta:
         table_name = "ad_config"

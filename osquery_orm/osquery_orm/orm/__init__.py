@@ -1,4 +1,4 @@
-from .baseModel import BaseModel
+from .base_model import BaseModel
 from .cursor import OSQueryCursor
 
 __all__ = [

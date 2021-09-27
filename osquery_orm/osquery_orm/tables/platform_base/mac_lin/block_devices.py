@@ -9,24 +9,15 @@ class BlockDevices(BaseModel):
     """
     Block (buffered access) device file nodes: disks, ramdisks, and DMG containers.
     """
-    # Block device name
-    name = TextField()
-    # Block device parent name
-    parent = TextField()
-    # Block device vendor string
-    vendor = TextField()
-    # Block device model string identifier
-    model = TextField()
-    # Block device size in blocks
-    size = BigIntegerField()
-    # Block size in bytes
-    block_size = IntegerField()
-    # Block device Universally Unique Identifier
-    uuid = TextField()
-    # Block device type string
-    type = TextField()
-    # Block device label string
-    label = TextField()
+    name = TextField(help_text="Block device name")
+    parent = TextField(help_text="Block device parent name")
+    vendor = TextField(help_text="Block device vendor string")
+    model = TextField(help_text="Block device model string identifier")
+    size = BigIntegerField(help_text="Block device size in blocks")
+    block_size = IntegerField(help_text="Block size in bytes")
+    uuid = TextField(help_text="Block device Universally Unique Identifier")
+    type = TextField(help_text="Block device type string")
+    label = TextField(help_text="Block device label string")
 
     class Meta:
         table_name = "block_devices"

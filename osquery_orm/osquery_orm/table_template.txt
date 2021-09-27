@@ -4,9 +4,7 @@ OSQuery ${table_name} ORM
 ${general_imports}from osquery_orm.orm import BaseModel
 ${field_imports}${local_imports}
 class ${class_name}(BaseModel):
-    """
     ${description}
-    """
 ${schema}
 
     class Meta:

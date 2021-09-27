@@ -12,14 +12,10 @@ class PowerSensors(BaseModel):
     Examples:
         select * from power_sensors where category = 'voltage'
     """
-    # The SMC key on OS X
-    key = TextField()  # {'index': True}
-    # The sensor category: currents, voltage, wattage
-    category = TextField()
-    # Name of power source
-    name = TextField()
-    # Power in Watts
-    value = TextField()
+    key = TextField(help_text="The SMC key on OS X")  # {'index': True}
+    category = TextField(help_text="The sensor category: currents, voltage, wattage")
+    name = TextField(help_text="Name of power source")
+    value = TextField(help_text="Power in Watts")
     power_sensors = ForeignKeyField(SmcKeys, backref='key')
 
     class Meta:

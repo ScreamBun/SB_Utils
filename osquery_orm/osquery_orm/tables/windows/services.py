@@ -11,30 +11,18 @@ class Services(BaseModel):
     Examples:
         select * from services
     """
-    # Service name
-    name = TextField()
-    # Service Type: OWN_PROCESS, SHARE_PROCESS and maybe Interactive (can interact with the desktop)
-    service_type = TextField()
-    # Service Display name
-    display_name = TextField()
-    # Service Current status: STOPPED, START_PENDING, STOP_PENDING, RUNNING, CONTINUE_PENDING, PAUSE_PENDING, PAUSED
-    status = TextField()
-    # the Process ID of the service
-    pid = IntegerField()
-    # Service start type: BOOT_START, SYSTEM_START, AUTO_START, DEMAND_START, DISABLED
-    start_type = TextField()
-    # The error code that the service uses to report an error that occurs when it is starting or stopping
-    win32_exit_code = IntegerField()
-    # The service-specific error code that the service returns when an error occurs while the service is starting or stopping
-    service_exit_code = IntegerField()
-    # Path to Service Executable
-    path = TextField()
-    # Path to ServiceDll
-    module_path = TextField()
-    # Service Description
-    description = TextField()
-    # The name of the account that the service process will be logged on as when it runs. This name can be of the form Domain\UserName. If the account belongs to the built-in domain, the name can be of the form .\UserName.
-    user_account = TextField()
+    name = TextField(help_text="Service name")
+    service_type = TextField(help_text="Service Type: OWN_PROCESS, SHARE_PROCESS and maybe Interactive (can interact with the desktop)")
+    display_name = TextField(help_text="Service Display name")
+    status = TextField(help_text="Service Current status: STOPPED, START_PENDING, STOP_PENDING, RUNNING, CONTINUE_PENDING, PAUSE_PENDING, PAUSED")
+    pid = IntegerField(help_text="the Process ID of the service")
+    start_type = TextField(help_text="Service start type: BOOT_START, SYSTEM_START, AUTO_START, DEMAND_START, DISABLED")
+    win32_exit_code = IntegerField(help_text="The error code that the service uses to report an error that occurs when it is starting or stopping")
+    service_exit_code = IntegerField(help_text="The service-specific error code that the service returns when an error occurs while the service is starting or stopping")
+    path = TextField(help_text="Path to Service Executable")
+    module_path = TextField(help_text="Path to ServiceDll")
+    description = TextField(help_text="Service Description")
+    user_account = TextField(help_text="The name of the account that the service process will be logged on as when it runs. This name can be of the form Domain\serName. If the account belongs to the built-in domain, the name can be of the form .\serName.")
 
     class Meta:
         table_name = "services"

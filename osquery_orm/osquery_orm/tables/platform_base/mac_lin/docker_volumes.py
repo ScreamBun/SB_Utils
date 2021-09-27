@@ -12,14 +12,10 @@ class DockerVolumes(BaseModel):
         select * from docker_volumes
         select * from docker_volumes where name = 'btrfs'
     """
-    # Volume name
-    name = TextField()  # {'index': True}
-    # Volume driver
-    driver = TextField()
-    # Mount point
-    mount_point = TextField()
-    # Volume type
-    type = TextField()
+    name = TextField(help_text="Volume name")  # {'index': True}
+    driver = TextField(help_text="Volume driver")
+    mount_point = TextField(help_text="Mount point")
+    type = TextField(help_text="Volume type")
 
     class Meta:
         table_name = "docker_volumes"

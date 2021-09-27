@@ -1,6 +1,6 @@
 import re
 
-from typing import Any, Sequence, Tuple
+from typing import Any, Sequence, Tuple, Union
 from osquery.extension_client import Client
 from osquery.extensions.ttypes import ExtensionResponse
 from peewee import DatabaseError, InterfaceError, ProgrammingError
@@ -52,13 +52,13 @@ class OSQueryCursor:
     """
     Implements the Python Database API Specification v2.0 (PEP-249)
     """
-    _commit: bool
-    _index: int
-    # Properties
-    _stored_results: list
-    _rowcount: int
-    _lastrowid: Any
     _arraysize: int = 1
+    _commit: bool
+    _executed: Union[bytes,str]
+    _index: int
+    _lastrowid: Any
+    _rowcount: int
+    _stored_results: list
     # tuple of column names, 7-tuple per column
     _description: Tuple[Tuple[str, None, None, None, None, None, None], ...] = None
     _connection: Client

@@ -12,28 +12,17 @@ class LxdInstances(BaseModel):
         select * from lxd_instances
         select * from lxd_instances where name = 'hello'
     """
-    # Instance name
-    name = TextField()  # {'index': True}
-    # Instance state (running, stopped, etc.)
-    status = TextField()
-    # Whether the instance is stateful(1) or not(0)
-    stateful = IntegerField()
-    # Whether the instance is ephemeral(1) or not(0)
-    ephemeral = IntegerField()
-    # ISO time of creation
-    created_at = TextField()
-    # ID of image used to launch this instance
-    base_image = TextField()
-    # Instance architecture
-    architecture = TextField()
-    # The OS of this instance
-    os = TextField()
-    # Instance description
-    description = TextField()
-    # Instance's process ID
-    pid = IntegerField()
-    # Number of processes running inside this instance
-    processes = IntegerField()
+    name = TextField(help_text="Instance name")  # {'index': True}
+    status = TextField(help_text="Instance state (running, stopped, etc.)")
+    stateful = IntegerField(help_text="Whether the instance is stateful(1) or not(0)")
+    ephemeral = IntegerField(help_text="Whether the instance is ephemeral(1) or not(0)")
+    created_at = TextField(help_text="ISO time of creation")
+    base_image = TextField(help_text="ID of image used to launch this instance")
+    architecture = TextField(help_text="Instance architecture")
+    os = TextField(help_text="The OS of this instance")
+    description = TextField(help_text="Instance description")
+    pid = IntegerField(help_text="Instance\'s process ID")
+    processes = IntegerField(help_text="Number of processes running inside this instance")
 
     class Meta:
         table_name = "lxd_instances"

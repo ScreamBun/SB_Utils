@@ -9,14 +9,10 @@ class PkgPackages(BaseModel):
     """
     pkgng packages that are currently installed on the host system.
     """
-    # Package name
-    name = TextField()
-    # Package version
-    version = TextField()
-    # Package size in bytes
-    flatsize = BigIntegerField()
-    # Architecture(s) supported
-    arch = TextField()
+    name = TextField(help_text="Package name")
+    version = TextField(help_text="Package version")
+    flatsize = BigIntegerField(help_text="Package size in bytes")
+    arch = TextField(help_text="Architecture(s) supported")
 
     class Meta:
         table_name = "pkg_packages"

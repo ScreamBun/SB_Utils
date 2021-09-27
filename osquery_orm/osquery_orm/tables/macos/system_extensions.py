@@ -11,24 +11,15 @@ class SystemExtensions(BaseModel):
     Examples:
         select * from system_extensions
     """
-    # Original path of system extension
-    path = TextField()
-    # Extension unique id
-    UUID = TextField()
-    # System extension state
-    state = TextField()
-    # Identifier name
-    identifier = TextField()
-    # System extension version
-    version = TextField()
-    # System extension category
-    category = TextField()
-    # System extension bundle path
-    bundle_path = TextField()
-    # Signing team ID
-    team = TextField()
-    # 1 if managed by MDM system extension payload configuration, 0 otherwise
-    mdm_managed = IntegerField()
+    path = TextField(help_text="Original path of system extension")
+    UUID = TextField(help_text="Extension unique id")
+    state = TextField(help_text="System extension state")
+    identifier = TextField(help_text="Identifier name")
+    version = TextField(help_text="System extension version")
+    category = TextField(help_text="System extension category")
+    bundle_path = TextField(help_text="System extension bundle path")
+    team = TextField(help_text="Signing team ID")
+    mdm_managed = IntegerField(help_text="1 if managed by MDM system extension payload configuration, 0 otherwise")
 
     class Meta:
         table_name = "system_extensions"

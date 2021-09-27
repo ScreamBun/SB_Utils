@@ -11,22 +11,14 @@ class ProcessNamespaces(BaseModel):
     Examples:
         select * from process_namespaces where pid = 1
     """
-    # Process (or thread) ID
-    pid = IntegerField()  # {'index': True}
-    # cgroup namespace inode
-    cgroup_namespace = TextField()
-    # ipc namespace inode
-    ipc_namespace = TextField()
-    # mnt namespace inode
-    mnt_namespace = TextField()
-    # net namespace inode
-    net_namespace = TextField()
-    # pid namespace inode
-    pid_namespace = TextField()
-    # user namespace inode
-    user_namespace = TextField()
-    # uts namespace inode
-    uts_namespace = TextField()
+    pid = IntegerField(help_text="Process (or thread) ID")  # {'index': True}
+    cgroup_namespace = TextField(help_text="cgroup namespace inode")
+    ipc_namespace = TextField(help_text="ipc namespace inode")
+    mnt_namespace = TextField(help_text="mnt namespace inode")
+    net_namespace = TextField(help_text="net namespace inode")
+    pid_namespace = TextField(help_text="pid namespace inode")
+    user_namespace = TextField(help_text="user namespace inode")
+    uts_namespace = TextField(help_text="uts namespace inode")
 
     class Meta:
         table_name = "process_namespaces"

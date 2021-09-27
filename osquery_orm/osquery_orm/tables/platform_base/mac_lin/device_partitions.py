@@ -9,24 +9,15 @@ class DevicePartitions(BaseModel):
     """
     Use TSK to enumerate details about partitions on a disk device.
     """
-    # Absolute file path to device node
-    device = TextField()  # {'required': True}
-    # A partition number or description
-    partition = IntegerField()
-    # 
-    label = TextField()
-    # 
-    type = TextField()
-    # 
-    offset = BigIntegerField()
-    # Byte size of each block
-    blocks_size = BigIntegerField()
-    # Number of blocks
-    blocks = BigIntegerField()
-    # Number of meta nodes
-    inodes = BigIntegerField()
-    # 
-    flags = IntegerField()
+    device = TextField(help_text="Absolute file path to device node")  # {'required': True}
+    partition = IntegerField(help_text="A partition number or description")
+    label = TextField(help_text="")
+    type = TextField(help_text="")
+    offset = BigIntegerField(help_text="")
+    blocks_size = BigIntegerField(help_text="Byte size of each block")
+    blocks = BigIntegerField(help_text="Number of blocks")
+    inodes = BigIntegerField(help_text="Number of meta nodes")
+    flags = IntegerField(help_text="")
 
     class Meta:
         table_name = "device_partitions"

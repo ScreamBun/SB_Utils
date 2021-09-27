@@ -11,22 +11,14 @@ class ProcessOpenPipes(BaseModel):
     Examples:
         select * from process_open_pipes
     """
-    # Process ID
-    pid = BigIntegerField()
-    # File descriptor
-    fd = BigIntegerField()
-    # Pipe open mode (r/w)
-    mode = TextField()
-    # Pipe inode number
-    inode = BigIntegerField()
-    # Pipe Type: named vs unnamed/anonymous
-    type = TextField()
-    # Process ID of partner process sharing a particular pipe
-    partner_pid = BigIntegerField()
-    # File descriptor of shared pipe at partner's end
-    partner_fd = BigIntegerField()
-    # Mode of shared pipe at partner's end
-    partner_mode = TextField()
+    pid = BigIntegerField(help_text="Process ID")
+    fd = BigIntegerField(help_text="File descriptor")
+    mode = TextField(help_text="Pipe open mode (r/w)")
+    inode = BigIntegerField(help_text="Pipe inode number")
+    type = TextField(help_text="Pipe Type: named vs unnamed/anonymous")
+    partner_pid = BigIntegerField(help_text="Process ID of partner process sharing a particular pipe")
+    partner_fd = BigIntegerField(help_text="File descriptor of shared pipe at partner\'s end")
+    partner_mode = TextField(help_text="Mode of shared pipe at partner\'s end")
 
     class Meta:
         table_name = "process_open_pipes"

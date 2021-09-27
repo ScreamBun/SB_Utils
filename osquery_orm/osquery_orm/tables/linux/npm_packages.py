@@ -1,7 +1,6 @@
 """
 OSQuery npm_packages ORM
 """
-import platform as pfm
 from osquery_orm.orm import BaseModel
 from peewee import IntegerField, TextField
 
@@ -13,20 +12,13 @@ class NpmPackages(BaseModel):
         select * from npm_packages
         select * from npm_packages where directory = '/home/user/my_project'
     """
-    # Package display name
-    name = TextField()
-    # Package supplied version
-    version = TextField()
-    # Package supplied description
-    description = TextField()
-    # Package author name
-    author = TextField()
-    # License for package
-    license = TextField()
-    # Module's package.json path
-    path = TextField()
-    # Node module's directory where this package is located
-    directory = TextField()  # {'index': True}
+    name = TextField(help_text="Package display name")
+    version = TextField(help_text="Package supplied version")
+    description = TextField(help_text="Package supplied description")
+    author = TextField(help_text="Package author name")
+    license = TextField(help_text="License for package")
+    path = TextField(help_text="Module\'s package.json path")
+    directory = TextField(help_text="Node module\'s directory where this package is located")  # {'index': True}
 
     class Meta:
         table_name = "npm_packages"
@@ -34,7 +26,5 @@ class NpmPackages(BaseModel):
 
 # OS specific properties for Linux
 class Linux_NpmPackages(NpmPackages):
-    # Pids that contain a namespace
-    pid_with_namespace = IntegerField()  # {'additional': True, 'hidden': True}
-    # Mount namespace id
-    mount_namespace_id = TextField()  # {'hidden': True}
+    pid_with_namespace = IntegerField(help_text="Pids that contain a namespace")  # {'additional': True, 'hidden': True}
+    mount_namespace_id = TextField(help_text="Mount namespace id")  # {'hidden': True}

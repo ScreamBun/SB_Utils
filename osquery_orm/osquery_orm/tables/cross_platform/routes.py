@@ -1,7 +1,6 @@
 """
 OSQuery routes ORM
 """
-import platform as pfm
 from osquery_orm.orm import BaseModel
 from peewee import IntegerField, TextField
 
@@ -10,24 +9,15 @@ class Routes(BaseModel):
     """
     The active route table for the host system.
     """
-    # Destination IP address
-    destination = TextField()
-    # Netmask length
-    netmask = IntegerField()
-    # Route gateway
-    gateway = TextField()
-    # Route source
-    source = TextField()
-    # Flags to describe route
-    flags = IntegerField()
-    # Route local interface
-    interface = TextField()
-    # Maximum Transmission Unit for the route
-    mtu = IntegerField()
-    # Cost of route. Lowest is preferred
-    metric = IntegerField()
-    # Type of route
-    type = TextField()  # {'additional': True}
+    destination = TextField(help_text="Destination IP address")
+    netmask = IntegerField(help_text="Netmask length")
+    gateway = TextField(help_text="Route gateway")
+    source = TextField(help_text="Route source")
+    flags = IntegerField(help_text="Flags to describe route")
+    interface = TextField(help_text="Route local interface")
+    mtu = IntegerField(help_text="Maximum Transmission Unit for the route")
+    metric = IntegerField(help_text="Cost of route. Lowest is preferred")
+    type = TextField(help_text="Type of route")  # {'additional': True}
 
     class Meta:
         table_name = "routes"
@@ -35,5 +25,4 @@ class Routes(BaseModel):
 
 # OS specific properties for Posix
 class Posix_Routes(Routes):
-    # Max hops expected
-    hopcount = IntegerField()
+    hopcount = IntegerField(help_text="Max hops expected")

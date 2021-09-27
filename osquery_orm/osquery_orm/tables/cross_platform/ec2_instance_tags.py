@@ -11,12 +11,9 @@ class Ec2InstanceTags(BaseModel):
     Examples:
         select * from ec2_instance_tags
     """
-    # EC2 instance ID
-    instance_id = TextField()
-    # Tag key
-    key = TextField()
-    # Tag value
-    value = TextField()
+    instance_id = TextField(help_text="EC2 instance ID")
+    key = TextField(help_text="Tag key")
+    value = TextField(help_text="Tag value")
 
     class Meta:
         table_name = "ec2_instance_tags"

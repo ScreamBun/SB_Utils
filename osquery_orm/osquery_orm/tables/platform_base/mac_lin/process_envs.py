@@ -14,12 +14,9 @@ class ProcessEnvs(BaseModel):
              from process_envs pe, (select * from processes limit 10) p
              where p.pid = pe.pid;
     """
-    # Process (or thread) ID
-    pid = IntegerField()  # {'index': True}
-    # Environment variable name
-    key = TextField()
-    # Environment variable value
-    value = TextField()
+    pid = IntegerField(help_text="Process (or thread) ID")  # {'index': True}
+    key = TextField(help_text="Environment variable name")
+    value = TextField(help_text="Environment variable value")
 
     class Meta:
         table_name = "process_envs"

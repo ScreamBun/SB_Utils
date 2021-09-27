@@ -9,28 +9,17 @@ class DiskInfo(BaseModel):
     """
     Retrieve basic information about the physical disks of a system.
     """
-    # Number of detected partitions on disk.
-    partitions = IntegerField()
-    # Physical drive number of the disk.
-    disk_index = IntegerField()
-    # The interface type of the disk.
-    type = TextField()
-    # The unique identifier of the drive on the system.
-    id = TextField()
-    # The unique identifier of the drive on the system.
-    pnp_device_id = TextField()
-    # Size of the disk.
-    disk_size = BigIntegerField()
-    # The manufacturer of the disk.
-    manufacturer = TextField()
-    # Hard drive model.
-    hardware_model = TextField()
-    # The label of the disk object.
-    name = TextField()
-    # The serial number of the disk.
-    serial = TextField()
-    # The OS's description of the disk.
-    description = TextField()
+    partitions = IntegerField(help_text="Number of detected partitions on disk.")
+    disk_index = IntegerField(help_text="Physical drive number of the disk.")
+    type = TextField(help_text="The interface type of the disk.")
+    id = TextField(help_text="The unique identifier of the drive on the system.")
+    pnp_device_id = TextField(help_text="The unique identifier of the drive on the system.")
+    disk_size = BigIntegerField(help_text="Size of the disk.")
+    manufacturer = TextField(help_text="The manufacturer of the disk.")
+    hardware_model = TextField(help_text="Hard drive model.")
+    name = TextField(help_text="The label of the disk object.")
+    serial = TextField(help_text="The serial number of the disk.")
+    description = TextField(help_text="The OS\'s description of the disk.")
 
     class Meta:
         table_name = "disk_info"

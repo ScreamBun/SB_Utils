@@ -13,22 +13,14 @@ class Signature(BaseModel):
         SELECT * FROM signature WHERE path = '/Applications/Xcode.app' AND hash_resources=0
         SELECT * FROM (SELECT path, MIN(signed) AS all_signed, MIN(CASE WHEN authority = 'Software Signing' AND signed = 1 THEN 1 ELSE 0 END) AS all_signed_by_apple FROM signature WHERE path LIKE '/bin/%' GROUP BY path);
     """
-    # Must provide a path or directory
-    path = TextField()  # {'index': True, 'required': True}
-    # Set to 1 to also hash resources, or 0 otherwise. Default is 1
-    hash_resources = IntegerField()  # {'additional': True}
-    # If applicable, the arch of the signed code
-    arch = TextField()
-    # 1 If the file is signed else 0
-    signed = IntegerField()
-    # The signing identifier sealed into the signature
-    identifier = TextField()
-    # Hash of the application Code Directory
-    cdhash = TextField()
-    # The team signing identifier sealed into the signature
-    team_identifier = TextField()
-    # Certificate Common Name
-    authority = TextField()
+    path = TextField(help_text="Must provide a path or directory")  # {'index': True, 'required': True}
+    hash_resources = IntegerField(help_text="Set to 1 to also hash resources, or 0 otherwise. Default is 1")  # {'additional': True}
+    arch = TextField(help_text="If applicable, the arch of the signed code")
+    signed = IntegerField(help_text="1 If the file is signed else 0")
+    identifier = TextField(help_text="The signing identifier sealed into the signature")
+    cdhash = TextField(help_text="Hash of the application Code Directory")
+    team_identifier = TextField(help_text="The team signing identifier sealed into the signature")
+    authority = TextField(help_text="Certificate Common Name")
 
     class Meta:
         table_name = "signature"

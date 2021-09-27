@@ -12,12 +12,9 @@ class Winbaseobj(BaseModel):
         select object_name, object_type from winbaseobj
         select * from winbaseobj where type='Mutant'
     """
-    # Terminal Services Session Id
-    session_id = IntegerField()
-    # Object Name
-    object_name = TextField()
-    # Object Type
-    object_type = TextField()
+    session_id = IntegerField(help_text="Terminal Services Session Id")
+    object_name = TextField(help_text="Object Name")
+    object_type = TextField(help_text="Object Type")
 
     class Meta:
         table_name = "winbaseobj"

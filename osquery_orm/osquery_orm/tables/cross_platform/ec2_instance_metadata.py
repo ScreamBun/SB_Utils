@@ -11,34 +11,20 @@ class Ec2InstanceMetadata(BaseModel):
     Examples:
         select * from ec2_instance_metadata
     """
-    # EC2 instance ID
-    instance_id = TextField()
-    # EC2 instance type
-    instance_type = TextField()
-    # Hardware architecture of this EC2 instance
-    architecture = TextField()
-    # AWS region in which this instance launched
-    region = TextField()
-    # Availability zone in which this instance launched
-    availability_zone = TextField()
-    # Private IPv4 DNS hostname of the first interface of this instance
-    local_hostname = TextField()
-    # Private IPv4 address of the first interface of this instance
-    local_ipv4 = TextField()
-    # MAC address for the first network interface of this EC2 instance
-    mac = TextField()
-    # Comma separated list of security group names
-    security_groups = TextField()
-    # If there is an IAM role associated with the instance, contains instance profile ARN
-    iam_arn = TextField()
-    # AMI ID used to launch this EC2 instance
-    ami_id = TextField()
-    # ID of the reservation
-    reservation_id = TextField()
-    # AWS account ID which owns this EC2 instance
-    account_id = TextField()
-    # SSH public key. Only available if supplied at instance launch time
-    ssh_public_key = TextField()
+    instance_id = TextField(help_text="EC2 instance ID")
+    instance_type = TextField(help_text="EC2 instance type")
+    architecture = TextField(help_text="Hardware architecture of this EC2 instance")
+    region = TextField(help_text="AWS region in which this instance launched")
+    availability_zone = TextField(help_text="Availability zone in which this instance launched")
+    local_hostname = TextField(help_text="Private IPv4 DNS hostname of the first interface of this instance")
+    local_ipv4 = TextField(help_text="Private IPv4 address of the first interface of this instance")
+    mac = TextField(help_text="MAC address for the first network interface of this EC2 instance")
+    security_groups = TextField(help_text="Comma separated list of security group names")
+    iam_arn = TextField(help_text="If there is an IAM role associated with the instance, contains instance profile ARN")
+    ami_id = TextField(help_text="AMI ID used to launch this EC2 instance")
+    reservation_id = TextField(help_text="ID of the reservation")
+    account_id = TextField(help_text="AWS account ID which owns this EC2 instance")
+    ssh_public_key = TextField(help_text="SSH public key. Only available if supplied at instance launch time")
 
     class Meta:
         table_name = "ec2_instance_metadata"

@@ -9,14 +9,10 @@ class KernelInfo(BaseModel):
     """
     Basic active kernel information.
     """
-    # Kernel version
-    version = TextField()
-    # Kernel arguments
-    arguments = TextField()
-    # Kernel path
-    path = TextField()
-    # Kernel device identifier
-    device = TextField()
+    version = TextField(help_text="Kernel version")
+    arguments = TextField(help_text="Kernel arguments")
+    path = TextField(help_text="Kernel path")
+    device = TextField(help_text="Kernel device identifier")
 
     class Meta:
         table_name = "kernel_info"

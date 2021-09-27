@@ -9,32 +9,19 @@ class Asl(BaseModel):
     """
     Queries the Apple System Log data structure for system events.
     """
-    # Unix timestamp.  Set automatically
-    time = IntegerField()  # {'additional': True}
-    # Nanosecond time.
-    time_nano_sec = IntegerField()  # {'additional': True}
-    # Sender's address (set by the server).
-    host = TextField()  # {'additional': True}
-    # Sender's identification string.  Default is process name.
-    sender = TextField()  # {'additional': True}
-    # Sender's facility.  Default is 'user'.
-    facility = TextField()  # {'additional': True}
-    # Sending process ID encoded as a string.  Set automatically.
-    pid = IntegerField()  # {'additional': True}
-    # GID that sent the log message (set by the server).
-    gid = BigIntegerField()  # {'additional': True}
-    # UID that sent the log message (set by the server).
-    uid = BigIntegerField()  # {'additional': True}
-    # Log level number.  See levels in asl.h.
-    level = IntegerField()  # {'additional': True}
-    # Message text.
-    message = TextField()  # {'additional': True}
-    # Reference PID for messages proxied by launchd
-    ref_pid = IntegerField()  # {'additional': True}
-    # Reference process for messages proxied by launchd
-    ref_proc = TextField()  # {'additional': True}
-    # Extra columns, in JSON format. Queries against this column are performed entirely in SQLite, so do not benefit from efficient querying via asl.h.
-    extra = TextField()
+    time = IntegerField(help_text="Unix timestamp.  Set automatically")  # {'additional': True}
+    time_nano_sec = IntegerField(help_text="Nanosecond time.")  # {'additional': True}
+    host = TextField(help_text="Sender\'s address (set by the server).")  # {'additional': True}
+    sender = TextField(help_text="Sender\'s identification string.  Default is process name.")  # {'additional': True}
+    facility = TextField(help_text="Sender\'s facility.  Default is \'user\'.")  # {'additional': True}
+    pid = IntegerField(help_text="Sending process ID encoded as a string.  Set automatically.")  # {'additional': True}
+    gid = BigIntegerField(help_text="GID that sent the log message (set by the server).")  # {'additional': True}
+    uid = BigIntegerField(help_text="UID that sent the log message (set by the server).")  # {'additional': True}
+    level = IntegerField(help_text="Log level number.  See levels in asl.h.")  # {'additional': True}
+    message = TextField(help_text="Message text.")  # {'additional': True}
+    ref_pid = IntegerField(help_text="Reference PID for messages proxied by launchd")  # {'additional': True}
+    ref_proc = TextField(help_text="Reference process for messages proxied by launchd")  # {'additional': True}
+    extra = TextField(help_text="Extra columns, in JSON format. Queries against this column are performed entirely in SQLite, so do not benefit from efficient querying via asl.h.")
 
     class Meta:
         table_name = "asl"

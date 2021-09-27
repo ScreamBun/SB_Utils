@@ -9,28 +9,17 @@ class Mounts(BaseModel):
     """
     System mounted devices and filesystems (not process specific).
     """
-    # Mounted device
-    device = TextField()
-    # Mounted device alias
-    device_alias = TextField()
-    # Mounted device path
-    path = TextField()
-    # Mounted device type
-    type = TextField()
-    # Block size in bytes
-    blocks_size = BigIntegerField()
-    # Mounted device used blocks
-    blocks = BigIntegerField()
-    # Mounted device free blocks
-    blocks_free = BigIntegerField()
-    # Mounted device available blocks
-    blocks_available = BigIntegerField()
-    # Mounted device used inodes
-    inodes = BigIntegerField()
-    # Mounted device free inodes
-    inodes_free = BigIntegerField()
-    # Mounted device flags
-    flags = TextField()
+    device = TextField(help_text="Mounted device")
+    device_alias = TextField(help_text="Mounted device alias")
+    path = TextField(help_text="Mounted device path")
+    type = TextField(help_text="Mounted device type")
+    blocks_size = BigIntegerField(help_text="Block size in bytes")
+    blocks = BigIntegerField(help_text="Mounted device used blocks")
+    blocks_free = BigIntegerField(help_text="Mounted device free blocks")
+    blocks_available = BigIntegerField(help_text="Mounted device available blocks")
+    inodes = BigIntegerField(help_text="Mounted device used inodes")
+    inodes_free = BigIntegerField(help_text="Mounted device free inodes")
+    flags = TextField(help_text="Mounted device flags")
 
     class Meta:
         table_name = "mounts"

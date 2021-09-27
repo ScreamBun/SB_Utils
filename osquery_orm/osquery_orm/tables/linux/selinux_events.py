@@ -9,16 +9,11 @@ class SelinuxEvents(BaseModel):
     """
     Track SELinux events.
     """
-    # Event type
-    type = TextField()
-    # Message
-    message = TextField()
-    # Time of execution in UNIX time
-    time = BigIntegerField()
-    # Time of execution in system uptime
-    uptime = BigIntegerField()
-    # Event ID
-    eid = TextField()  # {'hidden': True}
+    type = TextField(help_text="Event type")
+    message = TextField(help_text="Message")
+    time = BigIntegerField(help_text="Time of execution in UNIX time")
+    uptime = BigIntegerField(help_text="Time of execution in system uptime")
+    eid = TextField(help_text="Event ID")  # {'hidden': True}
 
     class Meta:
         table_name = "selinux_events"

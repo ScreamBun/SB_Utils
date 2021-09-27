@@ -9,16 +9,11 @@ class EventTaps(BaseModel):
     """
     Returns information about installed event taps.
     """
-    # Is the Event Tap enabled
-    enabled = IntegerField()
-    # Unique ID for the Tap
-    event_tap_id = IntegerField()
-    # The mask that identifies the set of events to be observed.
-    event_tapped = TextField()
-    # The process ID of the target application
-    process_being_tapped = IntegerField()
-    # The process ID of the application that created the event tap.
-    tapping_process = IntegerField()
+    enabled = IntegerField(help_text="Is the Event Tap enabled")
+    event_tap_id = IntegerField(help_text="Unique ID for the Tap")
+    event_tapped = TextField(help_text="The mask that identifies the set of events to be observed.")
+    process_being_tapped = IntegerField(help_text="The process ID of the target application")
+    tapping_process = IntegerField(help_text="The process ID of the application that created the event tap.")
 
     class Meta:
         table_name = "event_taps"

@@ -11,12 +11,9 @@ class DnsCache(BaseModel):
     Examples:
         select * from dns_cache
     """
-    # DNS record name
-    name = TextField()
-    # DNS record type
-    type = TextField()
-    # DNS record flags
-    flags = IntegerField()
+    name = TextField(help_text="DNS record name")
+    type = TextField(help_text="DNS record type")
+    flags = IntegerField(help_text="DNS record flags")
 
     class Meta:
         table_name = "dns_cache"

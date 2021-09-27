@@ -2,7 +2,7 @@
 OSQuery ssh_configs ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import BigIntegerField, ForeignKeyField, TextField
+from peewee import ForeignKeyField, BigIntegerField, TextField
 from .users import Users
 
 
@@ -12,14 +12,10 @@ class SshConfigs(BaseModel):
     Examples:
         select * from users join ssh_configs using (uid)
     """
-    # The local owner of the ssh_config file
-    uid = BigIntegerField()  # {'additional': True}
-    # The host or match block
-    block = TextField()
-    # The option and value
-    option = TextField()
-    # Path to the ssh_config file
-    ssh_config_file = TextField()
+    uid = BigIntegerField(help_text="The local owner of the ssh_config file")  # {'additional': True}
+    block = TextField(help_text="The host or match block")
+    option = TextField(help_text="The option and value")
+    ssh_config_file = TextField(help_text="Path to the ssh_config file")
     ssh_configs = ForeignKeyField(Users, backref='uid')
 
     class Meta:

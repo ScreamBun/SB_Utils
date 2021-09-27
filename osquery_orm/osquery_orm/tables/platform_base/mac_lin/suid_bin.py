@@ -9,14 +9,10 @@ class SuidBin(BaseModel):
     """
     suid binaries in common locations.
     """
-    # Binary path
-    path = TextField()
-    # Binary owner username
-    username = TextField()
-    # Binary owner group
-    groupname = TextField()
-    # Binary permissions
-    permissions = TextField()
+    path = TextField(help_text="Binary path")
+    username = TextField(help_text="Binary owner username")
+    groupname = TextField(help_text="Binary owner group")
+    permissions = TextField(help_text="Binary permissions")
 
     class Meta:
         table_name = "suid_bin"

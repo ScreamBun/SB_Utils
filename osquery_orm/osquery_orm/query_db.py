@@ -1,18 +1,17 @@
 import osquery
 
 from types import MethodType
-from typing import List, Sequence, Union
+from typing import Union
 from osquery.extension_client import Client
-from peewee import Database, SQL, ColumnMetadata, ForeignKeyMetadata, IndexMetadata, fn, simple_date_time
+from peewee import Database, SQL, ColumnMetadata, ForeignKeyMetadata, IndexMetadata, ProgrammingError, fn, simple_date_time
 from .orm.cursor import OSQueryCursor
-from .tables import Compatibility, Tables
+from .tables import Tables
 
 
 class OsQueryDatabase(Database):
-    _compatibility: List[Compatibility] = []
     tables: Tables
 
-    def __init__(self, database, comp: Sequence[Compatibility], *args, **kwargs):
+    def __init__(self, database, *args, **kwargs):
         """
         For an installed and running system osqueryd, this is:
            Linux and macOS: /var/osquery/osquery.em
@@ -23,15 +22,8 @@ class OsQueryDatabase(Database):
         :param kwargs:
         :return:
         """
-        super(OsQueryDatabase, self).__init__(database, *args, **kwargs)
-        self._aggregates = {}
-        self._collations = {}
-        self._functions = {}
-        self._window_functions = {}
+        super().__init__(database, *args, **kwargs)
         self._table_functions = []
-        self._extensions = set()
-        # Custom
-        self._compatibility = list(comp)
         self.tables = Tables(self)
 
     def _connect(self):
@@ -47,22 +39,20 @@ class OsQueryDatabase(Database):
             if self._table_functions:
                 for table_function in self._table_functions:
                     table_function.register(conn)
-        except:
-            raise
+        except Exception as err:
+            raise ProgrammingError from err
 
-        def cursor(self, commit=None):
+        def cursor(self, commit=None):  # pylint: disable=W0613
             return type('Cursor', (OSQueryCursor,), {'_connection': conn})(commit)
 
         conn.cursor = MethodType(cursor, conn)
         return conn
 
     def get_tables(self, schema=None):
-        table = self.tables.cross_platform.OsqueryRegistry
+        table = self.tables._cross_platform.OsqueryRegistry
+        # pylint: disable=C0121
         rslts = table.select(table.name).where(table.active == True).where(table.internal == False).where(table.registry == 'table')
-        tables = []
-        for row in rslts:
-            tables.append(row.name)
-        return tuple(tables)
+        return tuple(r.name for r in rslts)
 
     def get_indexes(self, table, schema=None):
         schema = schema or 'main'
@@ -110,24 +100,24 @@ class OsQueryDatabase(Database):
         if action and action not in ('nothing', 'update'):
             return SQL(f'INSERT OR {on_conflict._action.upper()}')
 
-    def conflict_update(self, oc, query):
+    def conflict_update(self, on_conflict, query):
         # Sqlite prior to 3.24.0 does not support Postgres-style upsert.
-        if self.server_version < (3, 24, 0) and any((oc._preserve, oc._update, oc._where, oc._conflict_target, oc._conflict_constraint)):
+        if self.server_version < (3, 24, 0) and any((on_conflict._preserve, on_conflict._update, on_conflict._where, on_conflict._conflict_target, on_conflict._conflict_constraint)):
             raise ValueError('SQLite does not support specifying which values to preserve or update.')
 
-        action = oc._action.lower() if oc._action else ''
+        action = on_conflict._action.lower() if on_conflict._action else ''
         if action and action not in ('nothing', 'update', ''):
             return
 
         if action == 'nothing':
             return SQL('ON CONFLICT DO NOTHING')
-        if not oc._update and not oc._preserve:
+        if not on_conflict._update and not on_conflict._preserve:
             raise ValueError('If you are not performing any updates (or preserving any INSERTed values), then the conflict resolution action should be set to "NOTHING".')
-        if oc._conflict_constraint:
+        if on_conflict._conflict_constraint:
             raise ValueError('SQLite does not support specifying named constraints for conflict resolution.')
-        if not oc._conflict_target:
+        if not on_conflict._conflict_target:
             raise ValueError('SQLite requires that a conflict target be specified when doing an upsert.')
-        return self._build_on_conflict_update(oc, query)
+        return self._build_on_conflict_update(on_conflict, query)
 
     def extract_date(self, date_part, date_field):
         return fn.date_part(date_part, date_field, python_value=int)

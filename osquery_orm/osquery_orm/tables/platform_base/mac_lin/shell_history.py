@@ -2,7 +2,7 @@
 OSQuery shell_history ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import IntegerField, BigIntegerField, ForeignKeyField, TextField
+from peewee import ForeignKeyField, IntegerField, BigIntegerField, TextField
 from .users import Users
 
 
@@ -12,14 +12,10 @@ class ShellHistory(BaseModel):
     Examples:
         select * from users join shell_history using (uid)
     """
-    # Shell history owner
-    uid = BigIntegerField()  # {'additional': True}
-    # Entry timestamp. It could be absent, default value is 0.
-    time = IntegerField()
-    # Unparsed date/line/command history line
-    command = TextField()
-    # Path to the .*_history for this user
-    history_file = TextField()
+    uid = BigIntegerField(help_text="Shell history owner")  # {'additional': True}
+    time = IntegerField(help_text="Entry timestamp. It could be absent, default value is 0.")
+    command = TextField(help_text="Unparsed date/line/command history line")
+    history_file = TextField(help_text="Path to the .*_history for this user")
     shell_history = ForeignKeyField(Users, backref='uid')
 
     class Meta:

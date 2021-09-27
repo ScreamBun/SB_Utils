@@ -9,8 +9,7 @@ class AlfExplicitAuths(BaseModel):
     """
     ALF services explicitly allowed to perform networking.
     """
-    # Process name explicitly allowed
-    process = TextField()
+    process = TextField(help_text="Process name explicitly allowed")
 
     class Meta:
         table_name = "alf_explicit_auths"

@@ -9,20 +9,13 @@ class KeychainItems(BaseModel):
     """
     Generic details about keychain items.
     """
-    # Generic item name
-    label = TextField()
-    # Optional item description
-    description = TextField()
-    # Optional keychain comment
-    comment = TextField()
-    # Data item was created
-    created = TextField()
-    # Date of last modification
-    modified = TextField()
-    # Keychain item type (class)
-    type = TextField()
-    # Path to keychain containing item
-    path = TextField()  # {'additional': True}
+    label = TextField(help_text="Generic item name")
+    description = TextField(help_text="Optional item description")
+    comment = TextField(help_text="Optional keychain comment")
+    created = TextField(help_text="Data item was created")
+    modified = TextField(help_text="Date of last modification")
+    type = TextField(help_text="Keychain item type (class)")
+    path = TextField(help_text="Path to keychain containing item")  # {'additional': True}
 
     class Meta:
         table_name = "keychain_items"

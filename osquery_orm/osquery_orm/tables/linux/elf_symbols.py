@@ -11,22 +11,14 @@ class ElfSymbols(BaseModel):
     Examples:
         select * from elf_symbols where path = '/usr/bin/grep'
     """
-    # Symbol name
-    name = TextField()
-    # Symbol address (value)
-    addr = IntegerField()
-    # Size of object
-    size = IntegerField()
-    # Symbol type
-    type = TextField()
-    # Binding type
-    binding = TextField()
-    # Section table index
-    offset = IntegerField()
-    # Table name containing symbol
-    table = TextField()
-    # Path to ELF file
-    path = TextField()  # {'required': True, 'index': True}
+    name = TextField(help_text="Symbol name")
+    addr = IntegerField(help_text="Symbol address (value)")
+    size = IntegerField(help_text="Size of object")
+    type = TextField(help_text="Symbol type")
+    binding = TextField(help_text="Binding type")
+    offset = IntegerField(help_text="Section table index")
+    table = TextField(help_text="Table name containing symbol")
+    path = TextField(help_text="Path to ELF file")  # {'required': True, 'index': True}
 
     class Meta:
         table_name = "elf_symbols"

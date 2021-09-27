@@ -11,26 +11,16 @@ class Shadow(BaseModel):
     Examples:
         select * from shadow where username = 'root'
     """
-    # Password status
-    password_status = TextField()
-    # Password hashing algorithm
-    hash_alg = TextField()
-    # Date of last password change (starting from UNIX epoch date)
-    last_change = BigIntegerField()
-    # Minimal number of days between password changes
-    min = BigIntegerField()
-    # Maximum number of days between password changes
-    max = BigIntegerField()
-    # Number of days before password expires to warn user about it
-    warning = BigIntegerField()
-    # Number of days after password expires until account is blocked
-    inactive = BigIntegerField()
-    # Number of days since UNIX epoch date until account is disabled
-    expire = BigIntegerField()
-    # Reserved
-    flag = BigIntegerField()
-    # Username
-    username = TextField()  # {'index': True}
+    password_status = TextField(help_text="Password status")
+    hash_alg = TextField(help_text="Password hashing algorithm")
+    last_change = BigIntegerField(help_text="Date of last password change (starting from UNIX epoch date)")
+    min = BigIntegerField(help_text="Minimal number of days between password changes")
+    max = BigIntegerField(help_text="Maximum number of days between password changes")
+    warning = BigIntegerField(help_text="Number of days before password expires to warn user about it")
+    inactive = BigIntegerField(help_text="Number of days after password expires until account is blocked")
+    expire = BigIntegerField(help_text="Number of days since UNIX epoch date until account is disabled")
+    flag = BigIntegerField(help_text="Reserved")
+    username = TextField(help_text="Username")  # {'index': True}
 
     class Meta:
         table_name = "shadow"

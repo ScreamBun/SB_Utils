@@ -9,50 +9,28 @@ class BpfSocketEvents(BaseModel):
     """
     Track network socket opens and closes.
     """
-    # Thread ID
-    tid = BigIntegerField()
-    # Process ID
-    pid = BigIntegerField()
-    # Parent process ID
-    parent = BigIntegerField()
-    # User ID
-    uid = BigIntegerField()
-    # Group ID
-    gid = BigIntegerField()
-    # Cgroup ID
-    cid = IntegerField()
-    # Exit code of the system call
-    exit_code = TextField()
-    # Set to 1 if one or more buffers could not be captured
-    probe_error = IntegerField()
-    # System call name
-    syscall = TextField()
-    # Path of executed file
-    path = TextField()
-    # The file description for the process socket
-    fd = TextField()
-    # The Internet protocol family ID
-    family = IntegerField()
-    # The socket type
-    type = IntegerField()
-    # The network protocol ID
-    protocol = IntegerField()
-    # Local address associated with socket
-    local_address = TextField()
-    # Remote address associated with socket
-    remote_address = TextField()
-    # Local network protocol port number
-    local_port = IntegerField()
-    # Remote network protocol port number
-    remote_port = IntegerField()
-    # How much time was spent inside the syscall (nsecs)
-    duration = IntegerField()
-    # The nsecs uptime timestamp as obtained from BPF
-    ntime = TextField()
-    # Time of execution in UNIX time
-    time = BigIntegerField()  # {'hidden': True}
-    # Event ID
-    eid = IntegerField()  # {'hidden': True}
+    tid = BigIntegerField(help_text="Thread ID")
+    pid = BigIntegerField(help_text="Process ID")
+    parent = BigIntegerField(help_text="Parent process ID")
+    uid = BigIntegerField(help_text="User ID")
+    gid = BigIntegerField(help_text="Group ID")
+    cid = IntegerField(help_text="Cgroup ID")
+    exit_code = TextField(help_text="Exit code of the system call")
+    probe_error = IntegerField(help_text="Set to 1 if one or more buffers could not be captured")
+    syscall = TextField(help_text="System call name")
+    path = TextField(help_text="Path of executed file")
+    fd = TextField(help_text="The file description for the process socket")
+    family = IntegerField(help_text="The Internet protocol family ID")
+    type = IntegerField(help_text="The socket type")
+    protocol = IntegerField(help_text="The network protocol ID")
+    local_address = TextField(help_text="Local address associated with socket")
+    remote_address = TextField(help_text="Remote address associated with socket")
+    local_port = IntegerField(help_text="Local network protocol port number")
+    remote_port = IntegerField(help_text="Remote network protocol port number")
+    duration = IntegerField(help_text="How much time was spent inside the syscall (nsecs)")
+    ntime = TextField(help_text="The nsecs uptime timestamp as obtained from BPF")
+    time = BigIntegerField(help_text="Time of execution in UNIX time")  # {'hidden': True}
+    eid = IntegerField(help_text="Event ID")  # {'hidden': True}
 
     class Meta:
         table_name = "bpf_socket_events"

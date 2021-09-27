@@ -9,16 +9,11 @@ class PortageKeywords(BaseModel):
     """
     A summary about portage configurations like keywords, mask and unmask.
     """
-    # Package name
-    package = TextField()
-    # The version which are affected by the use flags, empty means all
-    version = TextField()
-    # The keyword applied to the package
-    keyword = TextField()
-    # If the package is masked
-    mask = IntegerField()
-    # If the package is unmasked
-    unmask = IntegerField()
+    package = TextField(help_text="Package name")
+    version = TextField(help_text="The version which are affected by the use flags, empty means all")
+    keyword = TextField(help_text="The keyword applied to the package")
+    mask = IntegerField(help_text="If the package is masked")
+    unmask = IntegerField(help_text="If the package is unmasked")
 
     class Meta:
         table_name = "portage_keywords"

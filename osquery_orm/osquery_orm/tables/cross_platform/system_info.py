@@ -9,44 +9,25 @@ class SystemInfo(BaseModel):
     """
     System information for identification.
     """
-    # Network hostname including domain
-    hostname = TextField()
-    # Unique ID provided by the system
-    uuid = TextField()
-    # CPU type
-    cpu_type = TextField()
-    # CPU subtype
-    cpu_subtype = TextField()
-    # CPU brand string, contains vendor and model
-    cpu_brand = TextField()
-    # Number of physical CPU cores in to the system
-    cpu_physical_cores = IntegerField()
-    # Number of logical CPU cores available to the system
-    cpu_logical_cores = IntegerField()
-    # Microcode version
-    cpu_microcode = TextField()
-    # Total physical memory in bytes
-    physical_memory = BigIntegerField()
-    # Hardware vendor
-    hardware_vendor = TextField()
-    # Hardware model
-    hardware_model = TextField()
-    # Hardware version
-    hardware_version = TextField()
-    # Device serial number
-    hardware_serial = TextField()
-    # Board vendor
-    board_vendor = TextField()
-    # Board model
-    board_model = TextField()
-    # Board version
-    board_version = TextField()
-    # Board serial number
-    board_serial = TextField()
-    # Friendly computer name (optional)
-    computer_name = TextField()
-    # Local hostname (optional)
-    local_hostname = TextField()
+    hostname = TextField(help_text="Network hostname including domain")
+    uuid = TextField(help_text="Unique ID provided by the system")
+    cpu_type = TextField(help_text="CPU type")
+    cpu_subtype = TextField(help_text="CPU subtype")
+    cpu_brand = TextField(help_text="CPU brand string, contains vendor and model")
+    cpu_physical_cores = IntegerField(help_text="Number of physical CPU cores in to the system")
+    cpu_logical_cores = IntegerField(help_text="Number of logical CPU cores available to the system")
+    cpu_microcode = TextField(help_text="Microcode version")
+    physical_memory = BigIntegerField(help_text="Total physical memory in bytes")
+    hardware_vendor = TextField(help_text="Hardware vendor")
+    hardware_model = TextField(help_text="Hardware model")
+    hardware_version = TextField(help_text="Hardware version")
+    hardware_serial = TextField(help_text="Device serial number")
+    board_vendor = TextField(help_text="Board vendor")
+    board_model = TextField(help_text="Board model")
+    board_version = TextField(help_text="Board version")
+    board_serial = TextField(help_text="Board serial number")
+    computer_name = TextField(help_text="Friendly computer name (optional)")
+    local_hostname = TextField(help_text="Local hostname (optional)")
 
     class Meta:
         table_name = "system_info"
