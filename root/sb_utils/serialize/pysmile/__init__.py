@@ -8,8 +8,8 @@ from .decode import decode, SMILEDecodeError
 __author__ = 'Jonathan Hosmer'
 
 __all__ = [
-    'encode',
-    'decode',
-    'SMILEEncodeError',
     'SMILEDecodeError',
+    'SMILEEncodeError',
+    'decode',
+    'encode'
 ]

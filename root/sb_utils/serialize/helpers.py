@@ -128,11 +128,11 @@ def vpack_encode(msg: dict) -> bytes:
         msg_tmp.close()
 
         with tempfile.NamedTemporaryFile(delete=True) as enc_tmp:
-            process = Popen(["json-to-vpack", msg_tmp.name, enc_tmp.name], stdout=PIPE, stderr=PIPE)
-            _, _ = process.communicate()
+            with Popen(["json-to-vpack", msg_tmp.name, enc_tmp.name], stdout=PIPE, stderr=PIPE) as process:
+                _, _ = process.communicate()
 
-            with open(enc_tmp.name, "rb") as f:
-                return f.read()
+                with open(enc_tmp.name, "rb") as f:
+                    return f.read()
 
 
 def vpack_decode(msg: bytes) -> dict:
@@ -143,8 +143,8 @@ def vpack_decode(msg: bytes) -> dict:
         msg_tmp.close()
 
         with tempfile.NamedTemporaryFile(delete=True) as dec_tmp:
-            process = Popen(["vpack-to-json", msg_tmp.name, dec_tmp.name], stdout=PIPE, stderr=PIPE)
-            _, _ = process.communicate()
+            with Popen(["vpack-to-json", msg_tmp.name, dec_tmp.name], stdout=PIPE, stderr=PIPE) as process:
+                _, _ = process.communicate()
 
-            with open(dec_tmp.name, "rb") as f:
-                return json.load(f)
+                with open(dec_tmp.name, "rb") as f:
+                    return json.load(f)
