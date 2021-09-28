@@ -2,7 +2,7 @@
 OSQuery apps ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import DoubleField, TextField
+from peewee import TextField, DoubleField
 
 
 class Apps(BaseModel):

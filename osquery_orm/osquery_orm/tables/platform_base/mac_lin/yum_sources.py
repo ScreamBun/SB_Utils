@@ -2,7 +2,7 @@
 OSQuery yum_sources ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import TextField
+from peewee import TextField, IntegerField
 
 
 class YumSources(BaseModel):
@@ -17,3 +17,8 @@ class YumSources(BaseModel):
 
     class Meta:
         table_name = "yum_sources"
+
+
+# OS specific properties for Linux
+class Linux_YumSources(YumSources):
+    pid_with_namespace = IntegerField(help_text="Pids that contain a namespace")  # {'additional': True, 'hidden': True}

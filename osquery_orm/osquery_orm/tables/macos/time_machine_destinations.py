@@ -2,7 +2,7 @@
 OSQuery time_machine_destinations ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import IntegerField, TextField
+from peewee import TextField, IntegerField
 
 
 class TimeMachineDestinations(BaseModel):

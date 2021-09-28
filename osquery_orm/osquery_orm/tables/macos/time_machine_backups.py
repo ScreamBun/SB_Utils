@@ -2,7 +2,7 @@
 OSQuery time_machine_backups ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import IntegerField, TextField
+from peewee import TextField, IntegerField
 
 
 class TimeMachineBackups(BaseModel):

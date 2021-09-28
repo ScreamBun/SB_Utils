@@ -2,7 +2,7 @@
 OSQuery disk_encryption ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import ForeignKeyField, IntegerField, TextField
+from peewee import ForeignKeyField, TextField, IntegerField
 from .block_devices import BlockDevices
 
 
@@ -10,7 +10,7 @@ class DiskEncryption(BaseModel):
     """
     Disk encryption status and information.
     """
-    name = TextField(help_text="Disk name")
+    name = TextField(help_text="Disk name")  # {'index': True}
     uuid = TextField(help_text="Disk Universally Unique Identifier")
     encrypted = IntegerField(help_text="1 If encrypted: true (disk is encrypted), else 0")
     type = TextField(help_text="Description of cipher type and mode if available")

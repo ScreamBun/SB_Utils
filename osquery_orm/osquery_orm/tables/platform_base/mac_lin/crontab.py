@@ -2,7 +2,7 @@
 OSQuery crontab ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import TextField
+from peewee import TextField, IntegerField
 
 
 class Crontab(BaseModel):
@@ -20,3 +20,8 @@ class Crontab(BaseModel):
 
     class Meta:
         table_name = "crontab"
+
+
+# OS specific properties for Linux
+class Linux_Crontab(Crontab):
+    pid_with_namespace = IntegerField(help_text="Pids that contain a namespace")  # {'additional': True, 'hidden': True}

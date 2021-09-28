@@ -2,7 +2,7 @@
 OSQuery hash ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import IntegerField, TextField
+from peewee import TextField, IntegerField
 
 
 class Hash(BaseModel):

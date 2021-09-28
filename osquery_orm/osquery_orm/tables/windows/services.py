@@ -2,7 +2,7 @@
 OSQuery services ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import IntegerField, TextField
+from peewee import TextField, IntegerField
 
 
 class Services(BaseModel):
@@ -22,7 +22,7 @@ class Services(BaseModel):
     path = TextField(help_text="Path to Service Executable")
     module_path = TextField(help_text="Path to ServiceDll")
     description = TextField(help_text="Service Description")
-    user_account = TextField(help_text="The name of the account that the service process will be logged on as when it runs. This name can be of the form Domain\serName. If the account belongs to the built-in domain, the name can be of the form .\serName.")
+    user_account = TextField(help_text="The name of the account that the service process will be logged on as when it runs. This name can be of the form Domain\\UserName. If the account belongs to the built-in domain, the name can be of the form .\\UserName.")
 
     class Meta:
         table_name = "services"

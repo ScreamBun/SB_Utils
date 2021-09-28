@@ -2,7 +2,7 @@
 OSQuery authorized_keys ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import ForeignKeyField, BigIntegerField, TextField
+from peewee import ForeignKeyField, BigIntegerField, TextField, IntegerField
 from .users import Users
 
 
@@ -20,3 +20,8 @@ class AuthorizedKeys(BaseModel):
 
     class Meta:
         table_name = "authorized_keys"
+
+
+# OS specific properties for Linux
+class Linux_AuthorizedKeys(AuthorizedKeys):
+    pid_with_namespace = IntegerField(help_text="Pids that contain a namespace")  # {'additional': True, 'hidden': True}

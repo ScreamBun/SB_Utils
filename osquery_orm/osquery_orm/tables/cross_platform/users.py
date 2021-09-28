@@ -2,7 +2,7 @@
 OSQuery users ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import IntegerField, BigIntegerField, TextField
+from peewee import BigIntegerField, TextField, IntegerField
 
 
 class Users(BaseModel):
@@ -35,3 +35,8 @@ class Windows_Users(Users):
 # OS specific properties for MacOS
 class MacOS_Users(Users):
     is_hidden = IntegerField(help_text="IsHidden attribute set in OpenDirectory")
+
+
+# OS specific properties for Linux
+class Linux_Users(Users):
+    pid_with_namespace = IntegerField(help_text="Pids that contain a namespace")  # {'additional': True, 'hidden': True}

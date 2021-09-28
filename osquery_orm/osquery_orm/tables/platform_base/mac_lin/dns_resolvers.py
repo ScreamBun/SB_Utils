@@ -17,3 +17,8 @@ class DnsResolvers(BaseModel):
 
     class Meta:
         table_name = "dns_resolvers"
+
+
+# OS specific properties for Linux
+class Linux_DnsResolvers(DnsResolvers):
+    pid_with_namespace = IntegerField(help_text="Pids that contain a namespace")  # {'additional': True, 'hidden': True}

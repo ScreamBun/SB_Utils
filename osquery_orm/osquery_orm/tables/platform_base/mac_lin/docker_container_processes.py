@@ -2,7 +2,7 @@
 OSQuery docker_container_processes ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import DoubleField, IntegerField, BigIntegerField, TextField
+from peewee import BigIntegerField, TextField, DoubleField, IntegerField
 
 
 class DockerContainerProcesses(BaseModel):

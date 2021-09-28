@@ -2,7 +2,7 @@
 OSQuery lxd_images ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import IntegerField, BigIntegerField, TextField
+from peewee import BigIntegerField, TextField, IntegerField
 
 
 class LxdImages(BaseModel):

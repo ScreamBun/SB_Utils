@@ -2,7 +2,7 @@
 OSQuery firefox_addons ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import ForeignKeyField, IntegerField, BigIntegerField, TextField
+from peewee import ForeignKeyField, BigIntegerField, TextField, IntegerField
 from .users import Users
 
 

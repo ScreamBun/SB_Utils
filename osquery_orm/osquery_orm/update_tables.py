@@ -183,7 +183,7 @@ def doc2table(doc: str) -> dict:
         try:
             cc = compile(spec, doc, 'exec')
             eval(cc, eval_env)
-            attrs["description"] = f'''"""\n{attrs["description"]}\n"""''' if attrs["description"] else ""
+            attrs["description"] = re.sub("\t", "    ", f'''"""\n\t{attrs["description"]}\n\t"""''' if attrs["description"] else "")
             attrs["general_imports"] = ("\n".join(attrs["general_imports"]) + "\n") if attrs["general_imports"] else ""
             attrs["field_imports"] = attrs["field_imports"] - {"int", "str"}
             attrs["field_imports"] = f"from peewee import {', '.join(attrs['field_imports'])}\n" if attrs["field_imports"] else ""

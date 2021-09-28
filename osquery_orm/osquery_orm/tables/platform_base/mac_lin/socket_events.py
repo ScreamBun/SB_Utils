@@ -2,7 +2,7 @@
 OSQuery socket_events ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import IntegerField, BigIntegerField, TextField
+from peewee import BigIntegerField, TextField, IntegerField
 
 
 class SocketEvents(BaseModel):
@@ -14,7 +14,7 @@ class SocketEvents(BaseModel):
     path = TextField(help_text="Path of executed file")
     fd = TextField(help_text="The file description for the process socket")
     auid = BigIntegerField(help_text="Audit User ID")
-    success = IntegerField(help_text="The socket open attempt status")
+    status = TextField(help_text="Either \'succeeded\', \'failed\', \'in_progress\' (connect() on non-blocking socket) or \'no_client\' (null accept() on non-blocking socket)")
     family = IntegerField(help_text="The Internet protocol family ID")
     protocol = IntegerField(help_text="The network protocol ID")  # {'hidden': True}
     local_address = TextField(help_text="Local address associated with socket")
@@ -25,6 +25,7 @@ class SocketEvents(BaseModel):
     time = BigIntegerField(help_text="Time of execution in UNIX time")
     uptime = BigIntegerField(help_text="Time of execution in system uptime")
     eid = TextField(help_text="Event ID")  # {'hidden': True}
+    success = IntegerField(help_text="Deprecated. Use the \'status\' column instead")  # {'hidden': True}
 
     class Meta:
         table_name = "socket_events"

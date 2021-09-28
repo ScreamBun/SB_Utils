@@ -2,7 +2,7 @@
 OSQuery cpu_time ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import IntegerField, BigIntegerField
+from peewee import BigIntegerField, IntegerField
 
 
 class CpuTime(BaseModel):

@@ -2,7 +2,7 @@
 OSQuery groups ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import IntegerField, BigIntegerField, TextField
+from peewee import BigIntegerField, TextField, IntegerField
 
 
 class Groups(BaseModel):
@@ -28,3 +28,8 @@ class Windows_Groups(Groups):
 # OS specific properties for MacOS
 class MacOS_Groups(Groups):
     is_hidden = IntegerField(help_text="IsHidden attribute set in OpenDirectory")
+
+
+# OS specific properties for Linux
+class Linux_Groups(Groups):
+    pid_with_namespace = IntegerField(help_text="Pids that contain a namespace")  # {'additional': True, 'hidden': True}

@@ -2,7 +2,7 @@
 OSQuery etc_hosts ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import TextField
+from peewee import TextField, IntegerField
 
 
 class EtcHosts(BaseModel):
@@ -14,3 +14,8 @@ class EtcHosts(BaseModel):
 
     class Meta:
         table_name = "etc_hosts"
+
+
+# OS specific properties for Linux
+class Linux_EtcHosts(EtcHosts):
+    pid_with_namespace = IntegerField(help_text="Pids that contain a namespace")  # {'additional': True, 'hidden': True}
