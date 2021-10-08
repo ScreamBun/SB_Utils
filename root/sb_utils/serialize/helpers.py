@@ -122,7 +122,7 @@ def xml_decode(msg: str) -> dict:
 # Message Conversion helpers for VelocityPack (VPack)
 def vpack_encode(msg: dict) -> bytes:
     with tempfile.NamedTemporaryFile(delete=True) as msg_tmp:
-        with open(msg_tmp.name, "w") as f:
+        with open(msg_tmp.name, "w", encoding="UTF-8") as f:
             f.write(json.dumps(msg))
         os.chmod(msg_tmp.name, 0o0777)
         msg_tmp.close()
@@ -137,7 +137,7 @@ def vpack_encode(msg: dict) -> bytes:
 
 def vpack_decode(msg: bytes) -> dict:
     with tempfile.NamedTemporaryFile(delete=True) as msg_tmp:
-        with open(msg_tmp.name, "wb") as f:
+        with open(msg_tmp.name, "wb", encoding="UTF-8") as f:
             f.write(msg)
         os.chmod(msg_tmp.name, 0o0777)
         msg_tmp.close()

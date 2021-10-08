@@ -43,7 +43,7 @@ def _bytestr_format_dict(bytestr, value_dict):
             key = groups["mapping_key"]
             value = value_dict[key]
         if value is None:
-            raise ValueError("Unsupported conversion_type: {0}".format(groups["conversion_type"]))
+            raise ValueError(f"Unsupported conversion_type: {groups['conversion_type']}")
         return value
     return RE_PY_MAPPING_PARAM.sub(replace, bytestr)
 

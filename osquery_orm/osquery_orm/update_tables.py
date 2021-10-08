@@ -1,6 +1,7 @@
 """
 Update OSQuery tables
 """
+import json
 import os
 import re
 
@@ -8,6 +9,7 @@ from functools import partial
 from pathlib import Path
 from string import Template
 from typing import List
+from sb_utils import QueryDict
 
 IgnoreTables = ["example", ]
 NameOverride = {
@@ -55,9 +57,9 @@ AliasFields = ("False", "def", "if", "raise", "None", "del", "import", "return",
 
 def getClassName(_name: str):
     fixed_name = []
-    for c in _name.split('_'):
+    for c in _name.split("_"):
         fixed_name.append(NameOverride.get(c.lower(), c.capitalize()))
-    return ''.join(fixed_name)
+    return "".join(fixed_name)
 
 
 def getOperatingSystemExtentions(_os: str, cls: str):
@@ -99,7 +101,7 @@ def schema_column(attrs: dict, _name: str, _type: str, desc: str, **kwargs):
         "help_text": f'"{escapeText(desc)}"'
     }
     if _name in AliasFields:
-        args['column_name'] = f'"{_name}"'
+        args["column_name"] = f'"{_name}"'
         _name = f"{_name}_"
     field = f"{_name} = {_type}({', '.join(f'{k}={v}' for k, v in args.items())})"
     if kwargs:
@@ -181,20 +183,21 @@ def doc2table(doc: str) -> dict:
     with open(doc, "r") as d:
         spec = d.read()
         try:
-            cc = compile(spec, doc, 'exec')
+            cc = compile(spec, doc, "exec")
             eval(cc, eval_env)
             attrs["description"] = re.sub("\t", "    ", f'''"""\n\t{attrs["description"]}\n\t"""''' if attrs["description"] else "")
             attrs["general_imports"] = ("\n".join(attrs["general_imports"]) + "\n") if attrs["general_imports"] else ""
             attrs["field_imports"] = attrs["field_imports"] - {"int", "str"}
             attrs["field_imports"] = f"from peewee import {', '.join(attrs['field_imports'])}\n" if attrs["field_imports"] else ""
-            attrs["local_imports"] = ('\n'.join(attrs['local_imports']) + "\n\n") if attrs["local_imports"] else "\n"
+            attrs["local_imports"] = ("\n".join(attrs["local_imports"]) + "\n\n") if attrs["local_imports"] else "\n"
             return attrs
-        except Exception as e:
-            raise Exception('Table parsing error has occurred: {}'.format(e))
+        except Exception as err:
+            raise Exception(f"Table parsing error has occurred: {err}") from err
 
 
 if __name__ == "__main__":
-    with open('table_template.txt', 'r') as t:
+    schema_const_tables = QueryDict()
+    with open("table_template.txt", "r", encoding="UTF-8") as t:
         template_str = Template(t.read())
     spec_dir = os.path.abspath("./specs")
     table_dir = os.path.abspath("./tables")
@@ -203,12 +206,28 @@ if __name__ == "__main__":
             name, ext = os.path.splitext(filename)
             if name in IgnoreTables:
                 continue
-            if ext == '.table':
+            if ext == ".table":
                 spec_path = os.sep.join([dirpath, filename])
                 table_path = os.path.join(dirpath, f"{name}.py")
                 table_path = table_path.replace(spec_dir, table_dir)
                 print(f"Updating table for {spec_path}")
                 opts = doc2table(spec_path)
+                # Create JSON consts
+                d = dirpath.split("/")[-1]
+                if d not in schema_const_tables:
+                    schema_const_tables[d] = []
+                desc = re.sub(r"\n\s+Examples:\n(.|\n)*", "", opts.get("description")[3:-3].strip())
+                schema_const_tables[d].append({
+                    "const": opts.get("table_name"),
+                    "description": desc
+                })
+                # Write PeeWee model
                 Path(os.path.dirname(table_path)).mkdir(parents=True, exist_ok=True)
-                with open(table_path, "w") as f:
+                with open(table_path, "w", encoding="UTF-8") as f:
                     f.write(template_str.substitute(opts))
+
+    for k, v in QueryDict(schema_const_tables).items():
+        schema_const_tables[k] = sorted(v, key=lambda i: i["const"])
+
+    with open("tables.json", "w", encoding="UTF-8") as f:
+        json.dump(schema_const_tables, f, indent=2)
