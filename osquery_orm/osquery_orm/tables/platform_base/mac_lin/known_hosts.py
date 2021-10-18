@@ -2,7 +2,7 @@
 OSQuery known_hosts ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import ForeignKeyField, BigIntegerField, TextField
+from peewee import BigIntegerField, ForeignKeyField, TextField
 from .users import Users
 
 

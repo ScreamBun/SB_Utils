@@ -2,7 +2,7 @@
 OSQuery certificates ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import DateTimeField, TextField, IntegerField
+from peewee import DateTimeField, IntegerField, TextField
 
 
 class Certificates(BaseModel):

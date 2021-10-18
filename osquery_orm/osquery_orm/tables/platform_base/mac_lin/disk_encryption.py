@@ -2,7 +2,7 @@
 OSQuery disk_encryption ORM
 """
 from osquery_orm.orm import BaseModel
-from peewee import ForeignKeyField, TextField, IntegerField
+from peewee import ForeignKeyField, IntegerField, TextField
 from .block_devices import BlockDevices
 
 
