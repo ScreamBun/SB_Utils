@@ -26,3 +26,6 @@ class Routes(BaseModel):
 # OS specific properties for Posix
 class Posix_Routes(Routes):
     hopcount = IntegerField(help_text="Max hops expected")
+
+    class Meta:
+        table_name = "routes"

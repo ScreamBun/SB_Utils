@@ -25,3 +25,6 @@ class AptSources(BaseModel):
 # OS specific properties for Linux
 class Linux_AptSources(AptSources):
     pid_with_namespace = IntegerField(help_text="Pids that contain a namespace")  # {'additional': True, 'hidden': True}
+
+    class Meta:
+        table_name = "apt_sources"

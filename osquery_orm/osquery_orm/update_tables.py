@@ -107,7 +107,8 @@ def schemaName(_name: str, select: bool = True):
 def table_name(attrs: dict, _name: str, *args, **kwargs):
     attrs.update(
         class_name=getClassName(_name),
-        table_name=_name
+        table_name=_name,
+        metadata=f"\n\tclass Meta:\n\t\ttable_name = \"{_name}\"".replace("\t", " " * 4)
     )
 
 
@@ -154,6 +155,7 @@ def extended_schema(attrs: dict, _os: str, fields: List[str]):
     ext_schema += f"\n{getOperatingSystemExtentions(_os, attrs['class_name'])}\n"
     columns = "\n".join(fields)
     ext_schema += re.sub(r"^", "\t", columns, flags=re.MULTILINE).replace("\t", "    ")
+    ext_schema += f"\n{attrs['metadata']}"
     attrs.setdefault("extended_schema", "")
     attrs["extended_schema"] += ext_schema.replace("\t", " " * 4) + "\n"
 

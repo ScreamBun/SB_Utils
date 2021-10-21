@@ -27,3 +27,6 @@ class MacOS_DiskEncryption(DiskEncryption):
     uid = TextField(help_text="Currently authenticated user if available")
     user_uuid = TextField(help_text="UUID of authenticated user if available")
     filevault_status = TextField(help_text="FileVault status with one of following values: on | off | unknown")
+
+    class Meta:
+        table_name = "disk_encryption"

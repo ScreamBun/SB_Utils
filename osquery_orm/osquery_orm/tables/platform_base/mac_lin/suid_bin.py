@@ -21,3 +21,6 @@ class SuidBin(BaseModel):
 # OS specific properties for Linux
 class Linux_SuidBin(SuidBin):
     pid_with_namespace = IntegerField(help_text="Pids that contain a namespace")  # {'additional': True, 'hidden': True}
+
+    class Meta:
+        table_name = "suid_bin"

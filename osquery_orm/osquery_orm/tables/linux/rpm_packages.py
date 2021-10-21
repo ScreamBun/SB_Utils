@@ -29,3 +29,6 @@ class RpmPackages(BaseModel):
 class Linux_RpmPackages(RpmPackages):
     pid_with_namespace = IntegerField(help_text="Pids that contain a namespace")  # {'additional': True, 'hidden': True}
     mount_namespace_id = TextField(help_text="Mount namespace id")  # {'hidden': True}
+
+    class Meta:
+        table_name = "rpm_packages"

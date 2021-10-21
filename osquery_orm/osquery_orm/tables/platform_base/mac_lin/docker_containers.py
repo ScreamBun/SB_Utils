@@ -43,3 +43,6 @@ class Linux_DockerContainers(DockerContainers):
     pid_namespace = TextField(help_text="PID namespace")
     user_namespace = TextField(help_text="User namespace")
     uts_namespace = TextField(help_text="UTS namespace")
+
+    class Meta:
+        table_name = "docker_containers"

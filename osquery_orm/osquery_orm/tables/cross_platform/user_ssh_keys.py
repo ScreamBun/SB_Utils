@@ -25,3 +25,6 @@ class UserSshKeys(BaseModel):
 # OS specific properties for Linux
 class Linux_UserSshKeys(UserSshKeys):
     pid_with_namespace = IntegerField(help_text="Pids that contain a namespace")  # {'additional': True, 'hidden': True}
+
+    class Meta:
+        table_name = "user_ssh_keys"

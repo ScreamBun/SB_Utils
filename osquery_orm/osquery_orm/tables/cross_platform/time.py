@@ -31,3 +31,6 @@ class Time(BaseModel):
 # OS specific properties for Windows
 class Windows_Time(Time):
     win_timestamp = BigIntegerField(help_text="Timestamp value in 100 nanosecond units.")
+
+    class Meta:
+        table_name = "time"

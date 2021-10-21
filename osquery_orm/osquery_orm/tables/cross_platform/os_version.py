@@ -28,8 +28,14 @@ class OSVersion(BaseModel):
 class Windows_OSVersion(OSVersion):
     install_date = BigIntegerField(help_text="The install date of the OS.")
 
+    class Meta:
+        table_name = "os_version"
+
 
 # OS specific properties for Linux
 class Linux_OSVersion(OSVersion):
     pid_with_namespace = IntegerField(help_text="Pids that contain a namespace")  # {'additional': True, 'hidden': True}
     mount_namespace_id = TextField(help_text="Mount namespace id")  # {'hidden': True}
+
+    class Meta:
+        table_name = "os_version"

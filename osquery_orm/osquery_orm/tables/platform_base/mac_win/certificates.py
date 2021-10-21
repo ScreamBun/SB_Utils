@@ -37,3 +37,6 @@ class Windows_Certificates(Certificates):
     store = TextField(help_text="Certificate system store")
     username = TextField(help_text="Username")
     store_id = TextField(help_text="Exists for service/user stores. Contains raw store id provided by WinAPI.")
+
+    class Meta:
+        table_name = "certificates"

@@ -22,3 +22,6 @@ class YumSources(BaseModel):
 # OS specific properties for Linux
 class Linux_YumSources(YumSources):
     pid_with_namespace = IntegerField(help_text="Pids that contain a namespace")  # {'additional': True, 'hidden': True}
+
+    class Meta:
+        table_name = "yum_sources"
