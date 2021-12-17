@@ -123,7 +123,7 @@ class QueryDict(ObjectDict):
         """
         Get a key/path from the QueryDict
         :param path: key(s) to get the value of separated by the separator character
-        :param default: default value if the pey/path is not found
+        :param default: default value if the key/path is not found
         :return: value of key/path or default
         """
         if self.separator in path:

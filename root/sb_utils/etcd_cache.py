@@ -1,11 +1,15 @@
 """
 Local Cache for ETCd values
 """
-import etcd
+import copy
+import json
+import re
+import etcd3
 
-from threading import Event, Thread
-from time import sleep
+from threading import Lock
 from typing import Callable, List, Tuple, Union
+from etcd3.events import Event, DeleteEvent, PutEvent
+from etcd3.watch import WatchResponse
 from .general import isFunction
 from .ext_dicts import FrozenDict, QueryDict
 
@@ -18,142 +22,71 @@ Callbacks = Union[
 ]
 
 
-class ReusableThread(Thread):
-    """
-    Base: https://www.codeproject.com/Tips/1271787/Python-Reusable-Thread-Class
-    This class provides code for a restartale / reusable thread
-
-    join() will only wait for one (target)functioncall to finish
-    finish() will finish the whole thread (after that, it's not restartable anymore)
-    """
-
-    def __init__(self, target: Callable, args: tuple = None, kwargs: dict = None):
-        self._startSignal = Event()
-        self._oneRunFinished = Event()
-        self._finishIndicator = False
-        self._callable = target
-        self._callableArgs = args or ()
-        self._callableKwargs = kwargs or {}
-        Thread.__init__(self)
-
-    def restart(self) -> None:
-        """
-        make sure to always call join() before restarting
-        """
-        self._startSignal.set()
-
-    def run(self) -> None:
-        """
-        This class will reprocess the object "processObject" forever.
-        Through the change of data inside processObject and start signals
-        we can reuse the thread's resources
-        """
-        self.restart()
-        while True:
-            # wait until we should process
-            self._startSignal.wait()
-            self._startSignal.clear()
-            if self._finishIndicator:  # check, if we want to stop
-                self._oneRunFinished.set()
-                return
-
-            # call the threaded function
-            self._callable(*self._callableArgs, **self._callableKwargs)
-            # notify about the run's end
-            self._oneRunFinished.set()
-
-    def join(self, timeout: float = None) -> None:
-        """
-        This join will only wait for one single run (target functioncall) to be finished
-        """
-        self._oneRunFinished.wait(timeout)
-        self._oneRunFinished.clear()
-        self.restart()
-
-    def finish(self) -> None:
-        self._finishIndicator = True
-        self.restart()
-        self.join(5)
-
-
 class EtcdCache:
     _callbacks: List[Callback]
     _data: QueryDict
-    _etcd_client: etcd.Client
-    _etcd_updater: ReusableThread
+    _etcd_client: etcd3.client
+    _lock: Lock
     _root: str
-    _timeout: int
+    _watcher_id: int
 
-    def __init__(self, host: str, port: int, base: str, timeout: int = 60, callbacks: Callbacks = None):
-        super().__init__()
+    def __init__(self, host: str, port: int, base: str, callbacks: Callbacks = None):
         self._callbacks = []
         if isinstance(callbacks, (list, tuple)):
             self._callbacks.extend([f for f in callbacks if isFunction(f)])
 
-        self._data = QueryDict()
-        self._etcd_client = etcd.Client(
+        self._root = base if base.startswith('/') else f'/{base}'
+        self._root = self._root[:-1] if self._root.endswith('/') else self._root
+        self._etcd_client = etcd3.client(
             host=host,
             port=port
         )
-        self._root = base if base.endswith('/') else f'{base}/'
-        self._timeout = timeout
-        self._initial()
-        self._etcd_updater = ReusableThread(target=self._update, kwargs={'wait': True})
-        self._etcd_updater.setDaemon(True)
-        self._etcd_updater.start()
+        self._lock = Lock()
+        self._data = self._init_data()
+        self._watcher_id = self._etcd_client.add_watch_prefix_callback(key_prefix=self._root, callback=self._update)
 
     @property
     def cache(self) -> FrozenDict:
-        return FrozenDict(self._data)
+        with self._lock:
+            return FrozenDict(self._data)
 
     def shutdown(self) -> None:
-        self._etcd_updater.join(5)
-        self._etcd_updater.finish()
+        self._etcd_client.cancel_watch(self._watcher_id)
+
+    # Dict-like
+    def get(self, key: str) -> FrozenDict:
+        with self._lock:
+            return FrozenDict(self._data.get(key, {}))
 
     # Helper Methods
-    def _initial(self, base: str = None) -> None:
+    def _init_data(self, base: str = None) -> QueryDict:
         """
         Get ETCD initial values
         """
         root = base or self._root
-        try:
-            for k in self._etcd_client.read(root, recursive=True, sorted=True).children:
-                key = k.key.replace(self._root, '').replace('/', '.')
-                self._data[key] = k.value
-        except (etcd.EtcdKeyNotFound, etcd.EtcdWatchTimedOut):
-            pass
+        data = QueryDict()
+        for val, meta in self._etcd_client.get_prefix(root):
+            key = re.sub(fr'^{root}/'.encode(), b'', meta.key).decode().replace('/', '.')
+            data[key] = json.loads(val)
+        return data
 
-    def _update(self, wait: bool = False, base: str = None) -> None:
-        """
-        Get ETCD value updates
-        """
-        root = base or self._root
-        kwargs = dict(wait=True, timeout=self._timeout) if wait else {}
-        update = False
+    def _update(self, response: WatchResponse) -> None:
+        events: List[Event] = response.events
+        for evt in events:
+            key = re.sub(fr'^{self._root}/'.encode(), b'', evt.key).decode().replace('/', '.')
+            with self._lock:
+                tmp = copy.deepcopy(self._data)
+            if isinstance(evt, PutEvent):
+                val = json.loads(evt.value)
+                with self._lock:
+                    self._data[key] = val
+            elif isinstance(evt, DeleteEvent):
+                with self._lock:
+                    del self._data[key]
+            else:
+                print(f"Unknown Event - {evt}", flush=True)
 
-        try:
-            for k in self._etcd_client.read(root, recursive=True, sorted=True, **kwargs).children:
-                update = True
-                key = k.key.replace(self._root, '').replace('/', '.')
-                t_id = key.split('.')[0]
-                if t_id not in self._data:
-                    sleep(0.5)
-                    self._initial(base=f'{root}{t_id}')
-                else:
-                    if k.value is None:
-                        del self._data[key]
-                    else:
-                        self._data[key] = k.value
-            update = True
-        except (etcd.EtcdKeyNotFound, etcd.EtcdWatchTimedOut):
-            pass
-
-        if update:
-            for func in self._callbacks:
-                func(self.cache)
-
-        if self._etcd_updater.is_alive():
-            self._etcd_updater.join(5)
-            self._etcd_updater.restart()
-        else:
-            self._etcd_updater.start()
+            with self._lock:
+                if tmp != self._data:
+                    for func in self._callbacks:
+                        func(self.cache)
