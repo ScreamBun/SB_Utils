@@ -95,7 +95,8 @@ class EtcdCache:
             host=host,
             port=port
         )
-        self._root = base if base.endswith('/') else f'{base}/'
+        self._root = base if base.startswith('/') else f'/{base}'
+        self._root = self._root if self._root.endswith('/') else f'{self._root}/'
         self._lock = Lock()
         self._data = self._init_data()
         self._timeout = timeout
