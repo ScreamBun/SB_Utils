@@ -169,4 +169,5 @@ fabric.properties
 # Custom Ignore
 .idea
 .DS_Store
+lint.html
 root/sizes.md
