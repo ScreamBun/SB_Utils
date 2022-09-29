@@ -1,4 +1,4 @@
-[![OpenC2(https://github.com/ScreamBun/SB_Utils/blob/master/assets/images/openc2.png?raw=true)](https://openc2.org/)
+<a href="https://openc2.org/" target="_blank">![OpenC2](https://github.com/ScreamBun/SB_Utils/blob/master/assets/images/openc2.png?raw=true)</a>
 # Utils
 
 ## Installing
