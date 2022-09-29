@@ -1,3 +1,4 @@
+[![OpenC2(https://github.com/ScreamBun/SB_Utils/blob/master/assets/images/openc2.png)](https://openc2.org/)
 # Utils
 
 ## Installing
