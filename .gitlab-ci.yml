@@ -13,9 +13,12 @@ Build-Main:
 
   script:
     - cd root
-    # - python3 setup.py sdist bdist_wheel
+    - pip install --upgrade pip
+    - pip install --upgrade setuptools
+    - pip install wheel
     - python setup.py bdist_wheel 
     - mv $DIST_DIR/*.whl .
+    # - python3 setup.py sdist bdist_wheel    
 
   artifacts:
     name: "SB_UTILS.${CI_PIPELINE_ID}_${CI_COMMIT_SHA:0:8}"
