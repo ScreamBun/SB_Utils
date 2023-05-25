@@ -13,7 +13,8 @@ Build-Main:
 
   script:
     - cd root
-    - python3 setup.py sdist bdist_wheel
+    # - python3 setup.py sdist bdist_wheel
+    - python setup.py bdist_wheel 
     - mv $DIST_DIR/*.whl .
 
   artifacts:
