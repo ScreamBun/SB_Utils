@@ -1,4 +1,4 @@
-image: harbor.olympus.mtn/screamingbunny/docker/alpine-python3
+image: harbor.olympus.mtn/screamingbunny/docker/alpine-python
 
 variables:
   GIT_SSL_NO_VERIFY: "true"
